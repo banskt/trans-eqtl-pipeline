@@ -1,0 +1,44 @@
+#!/bin/bash
+
+CURDIR=`pwd`
+
+# data directory
+DATADIR="/scratch/sbanerj/data"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
+
+# output directory
+OUTDIR="/scratch/sbanerj/trans-eqtl/dev-pipeline"
+
+# Cardiogenics
+CARDIODIR="${DATADIR}/Cardiogenics"
+CARDIO_EXPR_FMT="${CARDIODIR}/expression/cardio_[TISSUE]_expr_gencode_filter.txt"
+CARDIO_GENO_FMT="${CARDIODIR}/genotype_qc/CG_dosages_filtered_[CHRM].imputed.gz"
+CARDIO_SAMPLE="${CARDIODIR}/genotype_qc/CG.sample"
+
+
+if [ ${MDATA} = "cardio-mono" ]; then
+    DATATYPE="cardiogenics"
+    SAMPLEFILE=${CARDIO_SAMPLE}
+    EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/mono}
+    GENO_FMT=${CARDIO_GENO_FMT}
+fi
+
+if [ ${MDATA} = "cardio-macro" ]; then
+    DATATYPE="cardiogenics"
+    SAMPLEFILE=${CARDIO_SAMPLE}
+    EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/macro}
+    GENO_FMT=${CARDIO_GENO_FMT}
+fi
+
+# GTEx
+
+# Pipeline directories
+UTILSDIR="${CURDIR}/utils"
+CONFIGDIR="${CURDIR}/configs"
+SCRIPTDIR="${CURDIR}/../scripts"
+MASTER_BSUBDIR="${CURDIR}/../bsubfiles"
+JOBSUBDIR="${CURDIR}/../jobsubs"
+ANALYSISDIR="${CURDIR}/../analysis"
+
+# Script files
+MATRIXEQTL="${SCRIPTDIR}/matrixeqtl.R"

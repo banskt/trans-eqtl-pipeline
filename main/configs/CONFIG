@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
+CHRNUMS="1 2 3"
+DATASETS="cardio-mono cardio-macro"
+
+# MatrixEQTL options
+MEQTL_PVALTHRES_CIS=0.00001
+MEQTL_PVALTHRES_TRANS=0.00001
+MATRIXEQTL_MODEL="modelLINEAR"
+
+TEJAAS_MODEL="jpa-rr"
+
+
+# Which methods to run?
+bMatrixEqtl=true
+bTejaas=false
+bValidationPlot=false
