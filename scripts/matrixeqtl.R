@@ -29,7 +29,9 @@ option_list = list(
     make_option(c("-q", "--outfiletrans"), type="character", default=NULL,
               help="path to output file for trans-eQTLs", metavar="character"),
     make_option(c("-m", "--model"), type="character", default="modelLINEAR",
-              help="Model to use from modelANOVA, modelLINEAR, or modelLINEAR_CROSS [default \"%default\"]", metavar="character")
+              help="Model to use from modelANOVA, modelLINEAR, or modelLINEAR_CROSS [default \"%default\"]", metavar="character"),
+    make_option(c("-r", "--randomize"), action="store_true", default=FALSE,
+              help="Randomize the gene expression")
 );
 
 opt_parser = OptionParser(option_list=option_list, add_help_option = TRUE);
@@ -98,6 +100,14 @@ gene$fileSkipColumns = 1;       # one column of row labels
 gene$fileSliceSize = 2000;      # read file in slices of 2,000 rows
 gene$LoadFile(expression_file_name);
 
+if (opt$randomize) {
+    message("Randomizing gene expression values by permuting samples")
+    expr_mat = as.matrix(gene);
+    shuffled = t(apply(expr_mat, 1, sample));
+    colnames(shuffled) = colnames(gene);
+    gene$CreateFromMatrix(shuffled);
+}
+
 # match columns of samples from genotype and expression
 if (!is.null(opt$selectdonors)) {
     message("Selecting donors from user list")
@@ -130,7 +140,7 @@ if (is.null(opt$covariates)) {
     }
 }
 
-if (opt$dataset == "cardiogenics") {
+if (opt$datatype == "cardiogenics") {
     #trim genepos ensembl ids
     ensembls = sapply(genepos$geneid, function(x){strsplit(x, '.', fixed=T)})
     ensembls = as.character(sapply(ensembls, "[[", 1))

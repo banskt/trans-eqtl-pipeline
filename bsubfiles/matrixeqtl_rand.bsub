@@ -33,4 +33,5 @@ Rscript ${SCRIPT} --genotype ${GTFILE} \
                   --pvaltrans ${TRANSPVAL} \
                   --outfilecis ${OUTFILECIS} \
                   --outfiletrans ${OUTFILETRANS} \
-                  --model ${MATRIXEQTLMODEL}
+                  --model ${MATRIXEQTLMODEL} \
+                  --randomize

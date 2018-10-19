@@ -13,17 +13,18 @@ OUTDIR="/scratch/sbanerj/trans-eqtl/dev-pipeline"
 CARDIODIR="${DATADIR}/Cardiogenics"
 CARDIO_EXPR_FMT="${CARDIODIR}/expression/cardio_[TISSUE]_expr_gencode_filter.txt"
 CARDIO_GENO_FMT="${CARDIODIR}/genotype_qc/CG_dosages_filtered_[CHRM].imputed.gz"
+CARDIO_BGEN_FMT="${CARDIODIR}/genotype_qc/CG_filtered_imputed_[CHRM].bgen"
 CARDIO_SAMPLE="${CARDIODIR}/genotype_qc/CG.sample"
 
 
-if [ ${MDATA} = "cardio-mono" ]; then
+if [ "${MDATA}" = "cardio-mono" ]; then
     DATATYPE="cardiogenics"
     SAMPLEFILE=${CARDIO_SAMPLE}
     EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/mono}
     GENO_FMT=${CARDIO_GENO_FMT}
 fi
 
-if [ ${MDATA} = "cardio-macro" ]; then
+if [ "${MDATA}" = "cardio-macro" ]; then
     DATATYPE="cardiogenics"
     SAMPLEFILE=${CARDIO_SAMPLE}
     EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/macro}
@@ -42,3 +43,6 @@ ANALYSISDIR="${CURDIR}/../analysis"
 
 # Script files
 MATRIXEQTL="${SCRIPTDIR}/matrixeqtl.R"
+
+# external programs required for the pipeline
+LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"

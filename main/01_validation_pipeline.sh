@@ -19,9 +19,10 @@ for MDATA in ${DATASETS}; do
 
     if [ ! -z "$EXPRESSIONFILE" ]; then
 
-        if [ "${bMatrixEqtl}" = "true" ]; then source ${UTILSDIR}/matrix_eqtl; fi
-        if [ "${bTejaas}" = "true" ]; then source ${UTILSDIR}/tejaas; fi
         echo "Submitting jobs for $MDATA"
+        if [ "${bMatrixEqtl}" = "true" ]; then source ${UTILSDIR}/matrix_eqtl; fi
+        if [ "${bMatrixEqtlRandom}" = "true" ]; then source ${UTILSDIR}/matrix_eqtl_random; fi
+        if [ "${bTejaas}" = "true" ]; then source ${UTILSDIR}/tejaas; fi
 
     fi
 
