@@ -83,7 +83,7 @@ for i, rsid in enumerate(rsid_list):
 
 hm = np.loadtxt(ldfile)
 n = locus_end - locus_start
-divisor = int(n / 50)
+divisor = int(n / 100)
 n = int(n / divisor)
 sparse_hm = np.zeros((n, n))
 for i, rsid1 in enumerate(rsid_list):
