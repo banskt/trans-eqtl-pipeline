@@ -22,6 +22,7 @@ TRANSPVAL=_PTHR_TRA
 OUTFILECIS=_OUTF_CIS
 OUTFILETRANS=_OUTF_TRA
 MATRIXEQTLMODEL=_MEQTLMOD
+EXTRAFLAGS=_EXT_FLAG
 
 
 Rscript ${SCRIPT} --genotype ${GTFILE} \
@@ -33,4 +34,5 @@ Rscript ${SCRIPT} --genotype ${GTFILE} \
                   --pvaltrans ${TRANSPVAL} \
                   --outfilecis ${OUTFILECIS} \
                   --outfiletrans ${OUTFILETRANS} \
-                  --model ${MATRIXEQTLMODEL}
+                  --model ${MATRIXEQTLMODEL} \
+                  ${EXTRAFLAGS}

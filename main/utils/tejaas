@@ -1,0 +1,66 @@
+#!/bin/bash
+
+THISMETHOD="tejaas"
+THISJOBDEPS=""
+
+for CHRM in ${CHRNUMS}; do
+    GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+    TOTALSNPS=`zcat ${GENOTYPEFILE} | wc -l`
+    NJOBS=$(echo $(( TOTALSNPS/MAX_NSNP_PERJOB )))
+    MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
+
+    for NULL in ${TEJAAS_NULL}; do
+        for SBETA in ${TEJAAS_SIGMA_BETA}; do
+
+            METHOD_VARIANT="${NULL}null_sb${SBETA}"
+            SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+            SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+
+            if [ -d ${SPECIFIC_JOBSUBDIR} ]; then rm -rf ${SPECIFIC_JOBSUBDIR}; fi; mkdir -p ${SPECIFIC_JOBSUBDIR}
+            if [ ! -d ${SPECIFIC_OUTDIR} ]; then mkdir -p ${SPECIFIC_OUTDIR}; fi
+        
+            JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
+        
+            for (( JOB=0; JOB <= ${NJOBS}; JOB++ )); do
+                INDEX=`echo ${JOB} | awk '{printf "%03d", $1}'`
+                JOBNAME="${JOBPREFIX}_${INDEX}"
+        
+                STARTSNP=$(( MAX_NSNP_PERJOB * JOB + 1 ))
+                ENDSNP=$(( MAX_NSNP_PERJOB * (JOB+1) ))
+                if [ $ENDSNP -gt $TOTALSNPS ]; then
+                    ENDSNP=${TOTALSNPS}
+                fi
+                INCSNP="${STARTSNP}:${ENDSNP}"
+        
+                OUTPREFIX="${SPECIFIC_OUTDIR}/chunk${INDEX}"
+
+                EXTRAFLAGS="--dosage"
+                if [ "${DATATYPE}" = "cardiogenics" ]; then
+                    EXTRAFLAGS="$EXTRAFLAGS --trim"
+                fi
+        
+                # create the job submission file
+                sed "s|_JOB_NAME|${JOBNAME}|g;
+                     s|_TJS_BINR|${TEJAAS}|g;
+                     s|_GT_FILE_|${GENOTYPEFILE}|g;
+                     s|_SAM_FILE|${SAMPLEFILE}|g;
+                     s|_EXPR_FL_|${EXPRESSIONFILE}|g;
+                     s|_GEN_POSF|${GENEINFOFILE}|g;
+                     s|_TJ_METHD|${TEJAAS_MODEL}|g;
+                     s|_NULL_MDL|${NULL}|g;
+                     s|_OUT_PRFX|${OUTPREFIX}|g;
+                     s|_STRT_END|${INCSNP}|g;
+                     s|_SNP_CUT_|${TEJAAS_SNPS_THRES}|g;
+                     s|_GEN_CUT_|${TEJAAS_GENE_THRES}|g;
+                     s|_SIG_BETA|${SBETA}|g;
+                     s|_CHRM_NUM|${CHRM}|g;
+                     s|_MAF_FILE|${MAF_1KG_FILE}|g;
+                     s|_EXT_FLAG|\"${EXTRAFLAGS}\"|g;
+                    " ${MASTER_BSUBDIR}/tejaas.bsub > ${SPECIFIC_JOBSUBDIR}/${JOBNAME}.bsub
+
+                submit_job ${SPECIFIC_JOBSUBDIR} ${JOBNAME} ${THISJOBDEPS}
+                JOBDEPS=`add_deps "${JOBDEPS}" ${JOBNAME}`
+            done
+        done
+    done
+done

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+function submit_job() {
+    local DIR=$1
+    local JOBNAME=$2
+    local DEPS=$3
+    local CWD=`pwd`
+    
+    cd ${DIR}
+    
+    echo ${JOBNAME}.bsub
+    
+    cd ${CWD}
+}
+
+function submit_job_later() {
+
+    local DIR=$1
+    local JOBNAME=$2
+    local DEPS=$3
+    local CWD=`pwd`
+    
+    cd ${DIR}
+    
+    if [ ! -z ${DEPS} ]; then
+        bsub -w "${DEPS}" < ${JOBNAME}.bsub
+    else
+        bsub < ${JOBNAME}.bsub
+    fi
+    
+    cd ${CWD}
+}
+
+                # ok=0
+                # # workaround, sometimes the file was submitted to the cluster but not written to disk yet
+                # while [ $ok -lt 1 ]; do
+                #     if [ -s ${JOBNAME}.bsub ]; then
+                #         bsub < ${JOBNAME}.bsub
+                #         ok=1
+                #     else
+                #         echo "File is empty, retrying.."
+                #         sleep 1;
+                #     fi
+                # done

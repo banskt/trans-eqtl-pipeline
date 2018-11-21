@@ -1,21 +1,27 @@
 #!/bin/bash
 
-JOBSUBDIR_MATRIX_EQTL="${JOBSUBDIR_DATA}/matrixeqtl"
+THISMETHOD="matrixeqtl"
+THISJOBDEPS=""
+EXTRAFLAGS=""
+if [ "${bMEqtlRandom}" = "true" ]; then
+    THISMETHOD="matrixeqtl_rand"
+    EXTRAFLAGS="--randomize"
+fi
+
+JOBSUBDIR_MATRIX_EQTL="${JOBSUBDIR_DATA}/${THISMETHOD}"
 
 for CHRM in ${CHRNUMS}; do
     SPECIFIC_JOBSUBDIR="${JOBSUBDIR_MATRIX_EQTL}/chr${CHRM}"
     if [ -d ${SPECIFIC_JOBSUBDIR} ]; then rm -rf ${SPECIFIC_JOBSUBDIR}; fi; mkdir -p ${SPECIFIC_JOBSUBDIR}
 
-    cd ${SPECIFIC_JOBSUBDIR}
-
-    SPECIFIC_OUTDIR="${OUTDIR_DATA}/matrixeqtl/chr${CHRM}"
+    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/chr${CHRM}"
     if [ ! -d ${SPECIFIC_OUTDIR} ]; then mkdir -p ${SPECIFIC_OUTDIR}; fi
     OUTFILE_CIS="${SPECIFIC_OUTDIR}/cis_eqtl.txt"
     OUTFILE_TRANS="${SPECIFIC_OUTDIR}/trans_eqtl.txt"
 
     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
 
-    MATRIXEQTL_JOBNAME="matrixeqtl_${MDATA}_chr${CHRM}_${RANDSTRING}"
+    MATRIXEQTL_JOBNAME="${THISMETHOD}_${MDATA}_chr${CHRM}_${RANDSTRING}"
 
     sed -e "s|_JOB_NAME|${MATRIXEQTL_JOBNAME}|g;
             s|_MEQTL_R_|${MATRIXEQTL}|g;
@@ -29,9 +35,10 @@ for CHRM in ${CHRNUMS}; do
             s|_OUTF_CIS|${OUTFILE_CIS}|g;
             s|_OUTF_TRA|${OUTFILE_TRANS}|g;
             s|_MEQTLMOD|${MATRIXEQTL_MODEL}|g;
-           " ${MASTER_BSUBDIR}/matrixeqtl.bsub > ${MATRIXEQTL_JOBNAME}.bsub
+            s|_EXT_FLAG|${EXTRAFLAGS}|g;
+           " ${MASTER_BSUBDIR}/matrixeqtl.bsub > ${SPECIFIC_JOBSUBDIR}/${MATRIXEQTL_JOBNAME}.bsub
 
-    bsub < ${MATRIXEQTL_JOBNAME}.bsub
-    cd ${CURDIR}
+    submit_job ${SPECIFIC_JOBSUBDIR} ${MATRIXEQTL_JOBNAME} ${THISJOBDEPS}
+    JOBDEPS=`add_deps "${JOBDEPS}" ${MATRIXEQTL_JOBNAME}`
 
 done

@@ -6,7 +6,7 @@ The following methods will be included:
 * [x] MatrixEQTL
 * [ ] GNetLMM
 * [ ] CPMA (implemented as JPA within TEJAAS)
-* [ ] TEJAAS
+* [x] TEJAAS
 
 We also want to compare:
 * [ ] effect of different pre-filtering methods

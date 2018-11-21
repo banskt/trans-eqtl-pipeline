@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function add_deps() {
+    local _JobDeps=$1
+    local _AddJob=$2
+    local _Result=""
+    if [ ! -z "$_JobDeps" ]; then
+        _Result="${_JobDeps} && done(${_AddJob})"
+    else
+        _Result="done(${_AddJob})"
+    fi
+    echo $_Result
+}

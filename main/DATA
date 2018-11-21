@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# data directory
+DATADIR="/scratch/sbanerj/data"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
+GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
+
+# output directory
+OUTDIR="/scratch/sbanerj/trans-eqtl/dev-pipeline"
+
+# Cardiogenics
+CARDIODIR="${DATADIR}/Cardiogenics"
+CARDIO_EXPR_FMT="${CARDIODIR}/expression/cardio_[TISSUE]_expr_gencode_filter.txt"
+CARDIO_GENO_FMT="${CARDIODIR}/genotype_qc/CG_dosages_filtered_[CHRM].imputed.gz"
+CARDIO_BGEN_FMT="${CARDIODIR}/genotype_qc/CG_filtered_imputed_[CHRM].bgen"
+CARDIO_SAMPLE="${CARDIODIR}/genotype_qc/CG.sample"
+CARDIO_1KG_MAF="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+
+# GTEx
+GTEXDIR="${DATADIR}/GTEx"
+GTEX_EXPR_FMT="${GTEXDIR}/expression/gtex.normalized.expression.lmcorrected.[TISSUE].txt"
+GTEX_GENO_FMT="${GTEXDIR}/genotype_qc/dosages/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_dosages_chr[CHRM].gz"
+GTEX_SAMPLE="${GTEXDIR}/gtex.sample"
+
+# Tissue specific and data specific formatting 
+DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
+TISSUEID=`echo ${MDATA} | cut -d'-' -f2`
+case "${DATATYPE}" in  # adding new dataset is easier with case than with if-else
+    "cardio")
+        DATATYPE="cardiogenics" # renaming data type from input
+        EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        GENO_FMT=${CARDIO_GENO_FMT}
+        SAMPLEFILE=${CARDIO_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    "gtex")
+        DATATYPE="gtex"
+        EXPRESSIONFILE=${GTEX_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        GENO_FMT=${GTEX_GENO_FMT}
+        SAMPLEFILE=${GTEX_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    *)
+        EXPRESSIONFILE=""
+        GENO_FMT=""
+        SAMPLEFILE=""
+        MAF_1KG_FILE=""
+        ;;
+esac
