@@ -3,9 +3,10 @@
 THISMETHOD="matrixeqtl"
 THISJOBDEPS=""
 EXTRAFLAGS=""
-if [ "${bMEqtlRandom}" = "true" ]; then
+if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="matrixeqtl_rand"
     EXTRAFLAGS="--randomize"
+    SHUFFLE=false
 fi
 
 JOBSUBDIR_MATRIX_EQTL="${JOBSUBDIR_DATA}/${THISMETHOD}"

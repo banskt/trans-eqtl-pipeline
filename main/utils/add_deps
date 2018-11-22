@@ -4,7 +4,7 @@ function add_deps() {
     local _JobDeps=$1
     local _AddJob=$2
     local _Result=""
-    if [ ! -z "$_JobDeps" ]; then
+    if [ ! "$_JobDeps" == "None" ]; then
         _Result="${_JobDeps} && done(${_AddJob})"
     else
         _Result="done(${_AddJob})"

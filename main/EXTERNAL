@@ -1,0 +1,5 @@
+#!/bin/bash
+
+LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"
+TEJAAS="${HOME}/trans-eQTL/codebase/tejaas/bin/tejaas"
+GNETLMMDIR="${HOME}/packages/GNetLMM"

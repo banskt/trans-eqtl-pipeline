@@ -31,14 +31,14 @@ function submit_job_later() {
     cd ${CWD}
 }
 
-                # ok=0
-                # # workaround, sometimes the file was submitted to the cluster but not written to disk yet
-                # while [ $ok -lt 1 ]; do
-                #     if [ -s ${JOBNAME}.bsub ]; then
-                #         bsub < ${JOBNAME}.bsub
-                #         ok=1
-                #     else
-                #         echo "File is empty, retrying.."
-                #         sleep 1;
-                #     fi
-                # done
+    # ok=0
+    # # workaround, sometimes the file was submitted to the cluster but not written to disk yet
+    # while [ $ok -lt 1 ]; do
+    #     if [ -s ${JOBNAME}.bsub ]; then
+    #         bsub < ${JOBNAME}.bsub
+    #         ok=1
+    #     else
+    #         echo "File is empty, retrying.."
+    #         sleep 1;
+    #     fi
+    # done

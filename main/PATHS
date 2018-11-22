@@ -1,18 +1,17 @@
 #!/bin/bash
 
-CURDIR=`pwd`
-
 # external programs required for the pipeline
 LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"
 TEJAAS="${HOME}/trans-eQTL/codebase/tejaas/bin/tejaas"
 
 # Pipeline directories
-UTILSDIR="${CURDIR}/utils"
-CONFIGDIR="${CURDIR}/configs"
-SCRIPTDIR="${CURDIR}/../scripts"
-MASTER_BSUBDIR="${CURDIR}/../bsubfiles"
-JOBSUBDIR="${CURDIR}/../jobsubs"
-ANALYSISDIR="${CURDIR}/../analysis"
+CURDIRUP="$(dirname "$(pwd)")"
+UTILSDIR="${CURDIRUP}/main/utils"
+CONFIGDIR="${CURDIRUP}/main/configs"
+SCRIPTDIR="${CURDIRUP}/scripts"
+MASTER_BSUBDIR="${CURDIRUP}/bsubfiles"
+JOBSUBDIR="${CURDIRUP}/jobsubs"
+ANALYSISDIR="${CURDIRUP}/analysis"
 
 # Script files
 MATRIXEQTL="${SCRIPTDIR}/matrixeqtl.R"

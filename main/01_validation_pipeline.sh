@@ -10,13 +10,15 @@ fi
 
 source ${CONFIGFILE}
 source PATHS
-
-RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
-
-# get the different functions
 source ${UTILSDIR}/submit_job
 source ${UTILSDIR}/add_deps
 source ${UTILSDIR}/unset_vars
+source EXTERNAL
+
+RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
+RUNJPA=false	# used for submitting jpa-only jobs
+SHUFFLE=false 	# used for controlling shuffling
+JOBDEPS="None" 	# used for controlling job dependencies
 
 for MDATA in ${DATASETS}; do
 
@@ -27,13 +29,15 @@ for MDATA in ${DATASETS}; do
     if [ ! -z "$EXPRESSIONFILE" ]; then
 
         echo "Submitting jobs for $MDATA"
-        JOBDEPS=""
         
         if [ "${bMatrixEqtl}" = "true" ];  then source ${UTILSDIR}/matrix_eqtl; fi
-        if [ "${bMEqtlRandom}" = "true" ]; then source ${UTILSDIR}/matrix_eqtl; fi
+        if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; fi
         if [ "${bTejaas}" = "true" ];      then source ${UTILSDIR}/tejaas; fi
+        if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
 
     fi
+
+    # echo ${JOBDEPS}
 
     unset_vars DATA
 

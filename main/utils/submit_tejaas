@@ -1,0 +1,81 @@
+#!/bin/bash
+
+function submit_tejaas() {
+    local tejaas=$1
+    local chrm=$2
+    local genotype=$3
+    local expression=$4
+    local sample=$5
+    local geneinfo=$6
+    local maffile=$7
+    local method=$8
+    local null=$9
+    local snpthres=${10}
+    local genethres=${11}
+    local sbeta=${12}
+    local extraflags=${13}
+    local jobsubdir=${14}
+    local outdir=${15}
+    local jobprefix=${16}
+    local nmax=${17}
+    local thisjobdep=${18}
+    local bsubdir=${19}
+    local __jobdeps=${20}
+    local jobdeps=${21}
+    local jobname=0
+    local i=0
+    local index=0
+    local includesnps=0
+    local startsnp=0
+    local endsnp=0
+    local outprefix=0
+
+    ## echo $tejaas $chrm $genotype ${expression} ${sample} ${geneinfo} $maffile
+    ## echo "Method: " ${method} ${null} ${snpthres} ${genethres} ${sbeta}
+    ## echo "Extraflags: " ${extraflags}
+    ## echo $jobsubdir $outdir $jobprefix
+    ## echo $nmax $thisjobdep $bsubdir $__jobdeps $jobdeps
+
+    ntot=`zcat ${genotype} | wc -l`
+    njobs=$(echo $(( ntot/nmax )))
+
+    if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
+    if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
+
+    for (( i=0; i <= ${njobs}; i++ )); do
+        index=`echo ${i} | awk '{printf "%03d", $1}'`
+        jobname="${jobprefix}_${index}"
+
+        startsnp=$(( nmax * i + 1 ))
+        endsnp=$(( nmax * (i + 1) ))
+        if [ $endsnp -gt $ntot ]; then
+            endsnp=${ntot}
+        fi
+        includesnps="${startsnp}:${endsnp}"
+
+        outprefix="${outdir}/chunk${index}"
+
+        # create the job submission file
+        sed "s|_i_NAME|${jobname}|g;
+             s|_TJS_BINR|${tejaas}|g;
+             s|_GT_FILE_|${genotype}|g;
+             s|_SAM_FILE|${sample}|g;
+             s|_EXPR_FL_|${expression}|g;
+             s|_GEN_POSF|${geneinfo}|g;
+             s|_TJ_METHD|${method}|g;
+             s|_NULL_MDL|${null}|g;
+             s|_OUT_PRFX|${outprefix}|g;
+             s|_STRT_END|${includesnps}|g;
+             s|_SNP_CUT_|${snpthres}|g;
+             s|_GEN_CUT_|${genethres}|g;
+             s|_SIG_BETA|${sbeta}|g;
+             s|_CHRM_NUM|${chrm}|g;
+             s|_MAF_FILE|${maffile}|g;
+             s|_EXT_FLAG|\"${extraflags}\"|g;
+            " ${bsubdir}/tejaas.bsub > ${jobsubdir}/${jobname}.bsub
+
+        submit_job ${jobsubdir} ${jobname} ${thisjobdep}
+        jobdeps=`add_deps "${jobdeps}" ${jobname}`
+    done
+    eval $__jobdeps="'$jobdeps'"
+}

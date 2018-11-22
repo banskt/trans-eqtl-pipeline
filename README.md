@@ -3,9 +3,9 @@
 (Currently in development)
 
 The following methods will be included:
-* [x] MatrixEQTL
-* [ ] GNetLMM
-* [ ] CPMA (implemented as JPA within TEJAAS)
+* [x] [MatrixEQTL](http://www.bios.unc.edu/research/genomic_software/Matrix_eQTL/)
+* [ ] [GNetLMM](https://github.com/PMBio/GNetLMM) (see [Installation instructions](https://github.com/banskt/trans-eqtl-pipeline/wiki/Install-GNetLMM-in-GWDG-cluster))
+* [x] [CPMA](https://github.com/cotsapaslab/CPMAtranseqtl) (The authors did not provide updated software, the pipeline uses JPA scores from TEJAAS)
 * [x] TEJAAS
 
 We also want to compare:
@@ -26,8 +26,18 @@ The pipeline expects the following input files:
 * Genotype (in gzipped dosage format)
 * Expression (tab-separated text file, gene name in column1, expression for `N` patients in the next `N` columns, header line starting with `gene_id` in first column and sample ids in the next `N` columns)
 * Sample (a dummy [sample file in Oxford format](http://www.stats.ox.ac.uk/~marchini/software/gwas/file_format.html))
+* GENCODE file
+* gene position file (for MatrixEQTL)
+* MAF file from 1000Genomes
 
 ## How to run
-1. Update the file paths in `main/PATH`.
-2. Create a `CONFIG` file (see example in `configs/CONFIG`).
-3. Run the different scripts from within `main` directory.
+1. Within `bsubfiles` folder, change the job submission criteria and module loadings as per your requirements (GWDG users, skip this step)
+2. Modify `main/utils/submit_job` to your own job scheduling mechanism (`bsub` users, skip this step)
+3. Update the path of external programs `main/EXTERNAL` 
+4. Update the path of your datasets in `main/DATA`.
+5. Create a `CONFIG` file (see example in `configs/CONFIG`).
+6. Run the pipeline from within `main` directory.
+```
+cd main
+./01_validation_pipeline.sh configs/CONFIG
+```
