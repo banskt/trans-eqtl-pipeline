@@ -56,7 +56,7 @@ function submit_tejaas() {
         outprefix="${outdir}/chunk${index}"
 
         # create the job submission file
-        sed "s|_i_NAME|${jobname}|g;
+        sed "s|_JOB_NAME|${jobname}|g;
              s|_TJS_BINR|${tejaas}|g;
              s|_GT_FILE_|${genotype}|g;
              s|_SAM_FILE|${sample}|g;

@@ -24,7 +24,7 @@ and then compare the methods using tissue-consistent trans-eQTLs (which are foun
 ## Input
 The pipeline expects the following input files:
 * Genotype (in gzipped dosage format)
-* Expression (tab-separated text file, gene name in column1, expression for `N` patients in the next `N` columns, header line starting with `gene_id` in first column and sample ids in the next `N` columns)
+* Expression (tab-separated text file: genes in rows, samples in columns. Header row with sample-ids, first column with gene names. In the header row, the first column is named `gene_id`). 
 * Sample (a dummy [sample file in Oxford format](http://www.stats.ox.ac.uk/~marchini/software/gwas/file_format.html))
 * GENCODE file
 * gene position file (for MatrixEQTL)

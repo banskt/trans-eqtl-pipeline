@@ -42,7 +42,7 @@ read_genotype <- function(SNP_file_name, donors_file_name, maf_filter=T, maf_thr
     message(SNP_file_name)
     snps_mat = read.csv(file=SNP_file_name, sep=" ", stringsAsFactors=F, header=F)
     row_names = snps_mat[,2]
-    donor_ids = read.csv(file=donors_file_name, sep=" ", stringsAsFactors=F, header=F)[,1]
+    donor_ids = read.csv(file=donors_file_name, sep=" ", stringsAsFactors=F, header=F, skip=2)[,1]
 
     # get SNPs positions for cis and trans analysis (before cropping the snp matrix)
     snpspos = snps_mat[,c(2,1,3)]

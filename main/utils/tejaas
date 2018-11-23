@@ -3,7 +3,20 @@
 THISMETHOD="tejaas"
 THISJOBDEPS="None"
 
+echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 source ${UTILSDIR}/submit_tejaas
+
+EXTRAFLAGS="--dosage"
+if [ "${DATATYPE}" = "cardiogenics" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --trim"
+fi
+
+if [ "${SHUFFLE}" = "true" ]; then
+    THISMETHOD="tejaas_rand"
+    EXTRAFLAGS="$EXTRAFLAGS --trim --shuffle"
+    SHUFFLE=false
+fi
+
 
 for CHRM in ${CHRNUMS}; do
     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
@@ -13,11 +26,6 @@ for CHRM in ${CHRNUMS}; do
         METHOD_VARIANT="jpa"
         SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
         SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-
-        EXTRAFLAGS="--dosage"
-        if [ "${DATATYPE}" = "cardiogenics" ]; then
-            EXTRAFLAGS="$EXTRAFLAGS --trim"
-        fi
 
         JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
 
@@ -38,11 +46,6 @@ for CHRM in ${CHRNUMS}; do
                 METHOD_VARIANT="${NULL}null_sb${SBETA}"
                 SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
                 SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-    
-                EXTRAFLAGS="--dosage"
-                if [ "${DATATYPE}" = "cardiogenics" ]; then
-                    EXTRAFLAGS="$EXTRAFLAGS --trim"
-                fi
     
                 JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
     

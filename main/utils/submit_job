@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function submit_job() {
+function submit_job_echo() {
     local DIR=$1
     local JOBNAME=$2
     local DEPS=$3
@@ -13,7 +13,7 @@ function submit_job() {
     cd ${CWD}
 }
 
-function submit_job_later() {
+function submit_job() {
 
     local DIR=$1
     local JOBNAME=$2
@@ -22,7 +22,7 @@ function submit_job_later() {
     
     cd ${DIR}
     
-    if [ ! -z ${DEPS} ]; then
+    if [ ! "${DEPS}" = "None" ]; then
         bsub -w "${DEPS}" < ${JOBNAME}.bsub
     else
         bsub < ${JOBNAME}.bsub

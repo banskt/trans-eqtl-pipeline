@@ -33,7 +33,9 @@ for MDATA in ${DATASETS}; do
         if [ "${bMatrixEqtl}" = "true" ];  then source ${UTILSDIR}/matrix_eqtl; fi
         if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; fi
         if [ "${bTejaas}" = "true" ];      then source ${UTILSDIR}/tejaas; fi
+        if [ "${bTjsRandom}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas; fi
         if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
+        if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi
 
     fi
 
@@ -47,3 +49,4 @@ if [ "${bValidationPlot}" = "true" ]; then source ${UTILSDIR}/validation_plot; f
 
 unset_vars ${CONFIGFILE}
 unset_vars PATHS
+unset_vars EXTERNAL

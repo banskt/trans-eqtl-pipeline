@@ -1,13 +1,15 @@
 #!/bin/bash
 
 THISMETHOD="matrixeqtl"
-THISJOBDEPS=""
+THISJOBDEPS="None"
 EXTRAFLAGS=""
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="matrixeqtl_rand"
     EXTRAFLAGS="--randomize"
     SHUFFLE=false
 fi
+
+echo "Submitting Matrix EQTL jobs with $EXTRAFLAGS"
 
 JOBSUBDIR_MATRIX_EQTL="${JOBSUBDIR_DATA}/${THISMETHOD}"
 
