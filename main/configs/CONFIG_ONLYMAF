@@ -10,25 +10,25 @@ EXPR_CORR="lm"
 #EXPR_CORR="lm35peer"
 
 # MatrixEQTL options
-bMatrixEqtl=true			# run the method if true
-bMEqtlRandom=true			# run the method if true
-MEQTL_PVALTHRES_CIS=0.001
-MEQTL_PVALTHRES_TRANS=0.001
+bMatrixEqtl=false			# run the method if true
+bMEqtlRandom=false			# run the method if true
+MEQTL_PVALTHRES_CIS=0.01
+MEQTL_PVALTHRES_TRANS=0.01
 MATRIXEQTL_MODEL="modelLINEAR"
 
 # TEJAAS options
 bTejaas=true				# run the method if true
 bTjsRandom=true
 TEJAAS_MODEL="jpa-rr" 			# only one model allowed
-TEJAAS_NULL="perm maf" 			# list of null models
+TEJAAS_NULL="maf" 			# list of null models
 TEJAAS_SIGMA_BETA="0.01" 		# list of sigma beta
 MAX_NSNP_PERJOB=20000 			# number of SNPs for analysis by TEJAAS per job
 TEJAAS_SNPS_THRES=0.001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
 TEJAAS_GENE_THRES=0.001 		# even for the above, not all target genes are printed; only those with p-values below this threshold
 
 # CPMA options
-bTejaasJPA=true
-bJPARandom=true
+bTejaasJPA=false
+bJPARandom=false
 
 # Which methods to run?
 bValidationPlot=false

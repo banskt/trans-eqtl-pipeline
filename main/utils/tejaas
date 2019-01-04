@@ -6,14 +6,14 @@ THISJOBDEPS="None"
 echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 source ${UTILSDIR}/submit_tejaas
 
-EXTRAFLAGS="--dosage"
+EXTRAFLAGS="--dosage --cismask"
 if [ "${DATATYPE}" = "cardiogenics" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --trim"
 fi
 
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="tejaas_rand"
-    EXTRAFLAGS="$EXTRAFLAGS --trim --shuffle"
+    EXTRAFLAGS="$EXTRAFLAGS --shuffle"
     SHUFFLE=false
 fi
 

@@ -20,8 +20,8 @@ function submit_tejaas() {
     local nmax=${17}
     local thisjobdep=${18}
     local bsubdir=${19}
-    local __jobdeps=${20}
-    local jobdeps=${21}
+    local __jobdeps=${20} ## name of the bash variable
+    local jobdeps=${21}   ## contents of the bash variable
     local jobname=0
     local i=0
     local index=0

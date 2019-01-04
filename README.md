@@ -30,6 +30,13 @@ The pipeline expects the following input files:
 * gene position file (for MatrixEQTL)
 * MAF file from 1000Genomes
 
+## Required softwares
+* Python >3.6 (numpy, mpmath)
+* TEJAAS
+* LDSTORE
+* GNeTLMM
+* R v3.4.1 (MatrixEQTL)
+
 ## How to run
 1. Within `bsubfiles` folder, change the job submission criteria and module loadings as per your requirements (GWDG users, skip this step)
 2. Modify `main/utils/submit_job` to your own job scheduling mechanism (`bsub` users, skip this step)

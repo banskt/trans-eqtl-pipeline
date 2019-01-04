@@ -1,6 +1,6 @@
 #!/bin/sh
-#BSUB -q mpi
-#BSUB -W 48:00
+#BSUB -q mpi-short
+#BSUB -W 2:00
 #BSUB -n 8
 #BSUB -R span[hosts=1]
 #BSUB -R scratch

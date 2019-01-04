@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# external programs required for the pipeline
-LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"
-TEJAAS="${HOME}/trans-eQTL/codebase/tejaas/bin/tejaas"
-
 # Pipeline directories
 CURDIRUP="$(dirname "$(pwd)")"
 UTILSDIR="${CURDIRUP}/main/utils"
