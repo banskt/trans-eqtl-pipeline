@@ -57,6 +57,18 @@ def matrixeqtl(filepath):
         for line in mfile:
             arr  = line.strip().split("\t")
             rsid = arr[0]
+            pval = float(arr[4])
+            if rsid not in res:
+                res[rsid] = -np.log10(pval)
+    return res
+
+def matrixeqtl_fdr(filepath):
+    res = dict()
+    with open(filepath, 'r') as mfile:
+        next(mfile)
+        for line in mfile:
+            arr  = line.strip().split("\t")
+            rsid = arr[0]
             fdr  = float(arr[5])
             if rsid not in res:
                 res[rsid] = -np.log10(fdr)

@@ -34,10 +34,10 @@ def confusion_matrix(result):
 
     #tpr    = np.array([x / pos if pos > 0 else 0 for x in tplist]) 				# TPR = Recall = TP / Positives
     #fpr    = np.array([x / neg if neg > 0 else 0 for x in fplist]) 				# FPR = FP / Negatives
-    #ppv    = np.array([x[0] / sum(x) if sum(x) > 0 else 1 for x in zip(tplist, fplist)]) 	# PPV = Precision = TP / (TP + FP)
+    ppv    = np.array([x[0] / sum(x) if sum(x) > 0 else 1 for x in zip(tplist, fplist)]) 	# PPV = Precision = TP / (TP + FP)
     #fdr    = np.array([x[1] / sum(x) if sum(x) > 0 else 0 for x in zip(tplist, fplist)]) 	# FDR = FP / (TP + FP)
     tparr  = np.array(tplist)                                                                   # Number of true positives
     nsel   = np.array([sum(x) for x in zip(tplist, fplist)]) 					# Number of y selected at each threshold
 
     #return fpr, tpr, ppv, nsel, fdr
-    return tparr, nsel
+    return tparr, nsel, ppv
