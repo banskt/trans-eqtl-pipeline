@@ -1,13 +1,13 @@
 import numpy as np
 
-def confusion_matrix(result):
-    keepres = [x for x in result if not np.isnan(x.stat)]
+def confusion_matrix(rocdata):
+    keepres = [x for x in rocdata if not np.isnan(x.stat)]
     nitems = len(keepres)
     ypred = np.array([x.stat for x in keepres])
     ytrue = np.array([x.causality for x in keepres])
 
-    pos = len([x for x in result if x.causality == 1])
-    neg = len(result) - pos
+    pos = len([x for x in rocdata if x.causality == 1])
+    neg = len(rocdata) - pos
 
     tp = 0	# True positives
     fp = 0	# False positives
@@ -32,7 +32,7 @@ def confusion_matrix(result):
     fplist.append(fp)
     tplist.append(tp)
 
-    #tpr    = np.array([x / pos if pos > 0 else 0 for x in tplist]) 				# TPR = Recall = TP / Positives
+    tpr    = np.array([x / pos if pos > 0 else 0 for x in tplist]) 				# TPR = Recall = TP / Positives
     #fpr    = np.array([x / neg if neg > 0 else 0 for x in fplist]) 				# FPR = FP / Negatives
     ppv    = np.array([x[0] / sum(x) if sum(x) > 0 else 1 for x in zip(tplist, fplist)]) 	# PPV = Precision = TP / (TP + FP)
     #fdr    = np.array([x[1] / sum(x) if sum(x) > 0 else 0 for x in zip(tplist, fplist)]) 	# FDR = FP / (TP + FP)
@@ -40,4 +40,4 @@ def confusion_matrix(result):
     nsel   = np.array([sum(x) for x in zip(tplist, fplist)]) 					# Number of y selected at each threshold
 
     #return fpr, tpr, ppv, nsel, fdr
-    return tparr, nsel, ppv
+    return nsel, tpr, ppv, tparr
