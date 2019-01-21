@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -d ${OUTDIR_DATA} ]; then mkdir -p ${OUTDIR_DATA}; fi
+
+if [ ! -f ${SHUFFLED_ID_FILE} ]; then
+    echo "Creating shuffled id file."
+    _DONOR_IDS_SHUF=`tail -n +3 ${SAMPLEFILE} | cut -d" " -f1 | shuf`
+    for ID in $_DONOR_IDS_SHUF; do echo ${ID}; done > ${SHUFFLED_ID_FILE}
+fi

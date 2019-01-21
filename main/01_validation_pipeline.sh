@@ -25,6 +25,9 @@ for MDATA in ${DATASETS}; do
     source DATA
     JOBSUBDIR_DATA="${JOBSUBDIR}/${MDATA}"
     OUTDIR_DATA="${OUTDIR}/${MDATA}"
+    SHUFFLED_ID_FILE="${OUTDIR_DATA}/shuffled_donor_ids.txt"
+
+    source ${UTILSDIR}/shuffle_donors
 
     if [ ! -z "$EXPRESSIONFILE" ]; then
 

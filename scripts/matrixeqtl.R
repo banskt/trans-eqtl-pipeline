@@ -31,7 +31,9 @@ option_list = list(
     make_option(c("-m", "--model"), type="character", default="modelLINEAR",
               help="Model to use from modelANOVA, modelLINEAR, or modelLINEAR_CROSS [default \"%default\"]", metavar="character"),
     make_option(c("-r", "--randomize"), action="store_true", default=FALSE,
-              help="Randomize the gene expression")
+              help="Randomize the gene expression"),
+    make_option(c("-R", "--shufflewith"), type="character", default=NULL,
+              help="file with shuffled donor ids for genotype shuffling", metavar="character")
 );
 
 opt_parser = OptionParser(option_list=option_list, add_help_option = TRUE);
@@ -85,6 +87,12 @@ donors_file_name = opt$donors;
 res = read_genotype(SNP_file_name, donors_file_name)
 snps_mat = res[[1]] #genotype matrix
 snpspos  = res[[2]] #SNP position info
+
+if (!is.null(opt$shufflewith)) {
+    message("Shuffling genotype using supplied donor IDs");
+    shuffled_colnames = scan(opt$shufflewith, what="", sep="\n")
+    colnames(snps_mat) = shuffled_colnames;
+}
 
 snps = SlicedData$new();
 snps$fileSliceSize = 2000;      # read file in slices of 2,000 rows

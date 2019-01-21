@@ -13,7 +13,7 @@ fi
 
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="tejaas_rand"
-    EXTRAFLAGS="$EXTRAFLAGS --shuffle"
+    EXTRAFLAGS="$EXTRAFLAGS --shuffle-with $SHUFFLED_ID_FILE"
     SHUFFLE=false
 fi
 

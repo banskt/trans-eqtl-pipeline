@@ -5,7 +5,7 @@ THISJOBDEPS="None"
 EXTRAFLAGS=""
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="matrixeqtl_rand"
-    EXTRAFLAGS="--randomize"
+    EXTRAFLAGS="--shufflewith ${SHUFFLED_ID_FILE}"
     SHUFFLE=false
 fi
 
@@ -38,7 +38,7 @@ for CHRM in ${CHRNUMS}; do
             s|_OUTF_CIS|${OUTFILE_CIS}|g;
             s|_OUTF_TRA|${OUTFILE_TRANS}|g;
             s|_MEQTLMOD|${MATRIXEQTL_MODEL}|g;
-            s|_EXT_FLAG|${EXTRAFLAGS}|g;
+            s|_EXT_FLAG|\"${EXTRAFLAGS}\"|g;
            " ${MASTER_BSUBDIR}/matrixeqtl.bsub > ${SPECIFIC_JOBSUBDIR}/${MATRIXEQTL_JOBNAME}.bsub
 
     submit_job ${SPECIFIC_JOBSUBDIR} ${MATRIXEQTL_JOBNAME} ${THISJOBDEPS}
