@@ -31,7 +31,7 @@ CARDIO_1KG_MAF="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CH
 GTEXDIR="${DATADIR}/GTEx"
 case "${EXPR_CORR}" in
     "lm")
-        GTEX_EXPR_FMT="${GTEXDIR}/expression/gtex.normalized.expression.lmcorrected.[TISSUE].txt"
+        GTEX_EXPR_FMT="${GTEXDIR}/expression/gtex.normalized.expression.lmcorrected.gencode_filtered.[TISSUE].txt"
         ;;
     "lm35peer")
         GTEX_EXPR_FMT="${GTEXDIR}/expression/gtex.normalized.expression.lmcorrected.35PEERcovcorrected.[TISSUE].txt"

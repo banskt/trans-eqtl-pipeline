@@ -50,3 +50,5 @@ mpirun -n 8 ${RUN_PATH} --oxf          ${GENOFILE} \
                         --prior-sigma  ${SBETA} \
                         --chrom        ${CHROM} \
                         ${EXTRAFLAGS}
+
+### python /usr/users/sbanerj/trans-eQTL/codebase/tejaas/main.py --oxf ${GENOFILE} --fam ${SAMPFILE} --gx ${GXPRFILE} --gtf ${GENEINFO} --method ${TJMETHOD} --null ${NULLMODL} --outprefix ${OUTPRFIX} --include-SNPs ${INCSTRNG} --psnpthres ${SNPTHRES} --pgenethres ${GENTHRES} --prior-sigma ${SBETA} --chrom ${CHROM} ${EXTRAFLAGS}

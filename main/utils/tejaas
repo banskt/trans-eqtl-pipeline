@@ -41,6 +41,8 @@ for CHRM in ${CHRNUMS}; do
 
     else
         for NULL in ${TEJAAS_NULL}; do
+            if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
+            if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
             for SBETA in ${TEJAAS_SIGMA_BETA}; do
     
                 METHOD_VARIANT="${NULL}null_sb${SBETA}"

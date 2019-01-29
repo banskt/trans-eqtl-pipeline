@@ -1,0 +1,36 @@
+#!/bin/sh
+#BSUB -q mpi-short
+#BSUB -W 2:00
+#BSUB -n 4
+#BSUB -R span[hosts=1]
+#BSUB -R scratch
+#BSUB -a openmp
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+source $HOME/miniconda3/envs/py36/bin/activate py36
+
+VCFTOOLS=_VCFTOOLS
+BGZIP=_BGZIP___
+TABIX=_TABIX___
+SRCVCF=_SRC_VCF_
+CHRM=_CHRM_NUM
+OUTFILE=_OUT_FILE
+MAF_MIN=_MAF_MIN_
+CONVERT_ANNOT=_ANNOT_PY
+ANNOTFILE=_ANNTFILE
+MAF_MAX=$( echo $MAF_MIN | awk '{m = 1 - $1; printf "%g", m}' )
+
+OUTDIR="$(dirname "${OUTFILE}")"
+RAND=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
+TMPOUT="${OUTDIR}/tmp_${RAND}_chr${CHRM}"
+HEADERFILE="${OUTDIR}/tmp_${RAND}_chr${CHRM}_newheader.txt"
+
+${VCFTOOLS} --gzvcf ${SRCVCF} --chr ${CHRM} --recode --recode-INFO-all --maf ${MAF_MIN} --max-maf ${MAF_MAX} --out ${TMPOUT}
+sed "18q;d" ${TMPOUT}.recode.vcf | awk -F$'\t' '{for (i = 1; i <= NF; i++) {idmod=gensub(/^(GTEX-[^-]*).*/,"\\1","g", $i); print idmod} }'| awk 'BEGIN { ORS = "\t" } { print }' > ${HEADERFILE}
+${BGZIP} -c ${TMPOUT}.recode.vcf > ${TMPOUT}.recode.vcf.gz
+${TABIX} -r ${HEADERFILE} ${TMPOUT}.recode.vcf.gz > ${TMPOUT}.vcf.gz
+python ${CONVERT_ANNOT} --input ${TMPOUT}.vcf.gz --out ${OUTFILE}.vcf.gz --annot ${ANNOTFILE}
+${TABIX} -f ${OUTFILE}.vcf.gz
+rm -rf ${TMPOUT}* ${HEADERFILE}

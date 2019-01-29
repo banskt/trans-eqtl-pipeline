@@ -1,0 +1,19 @@
+#!/bin/bash
+
+TISSUEFILE="tissue_table.txt"
+
+OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex"
+GXOUTDIR="${OUTDIR}/expression"
+GTOUTDIR="${OUTDIR}/genotype"
+
+GXFILENAME_FMT="${GXOUTDIR}/gtex_[SELECTION]_[PREPROC]_[TISSUE].txt"
+
+#---- Different types of gene expression preprocessing
+GXSELECTION=(protein_coding)
+GXNPEER=(0)
+GXNORMALIZE=(true false)
+GXLMCORR=(true false)
+
+#---- Genotype filtering
+MAFMIN=0.1
+bSPlitVcf=false # set this to true if you are starting from original GTEx gzipped vcf
