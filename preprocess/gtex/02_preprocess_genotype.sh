@@ -27,22 +27,23 @@ GTFILE_BASENAME=$( basename ${SRCVCF} ".vcf.gz" ) # gtex genotype file name
 GTOUT_ALL="${GTOUTDIR}/all_samples" # output directory for all samples
 if [ ! -d ${GTOUT_ALL} ]; then mkdir -p ${GTOUT_ALL}; fi
 
-PREPROC_STRING=`gx_preproc_string ${GXNORMALIZE[0]} ${GXLMCORR[0]} ${GXNPEER[0]}`
+PREPROC_STRING=$( gx_preproc_string ${GXNORMALIZE[0]} ${GXLMCORR[0]} ${GXNPEER[0]} )
 GXFILENAME_FMT_THIS="${GXFILENAME_FMT/\[SELECTION\]/${GXSELECTION[0]}}"
 GXFILENAME_FMT_THIS="${GXFILENAME_FMT_THIS/\[PREPROC\]/${PREPROC_STRING}}" # gene expression filename
 
-RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
+RANDSTRING=$( cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1 )
 JOBDEPS="None" # used for controlling job dependencies
 CONVERT_ANNOT="${SCRIPTDIR}/vcf_change_annot.py"
+IMPUTE_MISSING="${SCRIPTDIR}/vcf_impute_missingGT.py"
 
 #---- Run jobs for splitting genotype into chromosomes, filtering, changing header of VCF files and modifying annotations
 #---- ${JOBDEPS} contain the job dependencies
 if [ "${bSPlitVcf}" = "true" ]; then
-    # source utils/annotation_split.sh
+    source utils/annotation_split.sh
     source utils/vcf_split_filter_headerchange_annotation.sh
 fi
 
-#---- Genotypes are created for all tissues, 
+#---- Create genotypes for each tissue separately (!), 
 #---- specifically including only those samples 
 #---- which are present in the gene expression of those tissues
 #---- and in the same order as in the expression file.
@@ -56,16 +57,18 @@ while IFS='' read -r LINE || [ -n "$line" ]; do
     TSHORT=$( echo "${LINE}" | cut -f 2 )
     TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
 
-    # Get the name of the expression file
+    # Which expression file?
     EXPRFILE="${GXFILENAME_FMT_THIS/\[TISSUE\]/${TSHORT}}"
     GTOUT_THIS="${GTOUTDIR}/${TBASE}"
-    if [ -e ${EXPRFILE} ] ; then # Proceed only if the expression file has been generated
+    if [ -e ${EXPRFILE} ] ; then # Proceed only if the expression file exists
         echo "Creating list of donors for ${TFULL}"
         if [ ! -d ${GTOUT_THIS} ]; then mkdir -p ${GTOUT_THIS}; fi
         DONORFILE=${GTOUT_THIS}/${TSHORT}.samples
         head -n 1 ${EXPRFILE} | cut -f 2- | tr "\t" "\n" > ${DONORFILE}
-
-####        source utils/tissue_specific_genotype.sh
+ 
+        # only common samples, sorted according to expression file
+        # missing genotype imputed in PED for GNetLMM
+        source utils/tissue_specific_genotype.sh
 
 ####        for CHRM in {21..22}; do
 ####            echo "${TFULL}: chromosome ${CHRM}"

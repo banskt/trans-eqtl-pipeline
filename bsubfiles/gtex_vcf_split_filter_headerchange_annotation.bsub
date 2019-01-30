@@ -19,6 +19,7 @@ CHRM=_CHRM_NUM
 OUTFILE=_OUT_FILE
 MAF_MIN=_MAF_MIN_
 CONVERT_ANNOT=_ANNOT_PY
+IMPUTE_MISSING=_IMPUT_PY
 ANNOTFILE=_ANNTFILE
 MAF_MAX=$( echo $MAF_MIN | awk '{m = 1 - $1; printf "%g", m}' )
 
@@ -33,4 +34,5 @@ ${BGZIP} -c ${TMPOUT}.recode.vcf > ${TMPOUT}.recode.vcf.gz
 ${TABIX} -r ${HEADERFILE} ${TMPOUT}.recode.vcf.gz > ${TMPOUT}.vcf.gz
 python ${CONVERT_ANNOT} --input ${TMPOUT}.vcf.gz --out ${OUTFILE}.vcf.gz --annot ${ANNOTFILE}
 ${TABIX} -f ${OUTFILE}.vcf.gz
+python ${IMPUTE_MISSING} --input ${OUTFILE}.vcf.gz --out ${OUTFILE}_WARNimputedmissing.vcf.gz
 rm -rf ${TMPOUT}* ${HEADERFILE}

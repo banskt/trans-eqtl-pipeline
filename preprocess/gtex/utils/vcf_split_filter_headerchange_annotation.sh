@@ -19,10 +19,11 @@ for CHRM in {1..22}; do
             s|_OUT_FILE|${OUTFILE}|g;
             s|_MAF_MIN_|${MAFMIN}|g;
             s|_ANNOT_PY|${CONVERT_ANNOT}|g;
+            s|_IMPUT_PY|${IMPUTE_MISSING}|g;
             s|_ANNTFILE|${ANNOTFILE}|g;
            " ${MASTER_BSUBDIR}/gtex_vcf_split_filter_headerchange_annotation.bsub > ${SPECIFIC_JOBSUBDIR}/${JOBNAME}.bsub
 
     echo "Job file: ${SPECIFIC_JOBSUBDIR}/${JOBNAME}.bsub"
     submit_job ${SPECIFIC_JOBSUBDIR} ${JOBNAME} ${THISJOBDEPS}
-    JOBDEPS=`add_deps "${JOBDEPS}" ${JOBNAME}`
+    JOBDEPS=$( add_deps "${JOBDEPS}" ${JOBNAME} )
 done
