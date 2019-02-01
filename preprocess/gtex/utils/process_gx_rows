@@ -1,0 +1,34 @@
+#!/bin/bash
+
+function process_gx_rows() { 
+    EXPRFILE=$1
+    GXOUTFILE=$2
+    GENEPOSFILE=$3
+
+    STDPRFX="process_gx_rows :: "
+    cut -f1 ${EXPRFILE} | tail -n +2 > ${GXOUTFILE}.gene_names
+    echo "${STDPRFX} Found $( cat ${GXOUTFILE}.gene_names | wc -l ) genes"
+    echo "gene_ids gene_chrom gene_start gene_end" > ${GXOUTFILE}.rows
+
+    NDONE=0
+    while read -r LINE || [ -n "${LINE}" ]; do
+        NDONE=$((NDONE+1))
+        if [ $((NDONE%1000)) = 0 ]; then
+            echo "$STDPRFX Processing... ${NDONE} genes"
+        fi
+        MATCH=$( grep ${LINE} ${GENEPOSFILE} )
+        if [ -n "${MATCH}" ]; then
+            NWORD=$( echo ${MATCH} | wc -w )
+            if [ "${NWORD}" -eq "4" ]; then 
+                echo ${MATCH} | awk '{c=$2; sub("chr", "", c); print $1, c, $3, $4}' >> ${GXOUTFILE}.rows
+            else
+                echo "!!! ERROR !!! Check information for gene ${LINE} in position file."
+                echo "The number of columns in the matching line is not equal to 4."
+                echo "Possibly the gene is matching multiple lines or there is an error in the position file."
+            fi
+        else
+            echo "!!! ERROR !!! No information found in position file for gene ${LINE}"
+        fi
+    done < ${GXOUTFILE}.gene_names
+    rm -rf ${GXOUTFILE}.gene_names
+}

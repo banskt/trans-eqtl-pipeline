@@ -7,6 +7,10 @@ GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
 
 GXFILENAME_FMT="${GXOUTDIR}/gtex_[SELECTION]_[PREPROC]_[TISSUE].txt"
+GTFILE_BASENAME="GTEx_v6_imput_info04_HWEp1E6_PASS_dbSNP135"
+
+#---- Gene expression meta data
+GENEPOSFILE="${GXOUTDIR}/genepos.gencode.v19.txt"
 
 #---- Different types of gene expression preprocessing
 GXSELECTION=(protein_coding)
@@ -16,4 +20,10 @@ GXLMCORR=(true false)
 
 #---- Genotype filtering
 MAFMIN=0.1
-bSPlitVcf=true # set this to true if you are starting from original GTEx gzipped vcf
+REMOVE_INDELS=true
+REMOVE_AMBIGUOUS=true
+IMPUTE_MISSING=true
+
+#---- GNetLMM format
+CREATE_EXPRESSION=false
+CREATE_GENOTYPE=true

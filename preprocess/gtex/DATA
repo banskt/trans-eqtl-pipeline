@@ -9,3 +9,5 @@ SRCRPKM="${SRCDIR}/expression/GTEx_Data_20150112_RNAseq_RNASeQCv1.1.8_gene_rpkm.
 SRCREAD="${SRCDIR}/expression/GTEx_Data_20150112_RNAseq_RNASeQCv1.1.8_gene_reads.gct.gz"
 
 SRCPHENO="${SRCDIR}/phenotype/phs000424.v6.pht002743.v6.p1.c1.GTEx_Sample_Attributes.GRU.txt"
+
+GENCODEFILE="/scratch/sbanerj/data/GENCODE/gencode.v19.annotation.gtf.gz"

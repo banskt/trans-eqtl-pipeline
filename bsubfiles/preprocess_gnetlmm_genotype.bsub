@@ -1,0 +1,26 @@
+#!/bin/sh
+#BSUB -q mpi-short
+#BSUB -W 2:00
+#BSUB -n 4
+#BSUB -R span[hosts=1]
+#BSUB -R scratch
+#BSUB -a openmp
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+source $HOME/miniconda3/envs/py36/bin/activate py36
+
+BGZIP=_BGZIP___
+TABIX=_TABIX___
+PLINK2=_PLINK2__
+INFILE=_IN_FILE_
+OUTFILE=_OT_FILE_
+DONORFILE=_DONR_FL_
+VCF_SELSORT_PY=_VCSS_PY_
+
+python ${VCF_SELSORT_PY} --input ${INFILE} --out ${OUTFILE}.vcf.gz --incl-samples ${DONORFILE}
+gunzip ${OUTFILE}.vcf.gz
+${BGZIP} ${OUTFILE}.vcf
+
+${PLINK2} --vcf ${OUTFILE}.vcf.gz --make-bed --out ${OUTFILE} > ${OUTFILE}_plink.log

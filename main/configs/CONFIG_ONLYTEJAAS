@@ -1,17 +1,14 @@
 #!/bin/bash
 
 #CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
-#CHRNUMS="1 2 3"
-#CHRNUMS="11 12" 
-#DATASETS="gtex-wb gtex-ms gtex-hlv"
 DATASETS="gtex-ms gtex-hlv"
 CHRNUMS="7 8"
 EXPR_CORR="lm"
 #EXPR_CORR="lm35peer"
 
 # MatrixEQTL options
-bMatrixEqtl=true			# run the method if true
-bMEqtlRandom=true			# run the method if true
+bMatrixEqtl=false			# run the method if true
+bMEqtlRandom=false			# run the method if true
 MEQTL_PVALTHRES_CIS=0.001
 MEQTL_PVALTHRES_TRANS=0.001
 MATRIXEQTL_MODEL="modelLINEAR"
@@ -22,7 +19,7 @@ bTjsRandom=true
 TEJAAS_MODEL="jpa-rr" 			# only one model allowed
 TEJAAS_NULL="perm maf" 			# list of null models
 TEJAAS_SIGMA_BETA_PERM="0.01" 		# list of sigma beta for perm null
-TEJAAS_SIGMA_BETA_MAF="0.01" 		# list of sigma beta for MAF null
+TEJAAS_SIGMA_BETA_MAF="0.001" 		# list of sigma beta for MAF null
 MAX_NSNP_PERJOB=20000 			# number of SNPs for analysis by TEJAAS per job
 TEJAAS_SNPS_THRES=0.001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
 TEJAAS_GENE_THRES=0.001 		# even for the above, not all target genes are printed; only those with p-values below this threshold
