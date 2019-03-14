@@ -1,5 +1,26 @@
 import copy
 import numpy as np
+import re
+import pandas as pd
+
+def read_tissues(infile):
+    tissues = []
+    descriptions = []
+    with open(infile) as instream:
+        for l in instream:
+            if re.search("^#", l):
+                continue
+            tissues.append(l.split("\t")[1].rstrip())
+            descriptions.append(l.split("\t")[0].rstrip().replace(" ", "_"))
+    return tissues, descriptions
+
+def read_rocfile(infile):
+    df = pd.read_table(infile, header=0)
+    nsel = np.array(df.nsel.tolist())
+    tpr = np.array(df.tpr.tolist())
+    ppv = np.array(df.ppv.tolist())
+    valids = np.array(df.valids.tolist())
+    return nsel, tpr, ppv, valids
 
 def get_compatible_snp_dicts(dict1, dict2):
     k1  = list(dict1.keys())

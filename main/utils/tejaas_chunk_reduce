@@ -4,41 +4,65 @@ function tejaas_chunk_reduce() {
     local DIR=$1
     local CWD=`pwd`
     cd $DIR
-    for EXT in jpa.txt rr.txt gene_snp_list.txt; do
+    for EXT in jpa.txt rr.txt gene_snp_list.txt rr_it0.txt rr_it1.txt; do
         if [ -f chunk000_${EXT} ]; then
             NCHUNK=`wc -l chunk*_${EXT} | wc -l | awk '{print $1-1}'`
             NLINES=0
             ERROR=false
-            head -n 1 chunk000_${EXT} > ${EXT}
 
-            for ((i=0; i<$NCHUNK; i++)); do
-                NUM=`echo $i | awk '{printf "%03d\n", $1}'`
-                FILENAME="chunk${NUM}_${EXT}"
-                if [ -f ${FILENAME} ]; then
-                    tail -n +2 ${FILENAME} >> ${EXT}
-                    N=`wc -l ${FILENAME} | awk '{print $1}'`
+            while :
+            do
+                NLINES=0
+                ERROR=false
+                head -n 1 chunk000_${EXT} > ${EXT}
+
+                for ((i=0; i<$NCHUNK; i++)); do
+                    NUM=`echo $i | awk '{printf "%03d\n", $1}'`
+                    FILENAME="chunk${NUM}_${EXT}"
+                    if [ -f ${FILENAME} ]; then
+                        tail -n +2 ${FILENAME} >> ${EXT}
+                        # sed 1,1d ${FILENAME} >> ${EXT}
+                        Nacum=`wc -l ${EXT} | awk '{print $1}'`
+                        N=`wc -l ${FILENAME} | awk '{print $1}'`
+                    else
+                        echo "Error in ${DIR}: ${FILENAME} does not exist."
+                        ERROR=true
+                    fi
+                    NLINES=$((NLINES + N - 1))
+                done
+
+                NLINES=$((NLINES + 1))
+                N=`wc -l ${EXT} | awk '{print $1}'`
+                echo "$NLINES vs $Nacum"
+                if [ "$N" -eq "$NLINES" ]; then
+                    echo "Succesfully reduced chunks for $EXT in $DIR"
+                    echo "Done."
+                    break
                 else
-                    echo "Error in ${DIR}: ${FILENAME} does not exist."
-                    ERROR=true
+                    echo "Error in copying chunks for $EXT in $DIR"
+                    echo "--->RETRYING.."
                 fi
-                NLINES=$((NLINES + N - 1))
             done
+
+
             if [ "${ERROR}" = "false" ]; then
                 if [ -f ${EXT} ]; then
-                    NLINES=$((NLINES + 1))
                     N=`wc -l ${EXT} | awk '{print $1}'`
                     if [ "$N" -eq "$NLINES" ]; then
-                        rm -rf chunk*_${EXT}
-                        #echo "Succesfully reduced chunks for $EXT in $DIR"
+                        echo "Succesfully reduced chunks for $EXT in $DIR"
                         echo "Done."
                     else
                         echo "Error in copying chunks for $EXT in $DIR"
+                        echo "$N vs $NLINES"
+                        exit
                     fi
                 else
                     echo "Could not create $EXT in $DIR"
+                    exit
                 fi
             else
                 echo "Job error for $EXT in $DIR"
+                exit
             fi
         else
             echo "chunk000_${EXT} does not exist in $DIR"

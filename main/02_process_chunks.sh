@@ -4,7 +4,7 @@ CONFIGFILE=$1
 
 if [ -z ${CONFIGFILE} ] || [ ! -f ${CONFIGFILE} ]; then
     echo "Fatal! No configuration file found.";
-    echo "Use this script as: ./01_validation_pipeline.sh CONFIGFILE"
+    echo "Use this script as: ./02_process_chunks.sh CONFIGFILE"
     exit 1
 fi
 
