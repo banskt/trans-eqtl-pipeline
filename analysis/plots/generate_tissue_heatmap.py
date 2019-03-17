@@ -5,6 +5,7 @@ import matplotlib
 plt.switch_backend('agg')
 import os
 import sys
+import json
 sys.path.append('../')
 from utils import utils
 from collections import defaultdict
@@ -67,20 +68,32 @@ method2 = "matrixeqtl"
 outfile = method1+"_"+method2+"_crossval_map.png"
 
 tissue_file = "/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
-tissues, descriprtions = utils.read_tissues(tissue_file)
+tissues, descriptions = utils.read_tissues(tissue_file)
+
+json_file = "../gtex_metadata.json"
+with open(json_file) as instream:
+    gtex_meta = json.load(instream)
+
+
+my_colors = []
+for d in descriptions:
+    my_colors.append("#"+gtex_meta[d.replace(" ", "_")]["colorHex"])
+
 
 datasets = ["gtex-"+t for t in tissues]
 print("Working with:", datasets)
 N = len(datasets)
 matrix_dict = dict(zip(datasets, np.arange(N)))
 
-methods = ['tejaas_perm', 'tejaas_rand_perm', 'matrixeqtl', 'matrixeqtl_fdr', 'matrixeqtl_rand']
+methods = ['tejaas_perm', 'matrixeqtl' ]#, 'matrixeqtl_fdr', 'matrixeqtl_rand', 'tejaas_rand_perm']
 
-
+auc_dir = "/cbscratch/franco/trans-eqtl/analysis/data"
 
 auc_dict = dict()
 for method in methods:
-    auc_file = method+".testauc.txt"
+    # auc_file = method+".testauc.txt"
+    auc_file = os.path.join(auc_dir, method+".auc.txt")
+    print(auc_file)
     auc_array = np.zeros((N,N))
     if os.path.exists(auc_file):
         with open(auc_file) as instream:
@@ -103,30 +116,58 @@ for method in methods:
 
 print("Loaded:", auc_dict.keys())
 
-method_array = auc_dict[method1].T + auc_dict[method2] + np.identity(N)*0.4
-fig = plt.figure(figsize = (8, 8))
+method_array = auc_dict[method1].T + auc_dict[method2] + np.identity(N)
+method_array[range(N), range(N)] = (method_array.min() - 0.01)
+fig = plt.figure(figsize = (12, 12))
 ax = fig.add_subplot(111)
 
 # orig_cmap = matplotlib.cm.seismic
 # shifted_cmap = shiftedColorMap(orig_cmap, start=0.4, midpoint=0.7, stop=0.8, name='shifted')
 
-im = ax.imshow(method_array, cmap="hot_r")
+cmap = plt.cm.RdBu_r
+norm = plt.Normalize(method_array.min(), method_array.max())
+rgba = cmap(norm(method_array))
+rgba[range(N), range(N), :3] = 0.7,0.7,0.7
+im = ax.imshow(rgba)
+
+# Add the colorbar using a fake (not shown) image
+im = ax.imshow(method_array, visible=False, cmap="RdBu_r")
+
 # Create colorbar
 cbar = ax.figure.colorbar(im, ax=ax)
 cbar.ax.set_ylabel("AUC", rotation=-90, va="bottom")
 
 
 
+
+# delete axis lines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.tick_params(axis='y',which='both',left=False)
+ax.tick_params(axis='x',which='both',bottom=False)
+
 ax.set_xticks(np.arange(N))
 ax.set_yticks(np.arange(N))
-ax.set_xticklabels(datasets, fontsize=14)
-ax.set_yticklabels(datasets, fontsize=14)
-plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
-         rotation_mode="anchor")
-for i in range(N):
-    for j in range(N):
-        text = ax.text(j, i, "{:.3f}".format(method_array[i, j]).replace("0.500", ""),
-                       ha="center", va="center", color="w", fontsize=14)
+ax.set_xticklabels(datasets, fontsize=14, color="black")
+ax.set_yticklabels(datasets, fontsize=14, color="black")
+bbox = dict(boxstyle="round", alpha=0.9, ec="white", fc="white")
+plt.setp(ax.get_xticklabels(), rotation=90, ha="right", va="center",
+         rotation_mode="anchor", bbox=bbox)
+plt.setp(ax.get_yticklabels(), bbox=bbox)
+
+# ax.tick_params(axis='x', colors='red')
+# my_colors = ['#FFF000', 'b', 'r', 'r', 'g', 'k']
+for ticklabel, tickcolor in zip(plt.gca().get_xticklabels(), my_colors):
+    ticklabel.set_backgroundcolor(tickcolor)
+for ticklabel, tickcolor in zip(plt.gca().get_yticklabels(), my_colors):
+    ticklabel.set_backgroundcolor(tickcolor)
+
+# for i in range(N):
+#     for j in range(N):
+#         text = ax.text(j, i, "{:.3f}".format(method_array[i, j]).replace("{:.3f}".format(method_array.min()), ""),
+#                        ha="center", va="center", color="w", fontsize=14)
 
 ax.set_title("Tissue-Tissue validation AUC", fontsize=14)
 fig.tight_layout()

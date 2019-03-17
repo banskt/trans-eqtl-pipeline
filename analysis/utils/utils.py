@@ -3,6 +3,12 @@ import numpy as np
 import re
 import pandas as pd
 
+def myreplace(s):
+    todelete = ["(", ")", "-"]
+    for ch in todelete:
+        s = s.replace(ch, "")
+    return s.replace("  ", " ")
+
 def read_tissues(infile):
     tissues = []
     descriptions = []
@@ -11,7 +17,8 @@ def read_tissues(infile):
             if re.search("^#", l):
                 continue
             tissues.append(l.split("\t")[1].rstrip())
-            descriptions.append(l.split("\t")[0].rstrip().replace(" ", "_"))
+            descriptions.append(l.split("\t")[0].rstrip())
+    descriptions = [myreplace(d) for d in descriptions]
     return tissues, descriptions
 
 def read_rocfile(infile):
