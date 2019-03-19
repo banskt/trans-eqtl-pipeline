@@ -2,9 +2,18 @@
 
 TISSUEFILE="tissue_table.txt"
 
-OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex"
+OUTDIR="/cbscratch/franco/trans-eqtl/preprocess/gtex"
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
+
+
+RPKMOUTDIR="${GXOUTDIR}/rpkms"                  # tissue specific rpkms output dir
+NORMOUTDIR="${GXOUTDIR}/normalized"             # normalized, uncorrected expr dir
+LMOUTDIR="${GXOUTDIR}/lmcorrected"              # covariate corrected expression
+COVOUTDIR="${GXOUTDIR}/covariates"              # covariates outdir
+PEEROUTDIR="${GXOUTDIR}/peercorrected"          # PEER corrected
+AGE_COVARIATE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
+
 
 GXFILENAME_FMT="${GXOUTDIR}/gtex_[SELECTION]_[PREPROC]_[TISSUE].txt"
 GTFILE_BASENAME="GTEx_v6_imput_info04_HWEp1E6_PASS_dbSNP135"
@@ -27,3 +36,24 @@ IMPUTE_MISSING=true
 #---- GNetLMM format
 CREATE_EXPRESSION=false
 CREATE_GENOTYPE=true
+
+#---- Gene Expression processing
+USE_BSUB=true
+bProcessRPKMs_and_normalize=true    # start from the very beginning
+bformatCovariates=true              # format the covariates file
+bLMcorrect=true                     # use covariate file to correct gx with Linear Model
+GTEX_PEER_CORRECTION=true           # apply PEER correction to GTEx gx
+
+
+#---- use Age correction? 
+CORRECT_AGE=true
+
+#---- PEER config
+NCOVS="0 1 5 10 15 20"
+
+### from within R (for lm correction script)
+# install.packages("argparser")
+#### PEER Instalation
+# wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz
+# R CMD INSTALL R_peer_source_1.3.tgz
+

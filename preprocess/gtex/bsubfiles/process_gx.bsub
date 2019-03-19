@@ -1,0 +1,61 @@
+#!/bin/sh
+#BSUB -q mpi
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -R span[hosts=1]
+#BSUB -R cbscratch
+#BSUB -a intelmpi
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+module load intel/compiler/64/2017/17.0.2
+module load intel/mkl/64/2017/2.174
+
+export OMP_NUM_THREADS=8
+
+TFULL=_T_FULL_
+TSHORT=_T_SHORT_
+TBASE=_T_BASE
+UTILSDIR=_UTILS_
+PYENV=_PYENV_
+SCRIPTDIR=_SCRIPTDIR_
+SRCRPKM=_SRCRPKM_
+SRCPHENO=_SRCPHENO_
+SRCREAD=_SRCREAD_
+SRCCOVARS=_SRCCOVARS_
+DONORFILE=_DONORF_
+NORMOUTDIR=_NORM_OUTDIR_
+LMOUTDIR=_LM_OUT_
+PEEROUTDIR=_PEEROUT_
+COVOUTDIR=_COVOUTDIR_
+RPKMOUTDIR=_RPKM_OUT_
+NCOVS=_NCOVS_
+bProcessRPKMs_and_normalize=_STEP1_
+bformatCovariates=_STEP2_
+bLMcorrect=_STEP3_
+GTEX_PEER_CORRECTION=_STEP4_
+CORRECT_AGE=_CORRAGE_
+AGE_COVARIATE=_AGE_COV_
+
+
+# Expression Files
+EXPRFILE="${NORMOUTDIR}/${TSHORT}_normalized.txt"
+LMOUTFILE="${LMOUTDIR}/${TSHORT}_lmcorrected.txt"
+LMOUTFILE_AGE="${LMOUTDIR}/${TSHORT}_age_lmcorrected.txt"
+
+# Covariate Files
+COVARS="${COVOUTDIR}/${TSHORT}_nopeer_covariates.txt"
+COVARS_AGE="${COVOUTDIR}/${TSHORT}_nopeer_covariates_w_age.txt"
+
+if [ "${bProcessRPKMs_and_normalize}" = "true" ]; then source ${UTILSDIR}/process_rpkms_and_normalize.sh; fi
+if [ "${bformatCovariates}" = "true" ]; then source ${UTILSDIR}/format_covariates.sh; fi
+if [ "${bLMcorrect}" = "true" ]; then source ${UTILSDIR}/lm_correct.sh; fi
+
+if [ "${GTEX_PEER_CORRECTION}" = "true" ]; then                
+    if [ "${CORRECT_AGE}" = "true" ]; then              
+        source ${UTILSDIR}/peer_correction.sh $EXPRFILE $TSHORT "${PEEROUTDIR}_w_age" $COVARS_AGE;
+    else
+        source ${UTILSDIR}/peer_correction.sh $EXPRFILE $TSHORT $PEEROUTDIR $COVARS;
+    fi                
+fi

@@ -1,0 +1,14 @@
+#!/bin/bash
+function abs_path() {
+    # $1: relative path
+    echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+}
+
+# a beautiful one-line to get the full directory name of the location of this script
+CURDIRUP="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Pipeline directories
+UTILSDIR=$(abs_path "${CURDIRUP}/utils")
+SCRIPTDIR=$(abs_path "${CURDIRUP}/scripts")
+MASTER_BSUBDIR=$(abs_path "${CURDIRUP}/bsubfiles")
+JOBSUBDIR=$(abs_path "${CURDIRUP}/jobsubs")
