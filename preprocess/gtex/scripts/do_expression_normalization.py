@@ -63,11 +63,6 @@ def read_gct(gct_file, donor_ids):
     return df
 
 opts = parse_args()
-# path = "/home/fsimone/datasets/gtex/expression/"
-# gtf_file = os.path.join(path, "../")
-# rpkmpath = os.path.join(path, "GTEx_Data_20150112_RNAseq_RNASeQCv1.1.8_gene_rpkm_"+tissue+".gct") # "rpkm file"
-# countspath = os.path.join(path, "GTEx_Data_20150112_RNAseq_RNASeQCv1.1.8_gene_reads.gct.gz")    # file with read counts
-# donorspath = os.path.join(path, "../donor_ids.fam"
 expression_threshold=0.1    # 'Selects genes with > expression_threshold expression in at least min_samples')
 count_threshold=5,          # 'Selects genes with > count_threshold reads in at least min_samples')
 min_samples=10              # 'Minimum number of samples that must satisfy thresholds')
@@ -80,13 +75,7 @@ counts_df = read_gct(opts.countspath, donor_ids)
 if expression_df.shape[1] < min_samples:
     raise ValueError("tissue has less samples than threshold")
 
-# gene_info = readgtf.gencode_v12(gtf_file, trim=False)
-# allensembl_ids = [ i.ensembl_id for i in gene_infos]
-# common_ids = [i for i in allensembl_ids if i in expression_df.index]
-# genes_expression_df = expression_df.loc[common_ids]
-
 expr_ids = list(expression_df.columns)
-# shortids = [ "-".join(i.split("-")[:2]) for i in expr_ids]
 tissue_counts_df = counts_df.loc[:,expr_ids]
 
 print('Normalizing using all genes within %i samples ...' % expression_df.shape[1])
