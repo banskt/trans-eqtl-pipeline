@@ -1,0 +1,54 @@
+Brain - Anterior cingulate cortex (BA24)	ban
+Brain - Caudate (basal ganglia)	bca
+Brain - Cerebellar Hemisphere	bceh
+Brain - Cerebellum	bce
+Brain - Cortex	bco
+Brain - Frontal Cortex (BA9)	bfr
+Brain - Hippocampus	bhi
+Brain - Hypothalamus	bhy
+Brain - Nucleus accumbens (basal ganglia)	bnu
+Brain - Putamen (basal ganglia)	bpu
+Pituitary	pit
+Prostate	pro
+Small Intestine - Terminal Ileum	si
+Spleen	spl
+Uterus	ut
+Vagina	va
+Adrenal Gland	ag
+##Cells - EBV-transformed lymphocytes	ebv
+Liver	liv
+Testis	tes
+Ovary	ov
+Cells - Transformed fibroblasts	fib
+Muscle - Skeletal	ms
+Heart - Atrial Appendage	haa
+Heart - Left Ventricle	hlv
+Pancreas	pan
+Whole Blood	wb
+Skin - Not Sun Exposed (Suprapubic)	snse
+Skin - Sun Exposed (Lower leg)	sse
+Colon - Transverse	colt
+Colon - Sigmoid	cols
+Esophagus - Gastroesophageal Junction	esog
+Esophagus - Mucosa	esom
+Esophagus - Muscularis	esomu
+Thyroid	thy
+Artery - Coronary	ac
+Artery - Aorta	aa
+Artery - Tibial	at
+Stomach	sto
+Lung	lu
+Adipose - Visceral (Omentum)	av
+Adipose - Subcutaneous	as
+Breast - Mammary Tissue	br
+#####Bladder    bl
+#####Nerve - Tibial     nt
+#####Minor Salivary Gland   msg
+#####Kidney - Cortex    kc
+#####Cervix - Ectocervix    ect
+#####Cervix - Endocervix end
+####Cells - Leukemia cell line (CML)    leu
+#####Brain - Spinal cord (cervical c-1) bsp
+#####Brain - Substantia nigra   bsu
+#####Brain - Amygdala   bam
+#####Fallopian Tube ft

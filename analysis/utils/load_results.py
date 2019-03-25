@@ -24,6 +24,23 @@ class TejaasResult(collections.namedtuple('_TejaasResult', res_fields)):
         parent_string = super(TejaasResult, self).__repr__().strip(')')
         return '%s, logp=%f)' %(parent_string, self.logp)
 
+def plist2dict(rsids, pvals):
+    pvals = np.array(pvals)
+    min_nonzero = np.min(pvals[np.nonzero(pvals)])
+    pvals[pvals == 0] = min_nonzero
+    res = dict()
+    for i, key in enumerate(rsids):
+        res[key] = -np.log10(pvals[i])
+    return res
+
+def scorelist2dict(rsids, scores):
+    scores = np.array(scores)
+    minscore = np.min(scores)
+    res = dict()
+    for i, key in enumerate(rsids):
+        res[key] = scores[i] - minscore
+    return res
+
 def tejaas(filepath):
     res = dict()
     with open(filepath, 'r') as mfile:
@@ -48,7 +65,6 @@ def jpa(filepath):
             rsid = arr[0]
             res[rsid] = float(arr[1])
     return res
-
 
 def matrixeqtl(filepath):
     res = dict()
