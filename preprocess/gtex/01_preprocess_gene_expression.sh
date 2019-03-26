@@ -43,6 +43,7 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
                     source ${UTILSDIR}/peer_correction.sh $EXPRFILE $TSHORT $PEEROUTDIR $COVARS;
                 fi
             fi
+            if [ "${GENCODE_FILTER}" = "true" ]; then source ${UTILSDIR}/gencode_filter.sh; fi
         fi
     fi
 done < ${TISSUEFILE}

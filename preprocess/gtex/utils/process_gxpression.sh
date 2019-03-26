@@ -31,6 +31,7 @@ sed -e "s|_T_FULL_|\"${TFULL}\"|g;
         s|_AGE_COV_|${AGE_COVARIATE}|g;
         s|_PEEROUT_|${PEEROUTDIR}|g;
         s|_JOB_NAME|${JOBNAME}|g;
+        s|_GENCD_FILT_|${GENCODE_FILTER}|g;
         " ${MASTER_BSUBDIR}/process_gx.bsub > ${SPECIFIC_JOBSUBDIR}/${JOBNAME}.bsub
 
 submit_job ${SPECIFIC_JOBSUBDIR} ${JOBNAME} None # no job dependencies

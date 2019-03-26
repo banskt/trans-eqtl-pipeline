@@ -37,6 +37,7 @@ bLMcorrect=_STEP3_
 GTEX_PEER_CORRECTION=_STEP4_
 CORRECT_AGE=_CORRAGE_
 AGE_COVARIATE=_AGE_COV_
+GENCODE_FILTER=_GENCD_FILT_
 
 
 # Expression Files
@@ -59,3 +60,4 @@ if [ "${GTEX_PEER_CORRECTION}" = "true" ]; then
         source ${UTILSDIR}/peer_correction.sh $EXPRFILE $TSHORT $PEEROUTDIR $COVARS;
     fi                
 fi
+if [ "${GENCODE_FILTER}" = "true" ]; then source ${UTILSDIR}/gencode_filter.sh; fi

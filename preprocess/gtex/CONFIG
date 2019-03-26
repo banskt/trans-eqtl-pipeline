@@ -39,10 +39,11 @@ CREATE_GENOTYPE=true
 
 #---- Gene Expression processing
 USE_BSUB=true
-bProcessRPKMs_and_normalize=true    # start from the very beginning
-bformatCovariates=true              # format the covariates file
-bLMcorrect=true                     # use covariate file to correct gx with Linear Model
-GTEX_PEER_CORRECTION=true           # apply PEER correction to GTEx gx
+bProcessRPKMs_and_normalize=false    # start from the very beginning
+bformatCovariates=false              # format the covariates file
+bLMcorrect=false                     # use covariate file to correct gx with Linear Model
+GTEX_PEER_CORRECTION=false           # apply PEER correction to GTEx gx
+GENCODE_FILTER=true
 
 
 #---- use Age correction? 
