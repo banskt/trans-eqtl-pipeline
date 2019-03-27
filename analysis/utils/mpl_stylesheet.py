@@ -7,7 +7,7 @@ from matplotlib import cycler
 ## https://matplotlib.org/users/dflt_style_changes.html
 ## matplotlib.rcParams[] = 
 
-def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize = 20, padding = 10, fontfamily = 'latex', colors = 'banskt'):
+def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize = 28, padding = 10, fontfamily = 'latex', colors = 'banskt'):
 
     if colors == 'banskt':
         mcolors = banskt_colors()
@@ -31,7 +31,8 @@ def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize
         matplotlib.rcParams['mathtext.fontset'] =  'stixsans'
 
     # Size
-    matplotlib.rcParams['figure.figsize'] = (8, 8)
+    matplotlib.rcParams['figure.figsize'] = 8, 8
+    matplotlib.rcParams['figure.dpi'] = 300
     
     # Fonts
     matplotlib.rcParams['font.size'] = fontsize
@@ -62,8 +63,8 @@ def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize
     matplotlib.rcParams['legend.markerscale'] = 1.0
     # Dimensions as fraction of fontsize
     matplotlib.rcParams['legend.borderpad'] = 0
-    matplotlib.rcParams['legend.labelspacing'] = 0.3
-    matplotlib.rcParams['legend.handlelength'] = 1.0
+    matplotlib.rcParams['legend.labelspacing'] = 0.8
+    matplotlib.rcParams['legend.handlelength'] = 0.5
     matplotlib.rcParams['legend.handleheight'] = 0.9
     matplotlib.rcParams['legend.handletextpad'] = 0.5
     
