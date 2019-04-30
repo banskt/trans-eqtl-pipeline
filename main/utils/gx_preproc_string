@@ -3,10 +3,12 @@
 function gx_preproc_string() {
     local NORMED=$1
     local LMCORR=$2
-    local NPEER=$3
-    PREPROC_STRING="_"
+    local AGECORR=$3
+    local NPEER=$4
+    PREPROC_STRING=""
     if [ "${NORMED}" = "true" ]; then PREPROC_STRING="normalized_"; fi
     if [ "${LMCORR}" = "true" ]; then PREPROC_STRING="${PREPROC_STRING}lmcorrected_"; fi
-    if [ "$NPEER" -gt 0 ]; then PREPROC_STRING="${PREPROC_STRING}${NPEER}peer_"; fi
+    if [ "${AGECORR}" = "true" ]; then PREPROC_STRING="${PREPROC_STRING}withage_"; fi
+    if [ "${NPEER}" -gt 0 ]; then PREPROC_STRING="${PREPROC_STRING}${NPEER}peer_"; fi
     echo ${PREPROC_STRING} | sed 's/_$//'
 }

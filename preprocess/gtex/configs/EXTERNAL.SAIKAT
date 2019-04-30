@@ -1,0 +1,7 @@
+#!/bin/bash
+
+VCFTOOLS="/usr/users/sbanerj/packages/vcftools/vcftools-v0.1.15/bin/vcftools"
+BGZIP="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/bgzip"
+TABIX="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/tabix"
+PLINK2="/usr/users/sbanerj/packages/plink/plink-2.00/plink2"
+PYENV="/usr/users/sbanerj/miniconda3/envs/py36/bin/python"

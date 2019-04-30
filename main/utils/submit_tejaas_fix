@@ -42,7 +42,6 @@ function submit_tejaas() {
     ntot=$( zcat ${genotype} | wc -l )
     ntot=$( echo $((ntot - 1 )) )
     njobs=$( echo $(( (ntot + nmax - 1)/nmax )) )
-    #njobs=$(echo $(( ntot/nmax )))
 
     if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
     if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi

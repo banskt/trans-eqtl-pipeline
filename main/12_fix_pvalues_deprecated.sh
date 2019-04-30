@@ -10,9 +10,24 @@ fi
 
 source ${CONFIGFILE}
 source PATHS
+source EXTERNAL
 source ${UTILSDIR}/unset_vars
 source ${UTILSDIR}/gx_preproc_string
-source ${UTILSDIR}/tejaas_chunk_reduce.new
+TEJAAS_FIXPVAL_PY=$(abs_path "${SCRIPTDIR}/tejaas_fixpvals.py")
+
+function tejaas_fixpval() {
+    local PYENV=$1
+    local PYSCRIPT=$2
+    local DIR=$3
+    local CWD=$( pwd )
+    cd $DIR
+    #echo $PYENV ${PYSCRIPT} $DIR
+    if [ -f rr.txt ]; then
+        mv -v rr.txt rr_old.txt
+    fi
+    ${PYENV} ${PYSCRIPT} --infile $DIR/rr_old.txt --outfile $DIR/rr.txt
+    cd $CWD
+}
 
 source ${DATALOAD}
 
@@ -34,18 +49,13 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
             echo "Processing chunks for $TSHORT"
 
             for CHRM in ${CHRNUMS}; do
-                # calculate total number of chunks expected
-                NCHUNK=$( expected_nchunk ${GENO_FMT} ${CHRM} ${MAX_NSNP_PERJOB} )
-                echo "chr${CHRM} --> ${NCHUNK} chunks"
-                echo "============================"
-                if [ "${bTejaasJPA}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/jpa/chr${CHRM}" $NCHUNK; fi
-                if [ "${bJPARandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/jpa/chr${CHRM}" $NCHUNK; fi
+                echo "fixing chr${CHRM}"
                 for NULL in ${TEJAAS_NULL}; do
                     if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
                     if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
                     for SBETA in ${TEJAAS_SIGMA_BETA}; do
-                        if [ "${bTejaas}" = "true" ];    then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/${NULL}null_sb${SBETA}/chr${CHRM}" $NCHUNK; fi
-                        if [ "${bTjsRandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/${NULL}null_sb${SBETA}/chr${CHRM}" $NCHUNK; fi
+                        if [ "${bTejaas}" = "true" ];    then tejaas_fixpval "${PYTHON36}" "${TEJAAS_FIXPVAL_PY}" "${OUTDIR_DATA}/tejaas/${NULL}null_sb${SBETA}/chr${CHRM}"; fi
+                        if [ "${bTjsRandom}" = "true" ]; then tejaas_fixpval "${PYTHON36}" "${TEJAAS_FIXPVAL_PY}" "${OUTDIR_DATA}/tejaas_rand/${NULL}null_sb${SBETA}/chr${CHRM}"; fi
                     done
                 done
             done

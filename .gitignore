@@ -4,3 +4,6 @@ jobsubs
 __pycache__
 analysis/jupyter/cardiogenics_mono_macro
 analysis/jupyter/*.pkl
+main/tissue_table.txt
+analysis/plots
+analysis/snps_with_pval1
