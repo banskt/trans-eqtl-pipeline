@@ -2,7 +2,7 @@
 
 TISSUEFILE="tissue_table.txt"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/preprocess/gtex"
+OUTDIR="/cbscratch/franco/trans-eqtl/preprocess2/gtex"
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
 
@@ -39,18 +39,19 @@ CREATE_GENOTYPE=true
 
 #---- Gene Expression processing
 USE_BSUB=true
-bProcessRPKMs_and_normalize=false    # start from the very beginning
+bProcessRPKMs_and_normalize=true    # start from the very beginning
 bformatCovariates=false              # format the covariates file
 bLMcorrect=false                     # use covariate file to correct gx with Linear Model
 GTEX_PEER_CORRECTION=false           # apply PEER correction to GTEx gx
-GENCODE_FILTER=true
+GENCODE_FILTER=false
 
 
 #---- use Age correction? 
-CORRECT_AGE=true
+CORRECT_AGE=false
 
 #---- PEER config
-NCOVS="0 1 5 10 15 20"
+# NCOVS="0 1 5 10 15 20"
+NCOVS="25 30 35"
 
 ### from within R (for lm correction script)
 # install.packages("argparser")

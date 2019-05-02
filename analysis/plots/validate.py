@@ -79,6 +79,7 @@ def get_dict_for_method(method, input_dir, chrms, tissue, sb = '0.01'):
             chrmdicts[i] = load_results.matrixeqtl_fdr(filepath)
         elif method == 'matrixeqtl_rand':
             filepath = os.path.join(datadir, 'matrixeqtl_rand', 'chr{:d}'.format(chrm), 'trans_eqtl.txt')
+            print("Loading ", filepath)
             chrmdicts[i] = load_results.matrixeqtl(filepath)
 
     res = dict()
@@ -174,7 +175,7 @@ if __name__ == '__main__':
     chrms = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]
     # sbs = ["0.01", "0.05"]  # sigma_betas
     sbs = [opts.sigmabeta]
-    eps = [5, 1, 0.05]        # empirical_percents
+    eps = [1, 0.05]        # empirical_percents
 
     tissue_file = "/usr/users/fsimone/trans-eqtl-pipeline/analysis/plots/tissues.txt"
     tissues, descriptions = utils.read_tissues(tissue_file)
@@ -185,8 +186,8 @@ if __name__ == '__main__':
 
     methods = [opts.method]
     
-    input_dir = '/cbscratch/franco/trans-eqtl/dev-pipeline/lmcorrected'
-    outdirbase = "/cbscratch/franco/trans-eqtl/analysis/data/"
+    input_dir = '/cbscratch/franco/trans-eqtl/dev-pipeline/redone/lmcorrected'
+    outdirbase = "/cbscratch/franco/trans-eqtl/analysis/data_redone/"
     combi = [x for x in itertools.combinations(datasets,2)]
 
     # Load all datasets first

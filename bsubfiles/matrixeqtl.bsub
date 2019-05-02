@@ -1,15 +1,15 @@
 #!/bin/sh
-#BSUB -q mpi-short
-#BSUB -W 2:00
+#BSUB -q mpi
+#BSUB -W 24:00
 #BSUB -n 8
 #BSUB -R span[hosts=1]
-#BSUB -R scratch
+#BSUB -R cbscratch
 #BSUB -a openmp
 #BSUB -J _JOB_NAME
 #BSUB -o _JOB_NAME.out
 #BSUB -e _JOB_NAME.err
 
-module load R/3.4.1
+# module load R/3.4.1
 
 SCRIPT=_MEQTL_R_
 GTFILE=_GT_FILE_

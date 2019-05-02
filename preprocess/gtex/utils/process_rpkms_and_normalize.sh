@@ -2,10 +2,12 @@
 
 mkdir -p $NORMOUTDIR
 
-echo "Processing Tisuee: $TFULL"
+echo "Processing Tissue: $TFULL"
 # Select tissue-specific rpkms
-RPKMFILE="${RPKMOUTDIR}/${TSHORT}_rpkm.gct"
-$PYENV ${SCRIPTDIR}/select_samples_from_tissue.py --input $SRCRPKM --output $RPKMFILE --tissue="$TFULL" --pheno $SRCPHENO
+OUTPREFIXFILE="${RPKMOUTDIR}/${TSHORT}"
+$PYENV ${SCRIPTDIR}/select_samples_from_tissue.py --rpkm $SRCRPKM --counts $SRCREAD --output $OUTPREFIXFILE --tissue="$TFULL" --pheno $SRCPHENO
 
 # Normalize
-$PYENV ${SCRIPTDIR}/do_expression_normalization.py --rpkm $RPKMFILE --counts $SRCREAD --tissue $TSHORT --donors $DONORFILE --outdir $NORMOUTDIR
+RPKMFILE="${RPKMOUTDIR}/${TSHORT}_rpkm.gct"
+COUNTSFILE="${RPKMOUTDIR}/${TSHORT}_counts.gct"
+$PYENV ${SCRIPTDIR}/do_expression_normalization.py --rpkm $RPKMFILE --counts $COUNTSFILE --tissue $TSHORT --donors $DONORFILE --outdir $NORMOUTDIR

@@ -17,6 +17,16 @@ if [ "${SHUFFLE}" = "true" ]; then
     SHUFFLE=false
 fi
 
+if [ "${PARTITION1}" = "true" ]; then
+    THISMETHOD="${THISMETHOD}_part1"
+    EXTRAFLAGS="$EXTRAFLAGS --selected-donors $PARTITION_FILE_1"
+fi
+
+if [ "${PARTITION2}" = "true" ]; then
+    THISMETHOD="${THISMETHOD}_part2"
+    EXTRAFLAGS="$EXTRAFLAGS --selected-donors $PARTITION_FILE_2"
+fi
+
 
 for CHRM in ${CHRNUMS}; do
     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
@@ -24,8 +34,13 @@ for CHRM in ${CHRNUMS}; do
 
     if [ "${RUNJPA}" = "true" ]; then
         METHOD_VARIANT="jpa"
-        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+        if [ "${bTejaasPartition}" = "true" ]; then
+            SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+            SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+        else
+            SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+            SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+        fi
 
         JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
 
@@ -44,10 +59,14 @@ for CHRM in ${CHRNUMS}; do
             if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
             if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
             for SBETA in ${TEJAAS_SIGMA_BETA}; do
-    
                 METHOD_VARIANT="${NULL}null_sb${SBETA}"
-                SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                if [ "${bTejaasPartition}" = "true" ]; then
+                    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                else
+                    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                fi
     
                 JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
     

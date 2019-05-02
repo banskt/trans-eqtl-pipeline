@@ -7,13 +7,13 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description='Convert rpkm for a given tissue into inverse quantile normalized gene expression')
 
-    parser.add_argument('--rpkm',
+    parser.add_argument('--rpkm', # ms_rpkm.gct
                         type=str,
                         dest='rpkmpath',
                         metavar='FILE',
                         help='input RPKM GCT file for a given tissue')
 
-    parser.add_argument('--counts',
+    parser.add_argument('--counts', # ms_reads.gct
                         type=str,
                         dest='countspath',
                         metavar='FILE',
@@ -75,6 +75,7 @@ counts_df = read_gct(opts.countspath, donor_ids)
 if expression_df.shape[1] < min_samples:
     raise ValueError("tissue has less samples than threshold")
 
+# Here is where I get the proper headers on the counts file, from the rpkm headers
 expr_ids = list(expression_df.columns)
 tissue_counts_df = counts_df.loc[:,expr_ids]
 

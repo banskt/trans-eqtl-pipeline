@@ -9,16 +9,32 @@ if [ "${SHUFFLE}" = "true" ]; then
     SHUFFLE=false
 fi
 
+if [ "${PARTITION1}" = "true" ]; then
+    THISMETHOD="matrixeqtl_part1"
+    EXTRAFLAGS="--selectdonors $PARTITION_FILE_1"
+fi
+
+if [ "${PARTITION2}" = "true" ]; then
+    THISMETHOD="matrixeqtl_part2"
+    EXTRAFLAGS="--selectdonors $PARTITION_FILE_2"
+fi
+
 echo "Submitting Matrix EQTL jobs with $EXTRAFLAGS"
 
 JOBSUBDIR_MATRIX_EQTL="${JOBSUBDIR_DATA}/${THISMETHOD}"
 
 for CHRM in ${CHRNUMS}; do
-    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_MATRIX_EQTL}/chr${CHRM}"
+    if [ "${bTejaasPartition}" = "true" ]; then
+        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/chr${CHRM}"
+        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_MATRIX_EQTL}/${r}/chr${CHRM}"
+    else
+        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/chr${CHRM}"
+        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_MATRIX_EQTL}/chr${CHRM}"
+    fi
+    
     if [ -d ${SPECIFIC_JOBSUBDIR} ]; then rm -rf ${SPECIFIC_JOBSUBDIR}; fi; mkdir -p ${SPECIFIC_JOBSUBDIR}
-
-    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/chr${CHRM}"
     if [ ! -d ${SPECIFIC_OUTDIR} ]; then mkdir -p ${SPECIFIC_OUTDIR}; fi
+
     OUTFILE_CIS="${SPECIFIC_OUTDIR}/cis_eqtl.txt"
     OUTFILE_TRANS="${SPECIFIC_OUTDIR}/trans_eqtl.txt"
 

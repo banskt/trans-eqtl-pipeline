@@ -25,9 +25,10 @@ for MDATA in ${DATASETS}; do
     source DATA
     JOBSUBDIR_DATA="${JOBSUBDIR}/${MDATA}"
     OUTDIR_DATA="${OUTDIR}/${MDATA}"
-    SHUFFLED_ID_FILE="${OUTDIR_DATA}/shuffled_donor_ids.txt"
+    SHUFFLED_ID_FILE="${OUTDIR}/shuffled_donor_ids.txt"
 
     source ${UTILSDIR}/shuffle_donors
+    
 
     if [ ! -z "$EXPRESSIONFILE" ]; then
 
@@ -40,6 +41,30 @@ for MDATA in ${DATASETS}; do
         if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
         if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi
 
+        if [ "${bTjsRandom1000}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas_randoms; fi
+
+        if [ "${bTejaasPartition}" = "true" ]; then
+            for r in `seq 1 $REPLICAS`; do
+                echo $r
+                PARTITION_FILE_1="${OUTDIR_DATA}/${r}/part1.txt"
+                PARTITION_FILE_2="${OUTDIR_DATA}/${r}/part2.txt"
+                
+                # Create partitioned donor files
+                source ${UTILSDIR}/partition_donors
+
+                PARTITION1=true; PARTITION2=false;
+                source ${UTILSDIR}/tejaas;
+                # source ${UTILSDIR}/matrix_eqtl;
+                # SHUFFLE=true; source ${UTILSDIR}/tejaas
+                # SHUFFLE=false
+
+                PARTITION1=false; PARTITION2=true;
+                source ${UTILSDIR}/tejaas;
+                # source ${UTILSDIR}/matrix_eqtl;
+                # SHUFFLE=true; source ${UTILSDIR}/tejaas
+                # SHUFFLE=false
+            done;
+        fi
     fi
 
     # echo ${JOBDEPS}

@@ -52,6 +52,8 @@ def tejaas(filepath):
             q     = float(arr[2])
             mu    = float(arr[3])
             sigma = float(arr[4])
+            if sigma == 0:
+                continue
             logp  = np.log10(p) if p != 0 else pval( (q - mu) / sigma)
             res[rsid] = -logp
     return res

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d ${OUTDIR_DATA} ]; then mkdir -p ${OUTDIR_DATA}; fi
+if [ ! -d ${OUTDIR} ]; then mkdir -p ${OUTDIR}; fi
 
 if [ ! -f ${SHUFFLED_ID_FILE} ]; then
     echo "Creating shuffled id file."

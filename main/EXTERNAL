@@ -1,5 +1,6 @@
 #!/bin/bash
 
-LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"
-TEJAAS="${HOME}/trans-eQTL/codebase/tejaas/bin/tejaas"
+LDSTORE="${HOME}/bin/ldstore"
+TEJAAS="${HOME}/tejaas/bin/tejaas"
 GNETLMMDIR="${HOME}/packages/GNetLMM"
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"

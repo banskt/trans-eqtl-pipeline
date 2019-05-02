@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function tejaas_top_snps() {
+    local DIR=$1
+    local CWD=`pwd`
+    cd $DIR
+    echo $DIR
+    RRFILE="rr.txt"
+    if [ -f ${RRFILE} ]; then
+        $PYENV $SCRIPTDIR/select_top_rr.py --input $RRFILE --n $TOPN
+    else
+        echo "${RRFILE} does not exist in $DIR"
+    fi
+    cd $CWD
+}

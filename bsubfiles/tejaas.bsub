@@ -1,9 +1,9 @@
 #!/bin/sh
-#BSUB -q mpi-short
-#BSUB -W 2:00
+#BSUB -q mpi
+#BSUB -W 24:00
 #BSUB -n 8
 #BSUB -R span[hosts=1]
-#BSUB -R scratch
+#BSUB -R cbscratch
 #BSUB -a intelmpi
 #BSUB -J _JOB_NAME
 #BSUB -o _JOB_NAME.out
@@ -11,9 +11,9 @@
 
 module load intel/compiler/64/2017/17.0.2
 module load intel/mkl/64/2017/2.174
-module load openmpi/intel/64/1.10.7
+module load intel/mpi/64/2017/2.174
 
-source $HOME/miniconda3/envs/py36/bin/activate py36
+# source $HOME/miniconda3/envs/py36/bin/activate py36
 
 RUN_PATH=_TJS_BINR
 GENOFILE=_GT_FILE_

@@ -2,12 +2,12 @@
 
 
 PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
-methods="tejaas_perm matrixeqtl"
+methods="tejaas_perm tejaas_rand_perm matrixeqtl matrixeqtl_rand"
 sbs="0.01 0.05"
 
 
 for method in $methods; do
-    if [ "${method}" = "tejaas_perm" ]; then
+    if [ "${method}" == "tejaas_perm" ] || [ "${method}" == "tejaas_rand_perm" ]; then
         for sb in $sbs; do
             echo bsub -n 8 -R cbscratch -q mpi-long+ -x -W "240:00" \
                     -o "${method}_${sb}.out" \

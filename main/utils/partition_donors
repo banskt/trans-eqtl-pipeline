@@ -1,0 +1,26 @@
+#!/bin/bash
+
+PARTOUTDIR="${OUTDIR_DATA}/${r}"
+
+if [ ! -d ${PARTOUTDIR} ]; then mkdir -p ${PARTOUTDIR}; fi
+
+if [ ! -f ${PARTITION_FILE_1} ]; then
+    echo "Creating partitioned donor file."
+    NDONORS=`head -n 1 $EXPRESSIONFILE |cut  -f 2- | tr "\t" "\n"|wc -l`
+    echo "Got ${NDONORS} donors"
+    HALF=$((NDONORS / 2))
+    _DONOR_IDS_SHUF=`head -n 1 $EXPRESSIONFILE |cut  -f 2- | tr "\t" "\n" | shuf`
+    i=0
+    for ID in $_DONOR_IDS_SHUF; do
+    	echo ${ID};
+    	i=$((i + 1)); 
+    	if [ $i -eq $HALF ]; then break; fi
+    done > ${PARTITION_FILE_1}
+    i=0
+    for ID in $_DONOR_IDS_SHUF; do
+        i=$((i + 1)); 
+        if [ $i -gt $HALF ]; then
+            echo ${ID};
+        fi
+    done > ${PARTITION_FILE_2}
+fi

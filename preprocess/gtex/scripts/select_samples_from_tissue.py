@@ -9,11 +9,17 @@ def parse_args():
 
     parser = argparse.ArgumentParser(description='Extract samples of a particular tissue from GTEx gene expression file')
 
-    parser.add_argument('--input',
+    parser.add_argument('--rpkm',
                         type=str,
-                        dest='infilepath',
+                        dest='rpkmpath',
                         metavar='FILE',
-                        help='input GCT file containing all samples')
+                        help='input GCT file containing all samples (RPKMs)')
+
+    parser.add_argument('--counts',
+                        type=str,
+                        dest='countspath',
+                        metavar='FILE',
+                        help='input GCT file containing all samples (Read Counts)')
 
     parser.add_argument('--output',
                         type=str,
@@ -82,7 +88,13 @@ if __name__=='__main__':
 
     sample_ids = get_samples(opts.phenofilepath, opts.tissue)
     print ('Number of unflagged, RNA-Seq samples from %s: %i\n' % (opts.tissue, len(sample_ids)))
-    df = read_gct(opts.infilepath, sample_ids)
-    print ('Number of samples read from GCT file: %i\n' % (df.shape[1] - 1))
-    write_gct(df, opts.outfilepath)
+    df = read_gct(opts.rpkmpath, sample_ids)
+    print ('Number of samples read from GCT file (RPKMs): %i\n' % (df.shape[1] - 1))
+    write_gct(df, opts.outfilepath+"_rpkm.gct")
     print ('New GCT file written with %i samples and %i genes.\n' % (df.shape[1], df.shape[0] - 1))
+
+    df = read_gct(opts.countspath, sample_ids)
+    print ('Number of samples read from GCT file (Read Counts): %i\n' % (df.shape[1] - 1))
+    write_gct(df, opts.outfilepath+"_counts.gct")
+    print ('New GCT file written with %i samples and %i genes.\n' % (df.shape[1], df.shape[0] - 1))
+

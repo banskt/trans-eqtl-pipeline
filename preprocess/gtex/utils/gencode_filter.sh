@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+$PYENV ${SCRIPTDIR}/filter_gencode_expr.py --gx ${EXPRFILE} --donors ${DONORFILE} --dataset gtex
+
 if [ "${CORRECT_AGE}" = "true" ]; then
     $PYENV ${SCRIPTDIR}/filter_gencode_expr.py --gx ${LMOUTFILE_AGE} --donors ${DONORFILE} --dataset gtex
     PEERDIR="${PEEROUTDIR}_w_age"
