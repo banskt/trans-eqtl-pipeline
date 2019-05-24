@@ -1,7 +1,8 @@
 import pandas as pd
 import argparse
 import gzip, os
-from gtex_normalization import normalize_expression
+from expression_normalization import normalize_expression
+from expression_normalization import prepare_expression
 
 def parse_args():
 
@@ -64,8 +65,8 @@ def read_gct(gct_file, donor_ids):
 
 opts = parse_args()
 expression_threshold=0.1    # 'Selects genes with > expression_threshold expression in at least min_samples')
-count_threshold=5,          # 'Selects genes with > count_threshold reads in at least min_samples')
-min_samples=10              # 'Minimum number of samples that must satisfy thresholds')
+count_threshold=6,          # 'Selects genes with > count_threshold reads in at least min_samples')
+min_samples=30              # 'Minimum number of samples that must satisfy thresholds')
 
 
 donor_ids = get_donors(opts.donorspath)
@@ -80,7 +81,7 @@ expr_ids = list(expression_df.columns)
 tissue_counts_df = counts_df.loc[:,expr_ids]
 
 print('Normalizing using all genes within %i samples ...' % expression_df.shape[1])
-quant_std_df, quant_df = normalize_expression(expression_df, tissue_counts_df,
+quant_std_df, quant_df = prepare_expression(expression_df, tissue_counts_df,
     expression_threshold=expression_threshold, count_threshold=count_threshold, min_samples=min_samples)
 
 newcolumns = ["-".join(i.split("-")[:2]) for i in quant_std_df.columns]

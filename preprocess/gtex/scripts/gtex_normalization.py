@@ -1,79 +1,92 @@
-#!/usr/bin/env python
-
-import numpy as np
 import pandas as pd
-import scipy.stats as stats
+import argparse
+import gzip, os
+from expression_normalization import normalize_expression
 
-def normalize_quantiles(df):
-    """
-    Note: replicates behavior of R function normalize.quantiles from library("preprocessCore")  
+def parse_args():
 
-    Reference:
-     [1] Bolstad et al., Bioinformatics 19(2), pp. 185-193, 2003
-    
-    Adapted from https://github.com/andrewdyates/quantile_normalize
-    """
-    
-    M = df.values.copy()
-    
-    Q = M.argsort(axis=0)
-    m,n = M.shape
+    parser = argparse.ArgumentParser(description='Convert rpkm for a given tissue into inverse quantile normalized gene expression')
 
-    # compute quantile vector
-    quantiles = np.zeros(m)
-    for i in range(n):
-        quantiles += M[Q[:,i],i]
-    quantiles = quantiles / n
-    
-    for i in range(n):
-        # Get equivalence classes; unique values == 0
-        dupes = np.zeros(m, dtype=np.int)
-        for j in range(m-1):
-            if M[Q[j,i],i]==M[Q[j+1,i],i]:
-                dupes[j+1] = dupes[j]+1
-                
-        # Replace column with quantile ranks
-        M[Q[:,i],i] = quantiles
+    parser.add_argument('--rpkm',
+                        type=str,
+                        dest='rpkmpath',
+                        metavar='FILE',
+                        help='input RPKM GCT file for a given tissue')
 
-        # Average together equivalence classes
-        j = m-1
-        while j >= 0:
-            if dupes[j] == 0:
-                j -= 1
-            else:
-                idxs = Q[j-dupes[j]:j+1,i]
-                M[idxs,i] = np.median(M[idxs,i])
-                j -= 1 + dupes[j]
-        assert j == -1
-    
-    return M
-        
+    parser.add_argument('--counts',
+                        type=str,
+                        dest='countspath',
+                        metavar='FILE',
+                        help='input counts GCT file for all tissues')
 
-def inverse_quantile_normalization(M):
-    """
-    After quantile normalization of samples, standardize expression of each gene
-    """
-    R = stats.mstats.rankdata(M,axis=1)  # ties are averaged
-    Q = stats.norm.ppf(R/(M.shape[1]+1))
-    return Q
-        
-        
-def normalize_expression(expression_df, counts_df, expression_threshold=0.1, count_threshold=5, min_samples=10):
-    """
-    Genes are thresholded based on the following expression rules:
-      >=min_samples with >expression_threshold expression values
-      >=min_samples with >count_threshold read counts
-    """
-    # donor_ids = ['-'.join(i.split('-')[:2]) for i in expression_df.columns]
-    donor_ids = expression_df.columns
-    
-    # expression thresholds
-    mask = ((np.sum(expression_df>expression_threshold,axis=1)>=min_samples) & (np.sum(counts_df>count_threshold,axis=1)>=min_samples)).values
-    
-    # apply normalization
-    M = normalize_quantiles(expression_df.loc[mask])
-    R = inverse_quantile_normalization(M)
+    parser.add_argument('--tissue',
+                        type=str,
+                        dest='tissue',
+                        metavar='STR',
+                        help='exact name of the tissue')
 
-    quant_std_df = pd.DataFrame(data=R, columns=donor_ids, index=expression_df.loc[mask].index)    
-    quant_df = pd.DataFrame(data=M, columns=donor_ids, index=expression_df.loc[mask].index)
-    return quant_std_df, quant_df
+    parser.add_argument('--donors',
+                        type=str,
+                        dest='donorspath',
+                        metavar='STR',
+                        help='list of genotyped donors')
+
+    parser.add_argument('--outdir',
+                        type=str,
+                        dest="outdir",
+                        metavar='STR',
+                        help='output directory')
+
+
+    opts = parser.parse_args()
+    return opts
+
+
+def get_donors(path):
+    donor_ids = list()
+    with open(path, 'r') as instream:
+        # skip first two lines
+        next(instream)
+        next(instream)
+        for line in instream:
+            donor_ids.append(line.strip().split()[0])
+    return donor_ids
+
+def read_gct(gct_file, donor_ids):
+    """
+    Load GCT as DataFrame
+    """    
+    df = pd.read_csv(gct_file, sep='\t', skiprows=2, index_col=0)
+    df.drop('Description', axis=1, inplace=True)
+    df.index.name = 'gene_id'
+    df = df[[i for i in df.columns if '-'.join(i.split('-')[:2]) in donor_ids]]
+    return df
+
+opts = parse_args()
+expression_threshold=0.1    # 'Selects genes with > expression_threshold expression in at least min_samples')
+count_threshold=5,          # 'Selects genes with > count_threshold reads in at least min_samples')
+min_samples=10              # 'Minimum number of samples that must satisfy thresholds')
+
+
+donor_ids = get_donors(opts.donorspath)
+expression_df = read_gct(opts.rpkmpath, donor_ids)
+counts_df = read_gct(opts.countspath, donor_ids)
+
+if expression_df.shape[1] < min_samples:
+    raise ValueError("tissue has less samples than threshold")
+
+expr_ids = list(expression_df.columns)
+tissue_counts_df = counts_df.loc[:,expr_ids]
+
+print('Normalizing using all genes within %i samples ...' % expression_df.shape[1])
+quant_std_df, quant_df = normalize_expression(expression_df, tissue_counts_df,
+    expression_threshold=expression_threshold, count_threshold=count_threshold, min_samples=min_samples)
+
+newcolumns = ["-".join(i.split("-")[:2]) for i in quant_std_df.columns]
+quant_std_df.columns = newcolumns
+
+# write normalized expression file
+print("Writing normalized expression for {:s}".format(opts.tissue))
+if not os.path.exists(opts.outdir):
+    os.makedirs(opts.outdir)
+quant_std_df.to_csv(os.path.join(opts.outdir,"{:s}_normalized.txt".format(opts.tissue)), sep='\t')

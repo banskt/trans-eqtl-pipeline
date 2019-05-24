@@ -12,10 +12,14 @@ source ${CONFIGFILE}
 source PATHS
 source ${UTILSDIR}/unset_vars
 source ${UTILSDIR}/tejaas_chunk_reduce
+# for saikat
+# source ${UTILSDIR}/gx_preproc_string
+# source ${UTILSDIR}/tejaas_chunk_reduce.new
 
 for MDATA in ${DATASETS}; do
 
-    source DATA
+    # source DATA
+    source ${DATALOAD}
     OUTDIR_DATA="${OUTDIR}/${MDATA}"
 
     if [ ! -z "$EXPRESSIONFILE" ]; then
@@ -46,11 +50,6 @@ for MDATA in ${DATASETS}; do
             done
             
         done
-    fi
-
-    unset_vars DATA
-
-done
 
 unset_vars ${CONFIGFILE}
 unset_vars PATHS

@@ -7,7 +7,7 @@ from matplotlib import cycler
 ## https://matplotlib.org/users/dflt_style_changes.html
 ## matplotlib.rcParams[] = 
 
-def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize = 28, padding = 10, fontfamily = 'latex', colors = 'banskt'):
+def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize = 28, padding = 10, fontfamily = 'latex', colors = 'banskt', dpi = 300):
 
     if colors == 'banskt':
         mcolors = banskt_colors()
@@ -32,7 +32,7 @@ def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize
 
     # Size
     matplotlib.rcParams['figure.figsize'] = 8, 8
-    matplotlib.rcParams['figure.dpi'] = 300
+    matplotlib.rcParams['figure.dpi'] = dpi
     
     # Fonts
     matplotlib.rcParams['font.size'] = fontsize

@@ -6,7 +6,7 @@ THISJOBDEPS="None"
 echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 source ${UTILSDIR}/submit_tejaas
 
-EXTRAFLAGS="--dosage --cismask"
+EXTRAFLAGS="--cismask"
 if [ "${DATATYPE}" = "cardiogenics" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --trim"
 fi
@@ -42,9 +42,9 @@ for CHRM in ${CHRNUMS}; do
             SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
         fi
 
-        JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
+        JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
 
-        submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
+        submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
                       ${GENEINFOFILE} ${MAF_1KG_FILE} \
                       jpa perm \
                       ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} 0.01 \
@@ -68,9 +68,9 @@ for CHRM in ${CHRNUMS}; do
                     SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
                 fi
     
-                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
+                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
     
-                submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
+                submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
                               ${GENEINFOFILE} ${MAF_1KG_FILE} \
                               ${TEJAAS_MODEL} ${NULL} \
                               ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\

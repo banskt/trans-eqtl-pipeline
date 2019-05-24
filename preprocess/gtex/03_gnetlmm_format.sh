@@ -1,21 +1,15 @@
 #!/bin/bash
 
+if [ "$PS1" ]; then echo -e "This script cannot be sourced. Use \"${BASH_SOURCE[0]}\" instead." ; return ; fi
 CONFIGFILE=$1
-
-#---- Run this code with CONFIGFILE -----#
 if [ -z ${CONFIGFILE} ] || [ ! -f ${CONFIGFILE} ]; then
     echo "Fatal! No configuration file found.";
-    echo "Use this script as: ./02_preprocess_genotype.sh CONFIGFILE"
-    exit 1
+    echo "Use this script as: ${BASH_SOURCE[0]} CONFIGFILE";
+    exit 1;
 fi
-
-#---- It also needs the DATA file, which is hard-coded as of now.
-#---- However, the original data is always the same
-#---- and therefore, unlike CONFIG, several options are not needed.
-#---- Finally it needs the path or directory structure of the pipeline
 source ${CONFIGFILE}
-source DATA
-source EXTERNAL
+source ${DATALOAD}
+source ${EXTERNALLOAD}
 source ../../main/PATHS
 
 #---- Include functions
@@ -26,7 +20,7 @@ source utils/process_gx_rows
 
 VCF_SELECTSORT_PY="${SCRIPTDIR}/vcf_select_sort_samples.py"
 
-PREPROC_STRING=$( gx_preproc_string ${GXNORMALIZE[0]} ${GXLMCORR[0]} ${GXNPEER[0]} )
+PREPROC_STRING=$( gx_preproc_string ${bSelectNormalize} ${bLMcorrect} ${GXAGECORR} ${GXNPEERS[0]} )
 GXFILENAME_FMT_THIS="${GXFILENAME_FMT/\[SELECTION\]/${GXSELECTION[0]}}"
 GXFILENAME_FMT_THIS="${GXFILENAME_FMT_THIS/\[PREPROC\]/${PREPROC_STRING}}" # gene expression filename
 

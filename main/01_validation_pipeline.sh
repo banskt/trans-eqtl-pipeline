@@ -1,11 +1,12 @@
 #!/bin/bash
 
-CONFIGFILE=$1
+if [ "$PS1" ]; then echo -e "This script cannot be sourced. Use \"${BASH_SOURCE[0]}\" instead." ; return ; fi
 
+CONFIGFILE=$1
 if [ -z ${CONFIGFILE} ] || [ ! -f ${CONFIGFILE} ]; then
     echo "Fatal! No configuration file found.";
-    echo "Use this script as: ./01_validation_pipeline.sh CONFIGFILE"
-    exit 1
+    echo "Use this script as: ${BASH_SOURCE[0]} CONFIGFILE";
+    exit 1;
 fi
 
 source ${CONFIGFILE}
@@ -13,6 +14,7 @@ source PATHS
 source ${UTILSDIR}/submit_job
 source ${UTILSDIR}/add_deps
 source ${UTILSDIR}/unset_vars
+#source ${UTILSDIR}/gx_preproc_string
 source EXTERNAL
 
 RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
@@ -22,13 +24,13 @@ JOBDEPS="None" 	# used for controlling job dependencies
 
 for MDATA in ${DATASETS}; do
 
-    source DATA
+    # source DATA
+    source ${DATALOAD}
     JOBSUBDIR_DATA="${JOBSUBDIR}/${MDATA}"
     OUTDIR_DATA="${OUTDIR}/${MDATA}"
-    SHUFFLED_ID_FILE="${OUTDIR}/shuffled_donor_ids.txt"
+    SHUFFLED_ID_FILE="${OUTDIR_DATA}/shuffled_donor_ids.txt"
 
     source ${UTILSDIR}/shuffle_donors
-    
 
     if [ ! -z "$EXPRESSIONFILE" ]; then
 
@@ -40,6 +42,7 @@ for MDATA in ${DATASETS}; do
         if [ "${bTjsRandom}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas; fi
         if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
         if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi
+
 
         if [ "${bTjsRandom1000}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas_randoms; fi
 
@@ -65,10 +68,10 @@ for MDATA in ${DATASETS}; do
                 # SHUFFLE=false
             done;
         fi
+
     fi
 
     # echo ${JOBDEPS}
-
     unset_vars DATA
 
 done

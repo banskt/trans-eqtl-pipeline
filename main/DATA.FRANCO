@@ -74,18 +74,21 @@ case "${EXPR_CORR}" in
     "lmage_precorr")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.precorr.txt.gencode_filtered"
         ;;
-    "peer10")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
+    "peer")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_${PEERN}_PEER_residuals.txt.gencode_filtered"
         ;;
-    "peer20")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_20_PEER_residuals.txt.gencode_filtered"
-        ;;
-    "peer30")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_30_PEER_residuals.txt.gencode_filtered"
-        ;;
-    "peer35")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
-        ;;
+    # "peer10")
+    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
+    #     ;;
+    # "peer20")
+    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_20_PEER_residuals.txt.gencode_filtered"
+    #     ;;
+    # "peer30")
+    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_30_PEER_residuals.txt.gencode_filtered"
+    #     ;;
+    # "peer35")
+    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
+    #     ;;
     "peer10age")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected_w_age/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
         ;;

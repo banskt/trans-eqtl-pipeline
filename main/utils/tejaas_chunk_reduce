@@ -4,7 +4,7 @@ function tejaas_chunk_reduce() {
     local DIR=$1
     local CWD=`pwd`
     cd $DIR
-    for EXT in jpa.txt rr.txt gene_snp_list.txt; do
+    for EXT in rr.txt gene_snp_list.txt; do
         if [ -f chunk000_${EXT} ]; then
             NCHUNK=`wc -l chunk*_${EXT} | wc -l | awk '{print $1-1}'`
             if [ $NCHUNK -eq 0 ]; then NCHUNK=1; fi

@@ -14,6 +14,7 @@ SCRIPTDIR=$(abs_path "${CURDIRUP}/../scripts")
 MASTER_BSUBDIR=$(abs_path "${CURDIRUP}/../bsubfiles")
 JOBSUBDIR=$(abs_path "${CURDIRUP}/../jobsubs")
 ANALYSISDIR=$(abs_path "${CURDIRUP}/../analysis")
+PREPROCDIR=$(abs_path "${CURDIRUP}/../preprocess")
 
 # Script files
 MATRIXEQTL=$(abs_path "${SCRIPTDIR}/matrixeqtl.R")

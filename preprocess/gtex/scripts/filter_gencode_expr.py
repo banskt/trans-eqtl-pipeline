@@ -25,7 +25,18 @@ def parse_args():
 
     parser.add_argument('--dataset',
                         dest='dataset',
-                        help='gtex or cardiogenics')    
+                        help='gtex or cardiogenics')
+
+    parser.add_argument('--gtf',
+                         type=str,
+                         help='GTF file to use',
+                         dest='gtf_file')
+
+    parser.add_argument('--biotype',
+                        nargs = '*',
+                        dest = 'biotype',
+                        type = str,
+                        help = 'type of genes to select')
 
     opts = parser.parse_args()
     return opts
@@ -61,17 +72,18 @@ if __name__ == '__main__':
 
     print("Gene Expr File: {:s}".format(args.gx_file))
 
-    gtfpath = "/cbscratch/franco/datasets/gtex/gencode.v19.annotation.gtf.gz"
+    # gtfpath = "/cbscratch/franco/datasets/gtex/gencode.v19.annotation.gtf.gz"
     # can't read this with current library
     # gtfpath = "/cbscratch/franco/datasets/gtex/gencode.v28lift37.annotation.gtf.gz"
+    gtfpath = args.gtf_file
     print("Reading GENCODE file")
 
     donors = read_samples(args.donor_file)
 
     if args.dataset == "gtex":
-        gene_info = readgtf.gencode_v12(gtfpath, trim=False)
+        gene_info = readgtf.gencode_v12(gtfpath, trim=False, biotype=args.biotype)
     if args.dataset == "cardiogenics":
-        gene_info = readgtf.gencode_v12(gtfpath, trim=True)
+        gene_info = readgtf.gencode_v12(gtfpath, trim=True, biotype=args.biotype)
 
     gene_dict = defaultdict(lambda: False)
     for g in gene_info:
@@ -83,4 +95,7 @@ if __name__ == '__main__':
     # outfile = GXFILE+".gencode_filter"
     if args.out_file is None:
         args.out_file = args.gx_file + ".gencode_filtered"
+    outdir = os.path.dirname(os.path.realpath(args.out_file))
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
     sorted_gx_df.to_csv(args.out_file, doublequote=False, sep="\t")

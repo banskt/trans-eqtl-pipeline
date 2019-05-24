@@ -9,7 +9,9 @@
 #BSUB -o _JOB_NAME.out
 #BSUB -e _JOB_NAME.err
 
-source $HOME/miniconda3/envs/py36/bin/activate py36
+PYENV=_PYT_ENV_
+
+export OMP_NUM_THREADS=4
 
 VCFTOOLS=_VCFTOOLS
 BGZIP=_BGZIP___
@@ -52,17 +54,17 @@ FILTER_STRING="--maf ${MAF_MIN}"
 if [ "${REMOVE_AMBIGUOUS}" = "true" ]; then
     FILTER_STRING="${FILTER_STRING} --remove-ambiguous"
 fi
-python ${VCF_FILTER_PY} --input ${TMPOUT}.vcf.gz --out ${TMPOUT}_pyfilter.vcf.gz ${FILTER_STRING}
+${PYENV} ${VCF_FILTER_PY} --input ${TMPOUT}.vcf.gz --out ${TMPOUT}_pyfilter.vcf.gz ${FILTER_STRING}
 
 # convert annotation
-python ${CONVERT_ANNOT_PY} --input ${TMPOUT}_pyfilter.vcf.gz --out ${OUTFILE}.vcf.gz --annot ${ANNOTFILE}
+${PYENV} ${CONVERT_ANNOT_PY} --input ${TMPOUT}_pyfilter.vcf.gz --out ${OUTFILE}.vcf.gz --annot ${ANNOTFILE}
 gunzip ${OUTFILE}.vcf.gz
-${BGZIP} ${OUTFILE}.vcf # python creates gunzipped files, not bgzipped, Tabix needs bgzipped.
+${BGZIP} ${OUTFILE}.vcf # ${PYENV} creates gunzipped files, not bgzipped, Tabix needs bgzipped.
 ${TABIX} -f ${OUTFILE}.vcf.gz
 
 # impute missing genotype (optional)
 if [ "${IMPUTE_MISSING}" = "true" ]; then
-    python ${IMPUTE_MISSING_PY} --input ${OUTFILE}.vcf.gz --out ${OUTFILE}_WARNimputedmissing.vcf.gz
+    ${PYENV} ${IMPUTE_MISSING_PY} --input ${OUTFILE}.vcf.gz --out ${OUTFILE}_WARNimputedmissing.vcf.gz
     gunzip ${OUTFILE}_WARNimputedmissing.vcf.gz
     ${BGZIP} ${OUTFILE}_WARNimputedmissing.vcf
 fi
