@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VCFTOOLS="/usr/users/sbanerj/packages/vcftools/vcftools-v0.1.15/bin/vcftools"
+VCFTOOLS="/usr/users/fsimone/bin/vcftools_bins/bin/vcftools"
 BGZIP="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/bgzip"
 TABIX="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/tabix"
 PLINK2="/usr/users/fsimone/bin/plink2"

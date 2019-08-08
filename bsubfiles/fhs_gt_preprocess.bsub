@@ -1,0 +1,30 @@
+#!/bin/sh
+#BSUB -q mpi
+#BSUB -W 24:00
+#BSUB -x
+#BSUB -R cbscratch
+#BSUB -a intelmpi
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+module load intel/compiler/64/2017/17.0.2
+module load intel/mkl/64/2017/2.174
+# module load R/3.4.1
+PYENV=_PYENV_
+C=_CNST_
+DOSE_INFILE=_GTIN_
+DOSE_OUTFILE=_GTOUT_
+INFOFILE=_INFO_
+SAMPLEFILE=_SMPLE_
+REFORMATPY=_RFSCRIPT_
+CHROM=_CHRM_
+KEEPFILE=_KEEP_
+
+$PYENV $REFORMATPY  --gt ${DOSE_INFILE} \
+                    --info ${INFOFILE} \
+                    --sample ${SAMPLEFILE} \
+                    --out ${DOSE_OUTFILE} \
+                    --consent ${C} \
+                    --keepfile ${KEEPFILE} \
+                    --chrm ${CHROM}

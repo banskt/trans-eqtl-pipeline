@@ -13,14 +13,14 @@ source ${EXTERNALLOAD}
 source ../../main/PATHS
 
 #---- Include functions
-source ${UTILSDIR}/gx_preproc_string
-source ${UTILSDIR}/submit_job
+# source ${UTILSDIR}/gx_preproc_string
+# source ${UTILSDIR}/submit_job
 
 # Define all preprocessing scripts
 PREPROC_SCRIPTDIR="${PWD}/scripts"
 PREPROC_UTILSDIR="${PWD}/utils"
 SELECTSAMPLEPY="${PREPROC_SCRIPTDIR}/select_samples_from_tissue.py"
-GTEXNORMALIZEPY="${PREPROC_SCRIPTDIR}/gtex_normalization.py"
+GTEXNORMALIZEPY="${PREPROC_SCRIPTDIR}/gtex_normalization.py"  # do_expression_normalization.py
 COMPILEAGECOVPY="${PREPROC_SCRIPTDIR}/compile_age_covariate.py"
 LMCORR_R="${PREPROC_SCRIPTDIR}/correct_expr_lm.R"
 PEERSCRIPT_R="${PREPROC_SCRIPTDIR}/PEER.R"

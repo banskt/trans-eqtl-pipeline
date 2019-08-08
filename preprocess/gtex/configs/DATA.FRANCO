@@ -18,12 +18,10 @@ SRCSUBJCT="${SRCDIR}/phenotype/phs000424.v6.pht002742.v6.p1.c1.GTEx_Subject_Phen
 SRCCOVARS="${SRCDIR}/expression/GTEx_Analysis_v6p_eQTL_covariates"
 
 GENCODEFILE="${SRCDIR}/gencode.v19.annotation.gtf.gz"
+ 
+ 
+ #=========
 
-##  
-##  
-##  #=========
-## 
-## TISSUEFILE="mytissue_table.txt"
-## DONORFILE="${SRCDIR}/gtex.sample"
-## VCFDIR="$BASEDIR/genotypes/vcfs_allsamples"
-## PLINK2="$HOME/bin/plink2"
+TISSUEFILE="tissue_table.txt"
+DONORFILE="${SRCDIR}/gtex.sample"
+VCFDIR="$BASEDIR/genotypes/vcfs_allsamples"

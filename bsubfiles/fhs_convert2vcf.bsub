@@ -1,0 +1,41 @@
+#!/bin/sh
+#BSUB -q mpi
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -R span[hosts=1]
+#BSUB -R cbscratch
+#BSUB -a intelmpi
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+module load intel/compiler/64/2017/17.0.2
+module load intel/mkl/64/2017/2.174
+
+PYENV=_PYENV_
+SAMPLEFILE=_SMPLE_
+CONVERTPY=_CONVERT_
+SAMPLE_CHRM=_SMPLE_
+CHRM_INFILE=_INFILE_
+CHRM_JOEFILE=_JOEFILE_
+VCF_CALLTHRES=_CALLT_
+NOTDOSAGE=_NOTDOSE_
+OUTFILE=_OUTFILE_
+OUTJOE=_OUTJOE_
+
+EXTRAFLAG=""
+if [ "${NOTDOSAGE}" = "true" ]; then
+    EXTRAFLAG="--notdosage"
+fi
+
+$PYENV $CONVERTPY --dosagein ${CHRM_INFILE} \
+                  --outfile ${OUTFILE} \
+                  --samplefile ${SAMPLE_CHRM} \
+                  --callthres ${VCF_CALLTHRES} \
+                  $EXTRAFLAG
+
+$PYENV $CONVERTPY --dosagein ${CHRM_JOEFILE} \
+                  --outfile ${OUTJOE} \
+                  --samplefile ${SAMPLE_CHRM} \
+                  --callthres ${VCF_CALLTHRES} \
+                  $EXTRAFLAG

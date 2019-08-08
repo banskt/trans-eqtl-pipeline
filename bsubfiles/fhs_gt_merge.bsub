@@ -1,0 +1,22 @@
+#!/bin/bash -e
+#BSUB -q mpi
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -R span[hosts=1]
+#BSUB -R cbscratch
+#BSUB -a intelmpi
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+
+echo "Concatenating sample files"
+_CAT_;
+
+echo "Merging GT file"
+_CMD_;
+
+echo "Merging Joehannes GT file"
+_CMMD_JOE_;
+
+

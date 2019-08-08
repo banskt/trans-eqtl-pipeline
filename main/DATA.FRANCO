@@ -2,39 +2,39 @@
 
 # data directory
 DATADIR="/cbscratch/franco/datasets"
-EXPRDATADIR="/cbscratch/franco/trans-eqtl/preprocess"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess"
 GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
 GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
+PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 
 # output directory
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_aug2018"
+# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/fhs_nosqrt_dynamic_onerep"
+
+
+# if [ "${KNN}" -gt "0" ]; then
+#     OUTDIR="${OUTDIR}_knn${KNN}"
+# fi
+
+# if [ "${MAGIC_SQRT}" = "true" ]; then
+#     OUTDIR="${OUTDIR}_sqrt"
+# fi
+
+# if [ "${DYNAMIC_SB}" = "true" ]; then
+#     OUTDIR="${OUTDIR}/dynamic"
+# else
+#     OUTDIR="${OUTDIR}/strict"
+# fi
+
 case "${EXPR_CORR}" in
     "lm")
-        OUTDIR="${OUTDIR}/lmcorrected"
+        OUTDIR="${OUTDIR}/lmcorrected_it"
         ;;
     "lmage")
         OUTDIR="${OUTDIR}/lmcorrected_age"
         ;;
     "lmage_precorr")
         OUTDIR="${OUTDIR}/lmcorrected_age_precorr"
-        ;;
-    "peer10")
-        OUTDIR="${OUTDIR}/peer10"
-        ;;
-    "peer20")
-        OUTDIR="${OUTDIR}/peer20"
-        ;;
-    "peer30")
-        OUTDIR="${OUTDIR}/peer30"
-        ;;
-    "peer35")
-        OUTDIR="${OUTDIR}/peer35"
-        ;;
-    "peer10age")
-        OUTDIR="${OUTDIR}/peer10_age"
-        ;;
-    "peer35age")
-        OUTDIR="${OUTDIR}/peer35_age"
         ;;
     "norm_crossmap")
         OUTDIR="${OUTDIR}/norm_crossmap"
@@ -47,6 +47,21 @@ case "${EXPR_CORR}" in
         ;;
     "norm")
         OUTDIR="${OUTDIR}/norm"
+        ;;
+    "lasso")
+        OUTDIR="${OUTDIR}/lasso"
+        ;;
+    "tmm_lasso")
+        OUTDIR="${OUTDIR}/tmm_lasso"
+        ;;
+    "tmm")
+        OUTDIR="${OUTDIR}/tmm"
+        ;;
+    "qn_lasso")
+        OUTDIR="${OUTDIR}/qn_lasso"
+        ;;
+    "qn")
+        OUTDIR="${OUTDIR}/qn"
         ;;
     *)
         OUTDIR="${OUTDIR}/unknown"
@@ -64,55 +79,79 @@ CARDIO_1KG_MAF="None" # "${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_E
 # GTEx
 GTEXDIR="${DATADIR}/gtex"
 EXPRGTEXDIR="${EXPRDATADIR}/gtex"
+GTEX_GENO_DIR="${GTEXDIR}/genotypes"
+GTEX_GENO_FMT="${GTEXDIR}/genotypes/dosages_allsamples/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_dosages_chr[CHRM].gz"
+GTEX_SAMPLE="${GTEXDIR}/gtex.sample"
+GTEX_GENO_VCF_FMT="${GTEXDIR}/genotypes/vcfs_allsamples/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_chr[CHRM].vcf.gz"
+
+# Framingham
+FHSDIR="${DATADIR}/FHS"
+FHS_GENO_DIR="${FHSDIR}/genotypes"
+# FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+FHS_GENO_FMT="${FHS_GENO_DIR}/merged_dosages/chr[CHRM].fhs.dosages.txt.gz"
+FHS_GENO_VCF_FMT="${FHS_GENO_DIR}/vcfs/chr[CHRM].fhs.vcf.gz"
+FHS_BGEN_FMT="None"
+FHS_SAMPLE="${FHS_GENO_DIR}/merged_dosages/chr1.fhs.dosages.sample"
+FHS_1KG_MAF="None"
+
+
 case "${EXPR_CORR}" in
     "lm")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_lmcorrected.txt.gencode_filtered"
-        ;;
-    "lmage")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.txt.gencode_filtered"
-        ;;
-    "lmage_precorr")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.precorr.txt.gencode_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected_it/[TISSUE]_lmcorrected.txt.protein_coding_filtered"
         ;;
     "peer")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_${PEERN}_PEER_residuals.txt.gencode_filtered"
-        ;;
-    # "peer10")
-    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
-    #     ;;
-    # "peer20")
-    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_20_PEER_residuals.txt.gencode_filtered"
-    #     ;;
-    # "peer30")
-    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_30_PEER_residuals.txt.gencode_filtered"
-    #     ;;
-    # "peer35")
-    #     GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
-    #     ;;
-    "peer10age")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected_w_age/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
-        ;;
-    "peer35age")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected_w_age/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
+        if [ $PEERCOV = "false" ]; then
+            GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/normalized/[TISSUE]_${PEERN}_PEER_residuals.txt.protein_coding_filtered"
+        else
+            if [ $PEERAGE = "true" ]; then
+                GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/covar_withage/[TISSUE]_${PEERN}_PEER_residuals.txt.protein_coding_filtered"
+            else
+                GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/covar/[TISSUE]_${PEERN}_PEER_residuals.txt.protein_coding_filtered"
+            fi
+        fi
         ;;
     "norm_crossmap")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.gencode_filtered.crossmap_filtered"
-        ;;
-    "lm_crossmap")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_lmcorrected.txt.gencode_filtered.crossmap_filtered"
-        ;;
-    "lmage_crossmap")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.txt.gencode_filtered.crossmap_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered.crossmap_filtered"
         ;;
     "norm")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.gencode_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered"
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "lasso")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lasso/[TISSUE]_lasso.txt.protein_coding_filtered"
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs_lasso.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "tmm_lasso")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm_lasso/[TISSUE]_tmm_lasso.txt.protein_coding_filtered"
+        ;;
+    "tmm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm/[TISSUE]_tmm.txt.protein_coding_filtered"
+        ;;
+    "qn_lasso")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn_lasso/[TISSUE]_qn_lasso.txt.protein_coding_filtered"
+        ;;
+    "qn")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn/[TISSUE]_qn.txt.protein_coding_filtered"
         ;;
     *)
         GTEX_EXPR_FMT=""
         ;;
 esac
-GTEX_GENO_FMT="${GTEXDIR}/genotypes/dosages_allsamples/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_dosages_chr[CHRM].gz"
-GTEX_SAMPLE="${GTEXDIR}/gtex.sample"
+
+
+case "${ANNOT_TYPE}" in
+    "multi_tissue")
+        DHS_FILE="${DATADIR}/multi-tissue.master.ntypes.simple.hg19.bed"
+        ;;
+    "DHSindex")
+        DHS_FILE="${DATADIR}/DHSindex/DHS_Index_downlift_hg19.txt"
+        ;;
+    *)
+        DHS_FILE=""
+        ;;
+esac
+
+
 
 # Tissue specific and data specific formatting 
 DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
@@ -127,9 +166,20 @@ case "${DATATYPE}" in
         ;;
     "gtex")
         DATATYPE="gtex"
+        GENO_DIR=${GTEX_GENO_DIR}
         EXPRESSIONFILE=${GTEX_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
         GENO_FMT=${GTEX_GENO_FMT}
+        GENO_VCF_FMT=${GTEX_GENO_VCF_FMT}
         SAMPLEFILE=${GTEX_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    "fhs")
+        DATATYPE="fhs"
+        GENO_DIR=${FHS_GENO_DIR}
+        EXPRESSIONFILE=${FHS_EXPR_FMT}
+        GENO_FMT=${FHS_GENO_FMT}
+        GENO_VCF_FMT=${FHS_GENO_VCF_FMT}
+        SAMPLEFILE=${FHS_SAMPLE}
         MAF_1KG_FMT=${CARDIO_1KG_MAF}
         ;;
     *)

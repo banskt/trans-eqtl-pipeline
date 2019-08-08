@@ -1,6 +1,6 @@
 #!/bin/sh
 #BSUB -q mpi
-#BSUB -W 24:00
+#BSUB -W 48:00
 #BSUB -n 8
 #BSUB -R span[hosts=1]
 #BSUB -R cbscratch
@@ -17,6 +17,7 @@ module load intel/mpi/64/2017/2.174
 
 RUN_PATH=_TJS_BINR
 GENOFILE=_GT_FILE_
+SAMPFILE=_SAM_FILE
 GXPRFILE=_EXPR_FL_
 GENEINFO=_GEN_POSF
 
@@ -35,18 +36,31 @@ if [ "${NULLMODL}" = "maf" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --maf-file ${MAFFILE}"
 fi
 
+mpirun -n 8 ${RUN_PATH} --oxf          ${GENOFILE} \
+                        --fam          ${SAMPFILE} \
+                        --gx           ${GXPRFILE} \
+                        --gtf          ${GENEINFO} \
+                        --method       ${TJMETHOD} \
+                        --null         ${NULLMODL} \
+                        --outprefix    ${OUTPRFIX} \
+                        --include-SNPs ${INCSTRNG} \
+                        --psnpthres    ${SNPTHRES} \
+                        --pgenethres   ${GENTHRES} \
+                        --prior-sigma  ${SBETA} \
+                        --chrom        ${CHROM} \
+                        ${EXTRAFLAGS}
 
-mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \
-                                   --gx           ${GXPRFILE} \
-                                   --gtf          ${GENEINFO} \
-                                   --method       ${TJMETHOD} \
-                                   --null         ${NULLMODL} \
-                                   --outprefix    ${OUTPRFIX} \
-                                   --include-SNPs ${INCSTRNG} \
-                                   --psnpthres    ${SNPTHRES} \
-                                   --pgenethres   ${GENTHRES} \
-                                   --prior-sigma  ${SBETA} \
-                                   --chrom        ${CHROM} \
-                                   ${EXTRAFLAGS}
+# mpirun -n 8 ${RUN_PATH} --vcf          ${GENOFILE} \
+#                         --gx           ${GXPRFILE} \
+#                         --gtf          ${GENEINFO} \
+#                         --method       ${TJMETHOD} \
+#                         --null         ${NULLMODL} \
+#                         --outprefix    ${OUTPRFIX} \
+#                         --include-SNPs ${INCSTRNG} \
+#                         --psnpthres    ${SNPTHRES} \
+#                         --pgenethres   ${GENTHRES} \
+#                         --prior-sigma  ${SBETA} \
+#                         --chrom        ${CHROM} \
+#                         ${EXTRAFLAGS}
 
 ### ${MPYTHON} ${RUN_PATH} --vcf ${GENOFILE} --gx ${GXPRFILE} --gtf ${GENEINFO} --method ${TJMETHOD} --null ${NULLMODL} --outprefix ${OUTPRFIX} --include-SNPs ${INCSTRNG} --psnpthres ${SNPTHRES} --pgenethres ${GENTHRES} --prior-sigma ${SBETA} --chrom ${CHROM} ${EXTRAFLAGS}

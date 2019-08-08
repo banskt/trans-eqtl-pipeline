@@ -1,4 +1,4 @@
-Adipose - Subcutaneous	as
+# Adipose - Subcutaneous	as
 # Adipose - Visceral (Omentum)	av
 # Adrenal Gland	ag
 # Artery - Aorta	aa
@@ -43,7 +43,7 @@ Adipose - Subcutaneous	as
 # Pituitary	pit
 # Prostate	pro
 # Skin - Not Sun Exposed (Suprapubic)	snse
-Skin - Sun Exposed (Lower leg)	sse
+# Skin - Sun Exposed (Lower leg)	sse
 # Small Intestine - Terminal Ileum	si
 # Spleen	spl
 # Stomach	sto
@@ -52,3 +52,16 @@ Skin - Sun Exposed (Lower leg)	sse
 # Uterus	ut
 # Vagina	va
 # Whole Blood	wb
+####################
+Artery - Aorta	aa
+Adipose - Subcutaneous	as
+Artery - Tibial	at
+Esophagus - Mucosa	esom
+Esophagus - Muscularis	esomu
+Cells - Transformed fibroblasts	fib
+Lung	lu
+Muscle - Skeletal	ms
+Nerve - Tibial	nt
+Skin - Sun Exposed (Lower leg)	sse
+Thyroid	thy
+Whole Blood	wb

@@ -45,7 +45,6 @@ function tejaas_chunk_reduce() {
                 fi
             done
 
-
             if [ "${ERROR}" = "false" ]; then
                 if [ -f ${EXT} ]; then
                     N=`wc -l ${EXT} | awk '{print $1}'`

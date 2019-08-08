@@ -80,7 +80,9 @@ tissue_counts_df = counts_df.loc[:,expr_ids]
 
 print('Normalizing using all genes within %i samples ...' % expression_df.shape[1])
 quant_std_df, quant_df = normalize_expression(expression_df, tissue_counts_df,
-    expression_threshold=expression_threshold, count_threshold=count_threshold, min_samples=min_samples)
+                                              expression_threshold=expression_threshold, 
+                                              count_threshold=count_threshold, 
+                                              min_samples=min_samples)
 
 newcolumns = ["-".join(i.split("-")[:2]) for i in quant_std_df.columns]
 quant_std_df.columns = newcolumns

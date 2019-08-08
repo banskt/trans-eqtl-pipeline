@@ -1,0 +1,8 @@
+#!/bin/bash
+
+LDSTORE="${HOME}/packages/ldstore/ldstore_v1.1_x86_64/ldstore"
+TEJAAS="${HOME}/trans-eQTL/codebase/tejaas/main.py"
+GNETLMMDIR="${HOME}/packages/GNetLMM"
+PLINK19="${HOME}/packages/plink/plink-1.90/plink"
+PYTHON27="${HOME}/miniconda3/envs/py27/bin/python"
+PYTHON36="${HOME}/miniconda3/envs/py36/bin/python"

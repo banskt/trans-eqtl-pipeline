@@ -3,16 +3,33 @@
 #BSUB -W 48:00
 #BSUB -n 8
 #BSUB -R span[hosts=1]
-#BSUB -R scratch
-#BSUB -a openmp
+#BSUB -R cbscratch
+#BSUB -a intelmpi
 #BSUB -J _JOB_NAME
 #BSUB -o _JOB_NAME.out
 #BSUB -e _JOB_NAME.err
 
-LDSTORE=_LD_STOR_
-GTFILE=_GT_FILE_
-CORFILE=_COR_FIL_
+module load gcc
 
-${LDSTORE} --bgen ${GTFILE} --bcor ${CORFILE} --n-threads 8
-${LDSTORE} --bcor ${CORFILE} --merge 8
-rm -rf ${CORFILE}_*
+
+TMPDIR="/local/tmp/_JOB_NAME"
+mkdirs -p $TMPDIR && export $TMPDIR
+
+VCFTOOLS=_VCFTOOL_
+GTFILE=_GT_FILE_
+OUTFILE=_OUTF_
+WINDOW=_WINDOW_ # 100000;
+MIN_R2=_MIN_R2_ #0.5;
+LDKEEPFILE="_KEEP_"
+
+KEEPFLAG=""
+if [ "$LDKEEPFILE" != "" ]; then
+    KEEPFLAG="--keep ${LDKEEPFILE}"
+fi
+
+${VCFTOOLS} --gzvcf ${GTFILE} \
+            --geno-r2 \
+            --ld-window-bp ${WINDOW} \
+            --min-r2 ${MIN_R2} \
+            --out ${OUTFILE} ${KEEPFLAG}
+            # --temp ${TMPDIR}

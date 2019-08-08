@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# data directory
+DATADIR="/cbscratch/franco/datasets"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/preprocess"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
+GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
+
+# output directory
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6"
+case "${EXPR_CORR}" in
+    "lm")
+        OUTDIR="${OUTDIR}/lmcorrected"
+        ;;
+    "lmage")
+        OUTDIR="${OUTDIR}/lmcorrected_age"
+        ;;
+    "lmage_precorr")
+        OUTDIR="${OUTDIR}/lmcorrected_age_precorr"
+        ;;
+    "peer10")
+        OUTDIR="${OUTDIR}/peer10"
+        ;;
+    "peer20")
+        OUTDIR="${OUTDIR}/peer20"
+        ;;
+    "peer30")
+        OUTDIR="${OUTDIR}/peer30"
+        ;;
+    "peer35")
+        OUTDIR="${OUTDIR}/peer35"
+        ;;
+    "peer10age")
+        OUTDIR="${OUTDIR}/peer10_age"
+        ;;
+    "peer35age")
+        OUTDIR="${OUTDIR}/peer35_age"
+        ;;
+    "norm_crossmap")
+        OUTDIR="${OUTDIR}/norm_crossmap"
+        ;;
+    "lm_crossmap")
+        OUTDIR="${OUTDIR}/lm_crossmap"
+        ;;
+    "lmage_crossmap")
+        OUTDIR="${OUTDIR}/lmage_crossmap"
+        ;;
+    "norm")
+        OUTDIR="${OUTDIR}/norm"
+        ;;
+    *)
+        OUTDIR="${OUTDIR}/unknown"
+        ;;
+esac
+
+# Cardiogenics
+CARDIODIR="${DATADIR}/cardiogenics"
+CARDIO_EXPR_FMT="${CARDIODIR}/expression/cardio_[TISSUE]_matrix_nodup.txt.gencode_filter"
+CARDIO_GENO_FMT="${CARDIODIR}/genotype/prefiltered_dosages/CG_dosages_filtered_[CHRM].imputed.gz"
+CARDIO_BGEN_FMT="None"  #"${CARDIODIR}/genotype_qc/CG_filtered_imputed_[CHRM].bgen"
+CARDIO_SAMPLE="${CARDIODIR}/genotype/CG.sample_orig"
+CARDIO_1KG_MAF="None" # "${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+
+# GTEx
+GTEXDIR="${DATADIR}/gtex"
+EXPRGTEXDIR="${EXPRDATADIR}/gtex"
+case "${EXPR_CORR}" in
+    "lm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_lmcorrected.txt.gencode_filtered"
+        ;;
+    "lmage")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.txt.gencode_filtered"
+        ;;
+    "lmage_precorr")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.precorr.txt.gencode_filtered"
+        ;;
+    "peer10")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "peer20")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_20_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "peer30")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_30_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "peer35")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "peer10age")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected_w_age/[TISSUE]_10_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "peer35age")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected_w_age/[TISSUE]_35_PEER_residuals.txt.gencode_filtered"
+        ;;
+    "norm_crossmap")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.gencode_filtered.crossmap_filtered"
+        ;;
+    "lm_crossmap")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_lmcorrected.txt.gencode_filtered.crossmap_filtered"
+        ;;
+    "lmage_crossmap")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected/[TISSUE]_age_lmcorrected.txt.gencode_filtered.crossmap_filtered"
+        ;;
+    "norm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.gencode_filtered"
+        ;;
+    *)
+        GTEX_EXPR_FMT=""
+        ;;
+esac
+GTEX_GENO_FMT="${GTEXDIR}/genotypes/dosages_allsamples/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_dosages_chr[CHRM].gz"
+GTEX_SAMPLE="${GTEXDIR}/gtex.sample"
+
+# Tissue specific and data specific formatting 
+DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
+TISSUEID=`echo ${MDATA} | cut -d'-' -f2`
+case "${DATATYPE}" in
+    "cardio")
+        DATATYPE="cardiogenics" # renaming data type from input
+        EXPRESSIONFILE=${CARDIO_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        GENO_FMT=${CARDIO_GENO_FMT}
+        SAMPLEFILE=${CARDIO_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    "gtex")
+        DATATYPE="gtex"
+        EXPRESSIONFILE=${GTEX_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        GENO_FMT=${GTEX_GENO_FMT}
+        SAMPLEFILE=${GTEX_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    *)
+        EXPRESSIONFILE=""
+        GENO_FMT=""
+        SAMPLEFILE=""
+        MAF_1KG_FILE=""
+        ;;
+esac

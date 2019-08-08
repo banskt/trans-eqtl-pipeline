@@ -94,7 +94,8 @@ if __name__ == '__main__':
     sorted_gx_df = filter_donors(new_gx_df, donors)
     # outfile = GXFILE+".gencode_filter"
     if args.out_file is None:
-        args.out_file = args.gx_file + ".gencode_filtered"
+        args.out_file = args.gx_file + ".{:s}_filtered".format("_".join(args.biotype))
+        print("Outfile:", args.out_file)
     outdir = os.path.dirname(os.path.realpath(args.out_file))
     if not os.path.exists(outdir):
         os.makedirs(outdir)

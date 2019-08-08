@@ -6,15 +6,19 @@ THISJOBDEPS="None"
 echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 source ${UTILSDIR}/submit_tejaas
 
-
 if [ "${DATATYPE}" = "cardiogenics" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --trim"
 fi
 
-for it in `seq 1 44`; do
-
-  EXTRAFLAGS="--dosage --cismask --shuffle"
+for it in `seq 1 $NRANDOMS`; do
   THISMETHOD="tejaas_rand_${it}"
+  echo "Submit $THISMETHOD"
+
+  SHUFFLE_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}"
+  SHUFFLED_ID_FILE="${SHUFFLE_OUTDIR}/shuffled_donor_ids.txt"
+  if [ ! -d ${SHUFFLE_OUTDIR} ]; then mkdir -p ${SHUFFLE_OUTDIR}; fi
+  source ${UTILSDIR}/shuffle_donors
+  EXTRAFLAGS="--dosage --cismask --shuffle-with $SHUFFLED_ID_FILE"
 
   for CHRM in ${CHRNUMS}; do
       GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
@@ -22,13 +26,8 @@ for it in `seq 1 44`; do
 
       if [ "${RUNJPA}" = "true" ]; then
           METHOD_VARIANT="jpa"
-          if [ "${bTejaasPartition}" = "true" ]; then
-              SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-              SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-          else
-              SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-              SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-          fi
+          SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+          SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
 
           JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
 
@@ -48,16 +47,11 @@ for it in `seq 1 44`; do
               if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
               for SBETA in ${TEJAAS_SIGMA_BETA}; do
                   METHOD_VARIANT="${NULL}null_sb${SBETA}"
-                  if [ "${bTejaasPartition}" = "true" ]; then
-                      SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                      SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                  else
-                      SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                      SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                  fi
-      
+                  SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                  SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+
                   JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${MDATA}_chr${CHRM}_${RANDSTRING}"
-      
+
                   submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
                                 ${GENEINFOFILE} ${MAF_1KG_FILE} \
                                 ${TEJAAS_MODEL} ${NULL} \
@@ -67,7 +61,6 @@ for it in `seq 1 44`; do
                                 ${MAX_NSNP_PERJOB} \
                                 ${THISJOBDEPS} ${MASTER_BSUBDIR} \
                                 JOBDEPS "${JOBDEPS}"
-      
               done
           done
 

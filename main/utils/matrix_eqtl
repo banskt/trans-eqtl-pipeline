@@ -57,7 +57,7 @@ for CHRM in ${CHRNUMS}; do
             s|_EXT_FLAG|\"${EXTRAFLAGS}\"|g;
            " ${MASTER_BSUBDIR}/matrixeqtl.bsub > ${SPECIFIC_JOBSUBDIR}/${MATRIXEQTL_JOBNAME}.bsub
 
-    # submit_job ${SPECIFIC_JOBSUBDIR} ${MATRIXEQTL_JOBNAME} ${THISJOBDEPS}
+    submit_job ${SPECIFIC_JOBSUBDIR} ${MATRIXEQTL_JOBNAME} ${THISJOBDEPS}
     JOBDEPS=`add_deps "${JOBDEPS}" ${MATRIXEQTL_JOBNAME}`
 
 done

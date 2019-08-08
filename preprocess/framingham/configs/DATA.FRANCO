@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+SRCDIR="/cbscratch/franco/datasets/FHS"
+
+SRCSAMPLE="${SRCDIR}/genotypes/phg000679.v2_release_manifest.txt"
+
+SRCDOSE="${SRCDIR}/genotypes/[CNST]/machout.chr[CHRM]_[CNST].dose.gz"
+SRCINFO="${SRCDIR}/genotypes/info/machout.chr[CHRM].info.gz"
+GT_OUTFILE="${SRCDIR}/genotypes/[CNST]/chr[CHRM]_[CNST].fhs.dosages"
+
+# SNPs from Joehannes et al
+STARTERSNPS="${SRCDIR}/joehannes_et_al/FHS_gene_lead_eQTLs_starters.txt"
+
+SRCEXPR="${SRCDIR}/expression/"
+
+GENCODEFILE="${SRCDIR}/gencode.v19.annotation.gtf.gz"

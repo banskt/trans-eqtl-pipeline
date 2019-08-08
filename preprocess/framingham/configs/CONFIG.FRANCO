@@ -1,0 +1,20 @@
+#!/bin/bash
+
+DATALOAD="configs/DATA.FRANCO"
+EXTERNALLOAD="configs/EXTERNAL.FRANCO"
+
+CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
+
+# vcf test
+# CHRNUMS="22"
+
+CONSENT_GROUPS="c1 c2"
+
+# this jobs should be dependen on one another.. run sequentially!
+bReformatGT=false
+bMergeCnst=false
+bConvert2VCF=true
+
+VCF_CALLTHRES="0.1"
+NOTDOSAGE=false     # should only be true for cardiogenics
+

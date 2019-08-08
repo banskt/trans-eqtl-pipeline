@@ -1,0 +1,8 @@
+#!/bin/bash
+
+LDSTORE="${HOME}/bin/ldstore"
+TEJAAS="${HOME}/tejaas/bin/tejaas"
+GNETLMMDIR="${HOME}/packages/GNetLMM"
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
+VCFTOOLS="/usr/users/fsimone/bin/vcftools_bins/bin/vcftools"
+PLINK2="/usr/users/fsimone/bin/plink2"

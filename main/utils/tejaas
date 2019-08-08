@@ -6,23 +6,45 @@ THISJOBDEPS="None"
 echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 source ${UTILSDIR}/submit_tejaas
 
-EXTRAFLAGS="--cismask"
-if [ "${DATATYPE}" = "cardiogenics" ]; then
+EXTRAFLAGS="--dosage"
+_VARIANT=""
+
+if [ "${KNN}" -gt "0" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --knn ${KNN}"
+    _VARIANT="${_VARIANT}_knn${KNN}"
+fi
+
+if [ "${CISMASK}" == "true" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --cismask"
+else
+    _VARIANT="${_VARIANT}_nocismask"
+fi
+
+if [ "${MAGIC_SQRT}" == "true" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --magic_sqrt"
+    _VARIANT="${_VARIANT}_sqrt"
+fi
+
+if [ "${DATATYPE}" == "cardiogenics" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --trim"
 fi
 
-if [ "${SHUFFLE}" = "true" ]; then
+if [ "${DATATYPE}" == "fhs" ]; then
+    GENEINFOFILE=${PROBEINFOFILE}
+fi
+
+if [ "${SHUFFLE}" == "true" ]; then
     THISMETHOD="tejaas_rand"
     EXTRAFLAGS="$EXTRAFLAGS --shuffle-with $SHUFFLED_ID_FILE"
     SHUFFLE=false
 fi
 
-if [ "${PARTITION1}" = "true" ]; then
+if [ "${PARTITION1}" == "true" ]; then
     THISMETHOD="${THISMETHOD}_part1"
     EXTRAFLAGS="$EXTRAFLAGS --selected-donors $PARTITION_FILE_1"
 fi
 
-if [ "${PARTITION2}" = "true" ]; then
+if [ "${PARTITION2}" == "true" ]; then
     THISMETHOD="${THISMETHOD}_part2"
     EXTRAFLAGS="$EXTRAFLAGS --selected-donors $PARTITION_FILE_2"
 fi
@@ -34,6 +56,10 @@ for CHRM in ${CHRNUMS}; do
 
     if [ "${RUNJPA}" = "true" ]; then
         METHOD_VARIANT="jpa"
+        if [ "${_VARIANT}" != "" ]; then
+            METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"
+        fi
+
         if [ "${bTejaasPartition}" = "true" ]; then
             SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
             SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
@@ -44,33 +70,7 @@ for CHRM in ${CHRNUMS}; do
 
         JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
 
-        submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
-                      ${GENEINFOFILE} ${MAF_1KG_FILE} \
-                      jpa perm \
-                      ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} 0.01 \
-                      "${EXTRAFLAGS}" \
-                      ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
-                      ${MAX_NSNP_PERJOB} \
-                      ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                      JOBDEPS "${JOBDEPS}"
-
-    else
-        for NULL in ${TEJAAS_NULL}; do
-            if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
-            if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
-            for SBETA in ${TEJAAS_SIGMA_BETA}; do
-                METHOD_VARIANT="${NULL}null_sb${SBETA}"
-                if [ "${bTejaasPartition}" = "true" ]; then
-                    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                else
-                    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                fi
-    
-                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
-    
-                submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
+        submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
                               ${GENEINFOFILE} ${MAF_1KG_FILE} \
                               ${TEJAAS_MODEL} ${NULL} \
                               ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
@@ -79,8 +79,78 @@ for CHRM in ${CHRNUMS}; do
                               ${MAX_NSNP_PERJOB} \
                               ${THISJOBDEPS} ${MASTER_BSUBDIR} \
                               JOBDEPS "${JOBDEPS}"
-    
-            done
+
+        # submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
+        #               ${GENEINFOFILE} ${MAF_1KG_FILE} \
+        #               jpa perm \
+        #               ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} 0.01 \
+        #               "${EXTRAFLAGS}" \
+        #               ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+        #               ${MAX_NSNP_PERJOB} \
+        #               ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+        #               JOBDEPS "${JOBDEPS}"
+
+    else
+        for NULL in ${TEJAAS_NULL}; do
+            if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
+            if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
+            if [ ${DYNAMIC_SB} == "true" ]; then
+                METHOD_VARIANT="${NULL}null_sbDynamic"
+                if [ "${_VARIANT}" != "" ]; then
+                    METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"
+                fi
+                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
+                SBETA="0.00"
+
+                SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+
+                submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
+                              ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                              ${TEJAAS_MODEL} ${NULL} \
+                              ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                              "${EXTRAFLAGS}" \
+                              ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                              ${MAX_NSNP_PERJOB} \
+                              ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                              JOBDEPS "${JOBDEPS}"
+            else
+                for SBETA in ${TEJAAS_SIGMA_BETA}; do
+                    METHOD_VARIANT="${NULL}null_sb${SBETA}"
+                    if [ "${_VARIANT}" != "" ]; then
+                        METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"
+                    fi
+                    if [ "${bTejaasPartition}" = "true" ]; then
+                        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${r}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                    else
+                        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                    fi
+        
+                    JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
+        
+                    submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
+                                  ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                                  ${TEJAAS_MODEL} ${NULL} \
+                                  ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                                  "${EXTRAFLAGS}" \
+                                  ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                                  ${MAX_NSNP_PERJOB} \
+                                  ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                                  JOBDEPS "${JOBDEPS}"
+
+                    # submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
+                    #               ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                    #               ${TEJAAS_MODEL} ${NULL} \
+                    #               ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                    #               "${EXTRAFLAGS}" \
+                    #               ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                    #               ${MAX_NSNP_PERJOB} \
+                    #               ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                    #               JOBDEPS "${JOBDEPS}"
+                done
+            fi
         done
 
     fi

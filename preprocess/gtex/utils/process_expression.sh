@@ -1,7 +1,8 @@
 #!/bin/bash
+source ${UTILSDIR}/submit_job
 
 THISJOBDEPS="None" # no job dependencies
-SPECIFIC_JOBSUBDIR="${JOBSUBDIR}/preprocess/gtex/expression"
+SPECIFIC_JOBSUBDIR="${PREPROCDIR}/gtex/jobsubs"
 # if [ -d ${SPECIFIC_JOBSUBDIR} ]; then rm -rf ${SPECIFIC_JOBSUBDIR}; fi; mkdir -p ${SPECIFIC_JOBSUBDIR}
 
 JOBNAME="gtex_preprocess_gx_${TSHORT}_${RANDSTRING}"
@@ -37,9 +38,10 @@ sed -e "s|_JOB_NAME|${JOBNAME}|g;
         s|_LM_CORR_RS_|${LMCORR_R}|g;
         s|_PR_CORR_RS_|${PEERSCRIPT_R}|g;
         s|_GEN_FIL_PY_|${GENCODEFILTERPY}|g;
-        s|_GX_PROC_SH_|${UTILSDIR}/gx_preproc_string|g;
         s|_PUTILS_DIR_|${PREPROC_UTILSDIR}|g;
-        s|_GX_FIL_FMT_|${GXFILENAME_FMT}|g;
         " ${MASTER_BSUBDIR}/gtex_gx_preprocess.bsub > ${SPECIFIC_JOBSUBDIR}/${JOBNAME}.bsub
 
-#submit_job ${SPECIFIC_JOBSUBDIR} ${JOBNAME} ${THISJOBDEPS}
+        # s|_GX_PROC_SH_|${UTILSDIR}/gx_preproc_string|g;
+        # s|_GX_FIL_FMT_|${GXFILENAME_FMT}|g;
+
+submit_job ${SPECIFIC_JOBSUBDIR} ${JOBNAME} ${THISJOBDEPS}

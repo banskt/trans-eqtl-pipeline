@@ -4,6 +4,22 @@ import numpy as np
 import pandas as pd
 import scipy.stats as stats
 import warnings
+from sklearn import linear_model
+
+def lmcorrect(expression_df, cov_df):   
+    donor_ids = expression_df.columns
+
+    #sort donors
+    cov_df = cov_df[expression_df.columns]
+
+    reg = linear_model.LinearRegression()
+    reg.fit(cov_df.T, expression_df.T)
+
+    # reg.score(df_cov.T, crop_expression_df.T)
+    # print(reg.coef_)
+    residuals = expression_df - reg.predict(cov_df.T).T
+    return residuals, reg.coef_
+
 
 def normalize_quantiles(df):
     """
@@ -119,13 +135,13 @@ def edgeR_cpm(counts_df, tmm=None, normalized_lib_sizes=True):
     return counts_df / lib_size * 1e6
         
 
-def inverse_quantile_normalization(M):
-    """
-    After quantile normalization of samples, standardize expression of each gene
-    """
-    R = stats.mstats.rankdata(M,axis=1)  # ties are averaged
-    Q = stats.norm.ppf(R/(M.shape[1]+1))
-    return Q
+# def inverse_quantile_normalization(M):
+#     """
+#     After quantile normalization of samples, standardize expression of each gene
+#     """
+#     R = stats.mstats.rankdata(M,axis=1)  # ties are averaged
+#     Q = stats.norm.ppf(R/(M.shape[1]+1))
+#     return Q
 
 def inverse_normal_transform(M):
     """
@@ -153,7 +169,7 @@ def normalize_expression(expression_df, counts_df, expression_threshold=0.1, cou
     
     # apply normalization
     M = normalize_quantiles(expression_df.loc[mask])
-    R = inverse_quantile_normalization(M)
+    R = inverse_normal_transform(M)
 
     quant_std_df = pd.DataFrame(data=R, columns=donor_ids, index=expression_df.loc[mask].index)    
     quant_df = pd.DataFrame(data=M, columns=donor_ids, index=expression_df.loc[mask].index)

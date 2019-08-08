@@ -5,7 +5,7 @@ function tejaas_top_snps() {
     local CWD=`pwd`
     cd $DIR
     echo $DIR
-    RRFILE="rr.txt"
+    RRFILE="rr.txt.ld_prune"
     if [ -f ${RRFILE} ]; then
         $PYENV $SCRIPTDIR/select_top_rr.py --input $RRFILE --n $TOPN
     else

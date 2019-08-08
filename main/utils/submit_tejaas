@@ -1,15 +1,15 @@
 #!/bin/bash
 
 function submit_tejaas() {
-    local pyenv=$1
-    local tejaas=$2
-    local chrm=$3
-    local genotype=$4
-    local expression=$5
+    local tejaas=$1
+    local chrm=$2
+    local genotype=$3
+    local expression=$4
+    local sample=$5
     local geneinfo=$6
     local maffile=$7
     local method=$8
-    local null=${9}
+    local null=$9
     local snpthres=${10}
     local genethres=${11}
     local sbeta=${12}
@@ -36,18 +36,13 @@ function submit_tejaas() {
     ## echo $jobsubdir $outdir $jobprefix
     ## echo $nmax $thisjobdep $bsubdir $__jobdeps $jobdeps
 
-    ## this is wrong because vcf file contains header. 
-    ## our vcf files contain single line header.
-    ## however, having larger ntot is not harmful.
-    ntot=$( zcat ${genotype} | wc -l )
-    ntot=$( echo $((ntot - 1 )) )
-    njobs=$( echo $(( (ntot + nmax - 1)/nmax )) )
-    #njobs=$(echo $(( ntot/nmax )))
+    ntot=`zcat ${genotype} | wc -l`
+    njobs=$(echo $(( ntot/nmax )))
 
     if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
     if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
 
-    for (( i=0; i < ${njobs}; i++ )); do
+    for (( i=0; i <= ${njobs}; i++ )); do
         index=`echo ${i} | awk '{printf "%03d", $1}'`
         jobname="${jobprefix}_${index}"
 
@@ -62,9 +57,9 @@ function submit_tejaas() {
 
         # create the job submission file
         sed "s|_JOB_NAME|${jobname}|g;
-             s|_PYT_ENV_|${pyenv}|g;
              s|_TJS_BINR|${tejaas}|g;
              s|_GT_FILE_|${genotype}|g;
+             s|_SAM_FILE|${sample}|g;
              s|_EXPR_FL_|${expression}|g;
              s|_GEN_POSF|${geneinfo}|g;
              s|_TJ_METHD|${method}|g;
@@ -85,7 +80,6 @@ function submit_tejaas() {
     eval $__jobdeps="'$jobdeps'"
 }
 
-#!/bin/bash
 
 function submit_tejaas_1chunk() {
     local tejaas=$1

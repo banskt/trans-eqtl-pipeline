@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
