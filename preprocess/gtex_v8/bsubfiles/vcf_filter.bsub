@@ -1,0 +1,20 @@
+#!/bin/sh
+#BSUB -q mpi
+#BSUB -W 24:00
+#BSUB -x
+#BSUB -R cbscratch
+#BSUB -a intelmpi
+#BSUB -J _JOB_NAME
+#BSUB -o _JOB_NAME.out
+#BSUB -e _JOB_NAME.err
+
+module load intel/compiler/64/2017/17.0.2
+module load intel/mkl/64/2017/2.174
+
+PYENV=_PYENV_
+INVCF=_INVCF_
+OUTVCF=_OUTVCF_
+PYFILTER=_PYFILTER_
+
+$PYENV $PYFILTER --in $INVCF \
+                 --out $OUTVCF 
