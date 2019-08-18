@@ -1,39 +1,29 @@
 #!/bin/bash
 
 TISSUEFILE="tissue_table.txt"
-DATALOAD="configs/DATA.SAIKAT"
+DATALOAD="configs/GTEXv8.SAIKAT"
 EXTERNALLOAD="configs/EXTERNAL.SAIKAT"
-OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex"
-
+OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
 
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
 PREGXOUTDIR="${OUTDIR}/preprocess_gx"
-
-RPKMOUTDIR="${PREGXOUTDIR}/rpkms"                  # tissue specific rpkms output dir
-NORMOUTDIR="${PREGXOUTDIR}/normalized"             # normalized, uncorrected expr dir
-LMOUTDIR="${PREGXOUTDIR}/lmcorrected"              # covariate corrected expression
-COVOUTDIR="${PREGXOUTDIR}/covariates"              # covariates outdir
-PEEROUTDIR="${PREGXOUTDIR}/peercorrected"          # PEER corrected
-AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
-
-
-GXFILENAME_FMT="${GXOUTDIR}/gtex_[SELECTION]_[PREPROC]_[TISSUE].txt"
-GTFILE_BASENAME="GTEx_v6_imput_info04_HWEp1E6_PASS_dbSNP135"
+COVARDIR="${OUTDIR}/covariates"
 
 #---- Gene expression meta data
-GENEPOSFILE="${GXOUTDIR}/genepos.gencode.v19.txt"
+# GENEPOSFILE="${GXOUTDIR}/genepos.gencode.v19.txt"
 
-#---- Different types of gene expression preprocessing
-USE_BSUB=false
+#---- Options for gene expression pre-filtering
+USE_SLURM=true
+USE_LSF=false
 GXSELECTION="protein_coding"   # a list of biotypes to be selected for analysis
-bSelectNormalize=false
-bFormatCovariates=false
-bLMcorrect=false
-bPeerCorrect=false
-bGencodeFilter=true
-GXAGECORR="false"               # a list of boolean, "true false", true: gx will be corrected for age
-GXNPEERS="35"                   # number of peer factors, redundant if bPeerCorrect = false
+QCMETHODS="raw raw_std tmm_std_cclm"
+TPM_THRESHOLD=0.1
+COUNTS_THRESHOLD=6
+SAMPLE_FRAC_THRESHOLD=0.2
+bSelectTissue=true
+bNormalizeQC=true
+bCollectCovs=true
 
 #---- Genotype filtering
 MAFMIN=0.1
@@ -44,6 +34,10 @@ IMPUTE_MISSING=true
 #---- GNetLMM format
 CREATE_EXPRESSION=false
 CREATE_GENOTYPE=true
+
+for DIR in ${GXOUTDIR} ${GTOUTDIR} ${PREGXOUTDIR} ${COVARDIR}; do
+    if [ ! -d ${DIR} ]; then mkdir -p $DIR; fi
+done
 
 ## #---- Gene Expression processing
 ## bProcessRPKMs_and_normalize=false    # start from the very beginning
@@ -64,3 +58,13 @@ CREATE_GENOTYPE=true
 #### PEER Instalation
 # wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz
 # R CMD INSTALL R_peer_source_1.3.tgz
+
+#TPMOUTDIR="${PREGXOUTDIR}/tpms"                    # tissue specific tpms output dir
+#NORMOUTDIR="${PREGXOUTDIR}/normalized"             # normalized, uncorrected expr dir
+#LMOUTDIR="${PREGXOUTDIR}/lmcorrected"              # covariate corrected expression
+#COVOUTDIR="${PREGXOUTDIR}/covariates"              # covariates outdir
+#PEEROUTDIR="${PREGXOUTDIR}/peercorrected"          # PEER corrected
+#AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
+
+#GTFILE_BASENAME="GTEx_v6_imput_info04_HWEp1E6_PASS_dbSNP135"
+
