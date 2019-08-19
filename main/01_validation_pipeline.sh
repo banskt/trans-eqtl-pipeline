@@ -21,6 +21,8 @@ RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
 RUNJPA=false	# used for submitting jpa-only jobs
 SHUFFLE=false 	# used for controlling shuffling
 JOBDEPS="None" 	# used for controlling job dependencies
+TEJAAS_JOBDEPS="None"
+SUBMITTED_JOBIDS="" # used for controlling jobid reporting
 
 source ${DATALOAD}
 
@@ -36,7 +38,8 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
         OUTDIR_DATA="${OUTDIR}/${TSHORT}"
         SHUFFLED_ID_FILE="${OUTDIR}/shuffled_donor_ids.txt"
 
-        EXPRESSIONFILE=${EXPR_FMT/\[TISSUE\]/${TSHORT}}
+        GX_TISSUE_FMT=${EXPR_FMT/\[TISSUE\]/${TSHORT}}
+        EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}
 
         source ${UTILSDIR}/shuffle_donors
 
@@ -45,19 +48,19 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
             echo "Submitting jobs for $TBASE"
         
             if [ "${bMatrixEqtl}" = "true" ];  then source ${UTILSDIR}/matrix_eqtl; fi
-            if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; fi
+            if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; SHUFFLE=false; fi
             if [ "${bTejaas}" = "true" ];      then source ${UTILSDIR}/tejaas; fi
-            if [ "${bTjsRandom}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas; fi
-            if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
-            if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi
-            if [ "${bGNetLmm}" = "true" ]; then source ${UTILSDIR}/gnetlmm; fi
+            if [ "${bTjsRandom}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas; SHUFFLE=false; fi
+            #if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
+            #if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi
+            #if [ "${bGNetLmm}" = "true" ]; then source ${UTILSDIR}/gnetlmm; fi
 
         fi
     # echo ${JOBDEPS}
     fi
 done < ${TISSUEFILE}
 
-if [ "${bValidationPlot}" = "true" ]; then source ${UTILSDIR}/validation_plot; fi
+#if [ "${bValidationPlot}" = "true" ]; then source ${UTILSDIR}/validation_plot; fi
 
 unset_vars ${CONFIGFILE}
 unset_vars PATHS

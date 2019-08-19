@@ -5,8 +5,8 @@ extract_selected_samples_tpm_counts() {
     SRCREAD=$2
     SEL_SAMPLES=$3
     ALL_SAMPLES=$4
-    TPMOUT=$3
-    COUNTOUT=$4
+    TPMOUT=$5
+    COUNTOUT=$6
     TMP_OUTDIR=$( dirname $TPMOUT )
 
     grep -n -Fwf ${SEL_SAMPLES} ${ALL_SAMPLES} | cut -d':' -f1 > ${TMP_OUTDIR}/tmp.columns

@@ -3,7 +3,8 @@
 THISMETHOD="tejaas"
 THISJOBDEPS="None"
 
-echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
+EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}
+
 source ${UTILSDIR}/submit_tejaas
 
 EXTRAFLAGS="--cismask"
@@ -14,57 +15,43 @@ fi
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="tejaas_rand"
     EXTRAFLAGS="$EXTRAFLAGS --shuffle-with $SHUFFLED_ID_FILE"
-    SHUFFLE=false
 fi
-
 
 for CHRM in ${CHRNUMS}; do
     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
     MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
+    echo "Submitting TEJAAS jobs for Chromosome ${CHRM}, SHUFFLE=$SHUFFLE"
 
-    if [ "${RUNJPA}" = "true" ]; then
-        METHOD_VARIANT="jpa"
-        SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-        SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+    for NULL in ${TEJAAS_NULL}; do
+        if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
+        if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
+        for SBETA in ${TEJAAS_SIGMA_BETA}; do
+            METHOD_VARIANT="${NULL}null_sb${SBETA}"
+            __EFLAGS="${EXTRAFLAGS}" ## because we don't want inplace modification of $EXTRAFLAGS within the loop
+            if [ "${TEJAAS_KNN}" = "true" ]; then
+                __EFLAGS="${__EFLAGS} --knn"
+                METHOD_VARIANT="${METHOD_VARIANT}_knn"
+            fi
 
-        JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
+            SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}"
+            SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}"
+            JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
 
-        submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
-                      ${GENEINFOFILE} ${MAF_1KG_FILE} \
-                      jpa perm \
-                      ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} 0.01 \
-                      "${EXTRAFLAGS}" \
-                      ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
-                      ${MAX_NSNP_PERJOB} \
-                      ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                      JOBDEPS "${JOBDEPS}"
+            submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
+                          ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                          ${TEJAAS_MODEL} ${NULL} \
+                          ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                          "${__EFLAGS}" \
+                          ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                          ${MAX_NSNP_PERJOB} \
+                          ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                          TEJAAS_JOBDEPS "${TEJAAS_JOBDEPS}"
 
-    else
-        for NULL in ${TEJAAS_NULL}; do
-            if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
-            if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
-            for SBETA in ${TEJAAS_SIGMA_BETA}; do
-    
-                METHOD_VARIANT="${NULL}null_sb${SBETA}"
-                SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-                SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
-    
-                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
-    
-                submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
-                              ${GENEINFOFILE} ${MAF_1KG_FILE} \
-                              ${TEJAAS_MODEL} ${NULL} \
-                              ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
-                              "${EXTRAFLAGS}" \
-                              ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
-                              ${MAX_NSNP_PERJOB} \
-                              ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                              JOBDEPS "${JOBDEPS}"
-    
-            done
+            SUBMITTED_JOBIDS=${TEJAAS_JOBDEPS#*${SUBMITTED_JOBIDS}*:}
+            __MSTRING="${METHOD_VARIANT}"
+            if [ "${SHUFFLE}" = "true" ]; then __MSTRING="${__MSTRING} + shuffled genotype"; fi
+            echo "    ${SUBMITTED_JOBIDS} > ${__MSTRING}: ${THISJOBDEPS}"
+
         done
-
-    fi
+    done
 done
-
-RUNJPA=false

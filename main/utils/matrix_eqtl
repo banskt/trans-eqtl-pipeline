@@ -2,6 +2,8 @@
 
 THISMETHOD="matrixeqtl"
 THISJOBDEPS="None"
+EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}
+
 EXTRAFLAGS=""
 if [ "${SHUFFLE}" = "true" ]; then
     THISMETHOD="matrixeqtl_rand"

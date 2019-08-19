@@ -36,13 +36,9 @@ function submit_tejaas() {
     ## echo $jobsubdir $outdir $jobprefix
     ## echo $nmax $thisjobdep $bsubdir $__jobdeps $jobdeps
 
-    ## this is wrong because vcf file contains header. 
-    ## our vcf files contain single line header.
-    ## however, having larger ntot is not harmful.
-    ntot=$( zcat ${genotype} | wc -l )
-    ntot=$( echo $((ntot - 1 )) )
+    ## header lines are removeed with the sed construct
+    ntot=$( zcat ${genotype} | sed '/^\s*#/d;/^\s*$/d' | wc -l )
     njobs=$( echo $(( (ntot + nmax - 1)/nmax )) )
-    #njobs=$(echo $(( ntot/nmax )))
 
     if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
     if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
@@ -77,10 +73,10 @@ function submit_tejaas() {
              s|_CHRM_NUM|${chrm}|g;
              s|_MAF_FILE|${maffile}|g;
              s|_EXT_FLAG|\"${extraflags}\"|g;
-            " ${bsubdir}/tejaas.bsub > ${jobsubdir}/${jobname}.bsub
+            " ${bsubdir}/tejaas.sbatch > ${jobsubdir}/${jobname}.sbatch
 
-        submit_job ${jobsubdir} ${jobname} ${thisjobdep}
-        jobdeps=`add_deps "${jobdeps}" ${jobname}`
+        thisjobid=$( submit_job ${jobsubdir} ${jobname} ${thisjobdep} )
+        jobdeps=$( add_deps "${jobdeps}" ${thisjobid} )
     done
     eval $__jobdeps="'$jobdeps'"
 }
