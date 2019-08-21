@@ -2,4 +2,4 @@
 # CHROM=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22)
 NUMCHROM=${#CHROM[@]}
 NUMARR=$(($NUMCHROM - 1))
-sbatch --array=0-${NUMARR} 11_add_dosage_entry.sbatch 
+sbatch --array=0-${NUMARR} add_dosage_entry.sbatch 

@@ -5,8 +5,10 @@ function expected_nchunk() {
     local CHRM=$2
     local NMAX=$3
     GENOTYPEFILE=${GTFMT/\[CHRM\]/${CHRM}}
-    NSNPS=$( zcat ${GENOTYPEFILE} | wc -l )
-    NSNPS=$( echo $(( NSNPS - 1 )) ) # only one line of header
+    #NSNPS=$( zcat ${GENOTYPEFILE} | wc -l )
+    #NSNPS=$( echo $(( NSNPS - 1 )) ) # only one line of header
+    #NCHUNK=$( echo $(( (NSNPS + NMAX - 1)/NMAX )) )
+    NSNPS=$( zcat ${GENOTYPEFILE} | sed '/^\s*#/d;/^\s*$/d' | wc -l )
     NCHUNK=$( echo $(( (NSNPS + NMAX - 1)/NMAX )) )
     echo $NCHUNK
 }
