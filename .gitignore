@@ -5,9 +5,11 @@ __pycache__
 analysis/jupyter/cardiogenics_mono_macro
 analysis/jupyter/*.pkl
 analysis/external/DHS_Index_and_Vocabulary_hg38_WM20190703.txt*
-analysis/external/multi-tissue.master.ntypes.simple.hg19.bed
-analysis/external/multi-tissue.master.ntypes.simple.hg38_hglft_genome_620db_fada10.bed
+analysis/external/multi-tissue.master.ntypes.simple.hg19*
+analysis/external/multi-tissue.master.ntypes.simple.hg38_hglft_genome_620db_fada10*
 main/tissue_table.txt
 main/01a_resubmit_tejaas_rand.sh
+main/00b_copy_expression.sh
 analysis/plots
 analysis/snps_with_pval1
+preprocess/gtex/slurmfiles/add_DSentry_*

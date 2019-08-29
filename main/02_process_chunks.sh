@@ -57,7 +57,7 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
                     for SBETA in ${TEJAAS_SIGMA_BETA}; do
                         METHOD_VARIANT="${NULL}null_sb${SBETA}"
                         if [ "${TEJAAS_KNN}" = "true" ]; then METHOD_VARIANT="${METHOD_VARIANT}_knn"; fi
-                        #if [ "${bTejaas}" = "true" ];    then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}" $NCHUNK; fi
+                        if [ "${bTejaas}" = "true" ];    then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}" $NCHUNK; fi
                         if [ "${bTjsRandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}" $NCHUNK; fi
                     done
                 done

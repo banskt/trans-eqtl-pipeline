@@ -3,7 +3,7 @@
 TISSUEFILE="tissue_table.txt"
 DATALOAD="configs/GTEXv8.SAIKAT"
 EXTERNALLOAD="configs/EXTERNAL.SAIKAT"
-OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
+OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8_pub"
 
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
@@ -14,10 +14,10 @@ COVARDIR="${OUTDIR}/covariates"
 # GENEPOSFILE="${GXOUTDIR}/genepos.gencode.v19.txt"
 
 #---- Options for gene expression pre-filtering
-USE_SLURM=true
+USE_SLURM=false
 USE_LSF=false
 GXSELECTION="protein_coding"   # a list of biotypes to be selected for analysis
-QCMETHODS="raw raw_std tmm_std_cclm"
+QCMETHODS="raw raw_std"
 TPM_THRESHOLD=0.1
 COUNTS_THRESHOLD=6
 SAMPLE_FRAC_THRESHOLD=0.2

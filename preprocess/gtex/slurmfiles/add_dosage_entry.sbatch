@@ -12,6 +12,6 @@
 CHROM=(1 2)
 DS2VCF="/usr/users/sbanerj/trans-eQTL/dev-pipeline/preprocess/external/DS2VCF/bin/add_dosage"
 CHRNUM=${CHROM[$SLURM_ARRAY_TASK_ID]}
-INFILE="/scratch/sbanerj/trans-eqtl/input/gtex/genotype/v8_all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr${CHRNUM}.vcf.gz"
-OUTFILE="/scratch/sbanerj/trans-eqtl/input/gtex/genotype/v8_all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr${CHRNUM}.vcf.gz"
+INFILE="/scratch/sbanerj/trans-eqtl/input/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr${CHRNUM}.vcf.gz"
+OUTFILE="/usr/users/sbanerj/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr${CHRNUM}.vcf.gz"
 ${DS2VCF} ${INFILE} ${OUTFILE}

@@ -36,7 +36,7 @@ Adipose - Subcutaneous	as
 # Liver	liv
 # Lung	lu
 # Minor Salivary Gland	msg
-# Muscle - Skeletal	ms
+Muscle - Skeletal	ms
 # Nerve - Tibial	nt
 # Ovary	ov
 # Pancreas	pan

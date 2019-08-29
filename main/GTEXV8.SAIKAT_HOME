@@ -1,0 +1,27 @@
+#!/bin/bash
+
+DATADIR="/scratch/sbanerj/data"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v26.txt"
+GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
+
+# output directory
+OUTDIR="/usr/users/sbanerj/trans_eqtl_results"
+
+if [ ${DATASET} = "GTEx" ]; then
+    DATATYPE="gtex"
+    GTEXDIR="/usr/users/sbanerj/gtex_v8"
+
+    SELECTION_STRING=$( echo ${GXSELECTION} | sed 's/ /_/g' )
+    EXPR_FMT="${GTEXDIR}/expression/gtex_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
+    GENO_FMT="${GTEXDIR}/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr[CHRM].vcf.gz"
+
+    SAMPLEFILE="${GTEXDIR}/gtex.sample"
+
+    JOBSUBDIR="${JOBSUBDIR}/gtex_v8_pub"
+    OUTDIR="${OUTDIR}/gtex_v8_pub"
+
+    TISSUEFILE="tissue_table.txt"
+
+    MAF_1KG_FMT="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+
+fi
