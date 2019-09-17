@@ -4,7 +4,7 @@ BEGIN { FS=OFS="\t" }
   sub("chr", "", $1)
   split($4, meta, ";")
   
-  if ($1 != "X" && $1 != "Y") {
+  if ($1 != "X" && $1 != "Y" && $1 != "M") {
     for (i in meta) {
       ## remove leading whitespace
       gsub (/^ */, "", meta[i])

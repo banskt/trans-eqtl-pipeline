@@ -12,13 +12,13 @@ if [ ${DATASET} = "GTEx" ]; then
     GTEXDIR="/usr/users/sbanerj/gtex_v8"
 
     SELECTION_STRING=$( echo ${GXSELECTION} | sed 's/ /_/g' )
-    EXPR_FMT="${GTEXDIR}/expression/gtex_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
+    EXPR_FMT="${GTEXDIR}/expression/gtexv8_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
     GENO_FMT="${GTEXDIR}/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr[CHRM].vcf.gz"
 
     SAMPLEFILE="${GTEXDIR}/gtex.sample"
 
-    JOBSUBDIR="${JOBSUBDIR}/gtex_v8_pub"
-    OUTDIR="${OUTDIR}/gtex_v8_pub"
+    JOBSUBDIR="${JOBSUBDIR}/gtex_v8"
+    OUTDIR="${OUTDIR}/gtex_v8"
 
     TISSUEFILE="tissue_table.txt"
 

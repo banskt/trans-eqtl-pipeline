@@ -16,9 +16,10 @@ def timeit(f):
     return wrap
 
 def myreplace(s):
-    todelete = ["(", ")", "-"]
+    todelete = ["(", ")"]
     for ch in todelete:
         s = s.replace(ch, "")
+    s = s.replace(" - ", " ")
     return s.replace("  ", " ")
 
 def read_tissues(infile):
@@ -32,6 +33,20 @@ def read_tissues(infile):
             descriptions.append(l.split("\t")[0].rstrip())
     descriptions = [myreplace(d) for d in descriptions]
     return tissues, descriptions
+
+def read_matching_eid(infile):
+    matches = dict()
+    with open(infile) as instream:
+        for line in instream:
+            if re.search("^#", line):
+                continue
+            lsplit = line.split("\t")
+            tissue = lsplit[1].rstrip()
+            eids = list()
+            if len(lsplit) == 3 and not lsplit[2].rstrip() == 'NA':
+                eids = [x.rstrip() for x in lsplit[2].rstrip().split(",")]
+            matches[tissue] = eids
+    return matches
 
 def read_rocfile(infile):
     df = pd.read_table(infile, header=0)

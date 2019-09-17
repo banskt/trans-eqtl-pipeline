@@ -42,7 +42,7 @@ function submit_tejaas() {
     njobs=$( echo $(( (ntot + nmax - 1)/nmax )) )
 
     if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
-    if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
+    if [ -d ${outdir} ]; then rm -rf ${outdir}; mkdir -p ${outdir}; fi
 
     for (( i=0; i < ${njobs}; i++ )); do
         index=`echo ${i} | awk '{printf "%03d", $1}'`

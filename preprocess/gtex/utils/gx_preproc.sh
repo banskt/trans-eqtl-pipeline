@@ -64,3 +64,6 @@ if [ "${bNormalizeQC}" = "true" ]; then
                          --gtf ${GENCODEFILE} \
                          --biotype ${GXSELECTION}
 fi
+
+## copy files to the expression folder
+cp ${TISSUEOUTDIR}/gtex_${TSHORT}* ${GXOUTDIR}/

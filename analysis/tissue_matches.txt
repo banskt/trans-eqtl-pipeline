@@ -1,0 +1,54 @@
+Adipose - Subcutaneous	as	E063
+Adipose - Visceral (Omentum)	av	E063
+Adrenal Gland	ag	NA
+Artery - Aorta	aa	E065
+Artery - Coronary	ac	NA
+Artery - Tibial	at	NA
+####### Bladder	bl
+Brain - Amygdala	bam
+Brain - Anterior cingulate cortex (BA24)	ban	E069
+Brain - Caudate (basal ganglia)	bca	E068
+Brain - Cerebellar Hemisphere	bceh	NA
+Brain - Cerebellum	bce	NA
+Brain - Cortex	bco	E067,E072,E073
+Brain - Frontal Cortex (BA9)	bfr	E072,E073
+Brain - Hippocampus	bhi	E071
+Brain - Hypothalamus	bhy	NA
+Brain - Nucleus accumbens (basal ganglia)	bnu	NA
+Brain - Putamen (basal ganglia)	bpu	NA
+Brain - Spinal cord (cervical c-1)	bsp	NA
+Brain - Substantia nigra	bsu	NA
+Breast - Mammary Tissue	br	E027
+Cells - EBV-transformed lymphocytes	ebv	E116
+####### Cells - Leukemia cell line (CML)	leu
+####### Cells - Transformed fibroblasts	fib
+####### Cervix - Ectocervix	ect
+####### Cervix - Endocervix	end
+Colon - Sigmoid	cols	E106
+Colon - Transverse	colt	E075,E076
+Esophagus - Gastroesophageal Junction	esog	E079
+Esophagus - Mucosa	esom	E079
+Esophagus - Muscularis	esomu	E079
+####### Fallopian Tube	ft
+Heart - Atrial Appendage	haa	E104
+Heart - Left Ventricle	hlv	E095
+####### Kidney - Cortex	kc
+Liver	liv	E066
+Lung	lu	E096
+Minor Salivary Gland	msg
+Muscle - Skeletal	ms	E107,E108
+Nerve - Tibial	nt	NA
+Ovary	ov	E097
+Pancreas	pan	E098
+Pituitary	pit	NA
+Prostate	pro	NA
+Skin - Not Sun Exposed (Suprapubic)	snse	NA
+Skin - Sun Exposed (Lower leg)	sse	NA
+Small Intestine - Terminal Ileum	si	E109
+Spleen	spl	E113
+Stomach	sto	E110,E111
+Testis	tes	NA
+Thyroid	thy	NA
+Uterus	ut	NA
+Vagina	va	NA
+Whole Blood	wb	E062

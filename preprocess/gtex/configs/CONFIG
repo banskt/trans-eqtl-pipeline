@@ -3,7 +3,7 @@
 TISSUEFILE="tissue_table.txt"
 DATALOAD="configs/GTEXv8.SAIKAT"
 EXTERNALLOAD="configs/EXTERNAL.SAIKAT"
-OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8_pub"
+OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
 
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
@@ -39,14 +39,6 @@ for DIR in ${GXOUTDIR} ${GTOUTDIR} ${PREGXOUTDIR} ${COVARDIR}; do
     if [ ! -d ${DIR} ]; then mkdir -p $DIR; fi
 done
 
-## #---- Gene Expression processing
-## bProcessRPKMs_and_normalize=false    # start from the very beginning
-## bformatCovariates=false              # format the covariates file
-## bLMcorrect=false                     # use covariate file to correct gx with Linear Model
-## GTEX_PEER_CORRECTION=false           # apply PEER correction to GTEx gx
-## GENCODE_FILTER=true
-
-
 ## #---- use Age correction? 
 ## CORRECT_AGE=true
 
@@ -58,13 +50,3 @@ done
 #### PEER Instalation
 # wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz
 # R CMD INSTALL R_peer_source_1.3.tgz
-
-#TPMOUTDIR="${PREGXOUTDIR}/tpms"                    # tissue specific tpms output dir
-#NORMOUTDIR="${PREGXOUTDIR}/normalized"             # normalized, uncorrected expr dir
-#LMOUTDIR="${PREGXOUTDIR}/lmcorrected"              # covariate corrected expression
-#COVOUTDIR="${PREGXOUTDIR}/covariates"              # covariates outdir
-#PEEROUTDIR="${PREGXOUTDIR}/peercorrected"          # PEER corrected
-#AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
-
-#GTFILE_BASENAME="GTEx_v6_imput_info04_HWEp1E6_PASS_dbSNP135"
-

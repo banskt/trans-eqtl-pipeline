@@ -53,15 +53,14 @@ function tejaas_chunk_reduce() {
                 done
     
                 # after all files have been collected (COLLECT=true), check if the line numbers match
-                # if the line numbers don't match, then there is some unknow error.
+                # if the line numbers don't match, then there is some unknown error.
                 # Investigate.
                 if [ "${COLLECT}" = "true" ]; then
                     NLINES_EXT=$( wc -l ${EXT} | awk '{print $1}' )
                     if [ "${NLINES_EXT}" -eq "${NCALCSNPS}" ]; then
                         echo "${DIR} --> ${EXT} --> Done."
                         # Now you can remove the chunks
-                        # wait what if some chunk has failed while running? i.e. have less SNPs than it should have
-                        # rm -rf chunk*_${EXT} 
+                        rm -rf chunk*_${EXT} 
                     else
                         echo "${DIR} --> ${EXT} --> Line numbers do not match."
                     fi
