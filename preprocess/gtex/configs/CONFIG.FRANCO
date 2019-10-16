@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess/gtex"
+OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_aug2019/gtex"
 
 TISSUEFILE="tissue_table.txt"
 DATALOAD="configs/DATA.FRANCO"
@@ -10,8 +10,8 @@ GTOUTDIR="${OUTDIR}/genotype"
 
 
 RPKMOUTDIR="${GXOUTDIR}/rpkms"                  # tissue specific rpkms output dir
-NORMOUTDIR="${GXOUTDIR}/normalized"             # normalized, uncorrected expr dir
-LMOUTDIR="${GXOUTDIR}/lmcorrected"              # covariate corrected expression
+# NORMOUTDIR="${GXOUTDIR}/normalized"             # normalized, uncorrected expr dir
+# LMOUTDIR="${GXOUTDIR}/lmcorrected"              # covariate corrected expression
 COVOUTDIR="${GXOUTDIR}/covariates"              # covariates outdir
 PEEROUTDIR="${GXOUTDIR}/peercorrected"          # PEER corrected
 AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
@@ -45,10 +45,10 @@ USE_BSUB=true
 bSelectNormalize=false           # bProcessRPKMs_and_normalize=true    # start from the very beginning
 bFormatCovariates=false              # format the covariates file
 bLMcorrect=false                     # use covariate file to correct gx with Linear Model
-bPeerCorrect=true           # apply PEER correction to GTEx gx
+bPeerCorrect=false           # apply PEER correction to GTEx gx
 bGencodeFilter=true
-GXAGECORR="true false"               # a list of boolean, "true false", true: gx will be corrected for age
-GXNPEERS="20"                   # number of peer factors, redundant if bPeerCorrect = false
+#GXAGECORR="true false"               # a list of boolean, "true false", true: gx will be corrected for age
+#GXNPEERS="20"                   # number of peer factors, redundant if bPeerCorrect = false
 
 ### from within R (for lm correction script)
 # install.packages("argparser")

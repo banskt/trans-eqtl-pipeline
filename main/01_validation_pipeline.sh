@@ -16,6 +16,7 @@ source ${UTILSDIR}/submit_job
 source ${UTILSDIR}/add_deps
 source ${UTILSDIR}/unset_vars
 #source ${UTILSDIR}/gx_preproc_string
+PYMQTL="${SCRIPTDIR}/reannotate_meqtl_results.py"
 
 RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
 RUNJPA=false	# used for submitting jpa-only jobs
@@ -51,28 +52,28 @@ for EXPR_CORR in ${EXPRESSIONS}; do
 
                 if [ "${bTjsRandomN}" = "true" ];   then SHUFFLE=true; source ${UTILSDIR}/tejaas_randoms; fi
 
-                if [ "${bTejaasPartition}" = "true" ]; then
-                    for r in `seq 1 $REPLICAS`; do
-                        echo $r
-                        PARTITION_FILE_1="${OUTDIR_DATA}/${r}/part1.txt"
-                        PARTITION_FILE_2="${OUTDIR_DATA}/${r}/part2.txt"
+                # if [ "${bTejaasPartition}" = "true" ]; then
+                #     for r in `seq 1 $REPLICAS`; do
+                #         echo $r
+                #         PARTITION_FILE_1="${OUTDIR_DATA}/${r}/part1.txt"
+                #         PARTITION_FILE_2="${OUTDIR_DATA}/${r}/part2.txt"
                         
-                        # Create partitioned donor files
-                        source ${UTILSDIR}/partition_donors
+                #         # Create partitioned donor files
+                #         source ${UTILSDIR}/partition_donors
 
-                        PARTITION1=true; PARTITION2=false;
-                        source ${UTILSDIR}/tejaas;
-                        # source ${UTILSDIR}/matrix_eqtl;
-                        # SHUFFLE=true; source ${UTILSDIR}/tejaas
-                        # SHUFFLE=false
+                #         PARTITION1=true; PARTITION2=false;
+                #         source ${UTILSDIR}/tejaas;
+                #         # source ${UTILSDIR}/matrix_eqtl;
+                #         # SHUFFLE=true; source ${UTILSDIR}/tejaas
+                #         # SHUFFLE=false
 
-                        PARTITION1=false; PARTITION2=true;
-                        source ${UTILSDIR}/tejaas;
-                        # source ${UTILSDIR}/matrix_eqtl;
-                        # SHUFFLE=true; source ${UTILSDIR}/tejaas
-                        # SHUFFLE=false
-                    done;
-                fi
+                #         PARTITION1=false; PARTITION2=true;
+                #         source ${UTILSDIR}/tejaas;
+                #         # source ${UTILSDIR}/matrix_eqtl;
+                #         # SHUFFLE=true; source ${UTILSDIR}/tejaas
+                #         # SHUFFLE=false
+                #     done;
+                # fi
             done
         fi
         

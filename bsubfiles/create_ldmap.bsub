@@ -1,7 +1,7 @@
 #!/bin/sh
 #BSUB -q mpi
 #BSUB -W 48:00
-#BSUB -n 8
+#BSUB -n 2
 #BSUB -R span[hosts=1]
 #BSUB -R cbscratch
 #BSUB -a intelmpi
@@ -15,6 +15,8 @@ module load gcc
 TMPDIR="/local/tmp/_JOB_NAME"
 mkdirs -p $TMPDIR && export $TMPDIR
 
+rm -rf /tmp/*
+
 VCFTOOLS=_VCFTOOL_
 GTFILE=_GT_FILE_
 OUTFILE=_OUTF_
@@ -27,9 +29,12 @@ if [ "$LDKEEPFILE" != "" ]; then
     KEEPFLAG="--keep ${LDKEEPFILE}"
 fi
 
-${VCFTOOLS} --gzvcf ${GTFILE} \
+${VCFTOOLS} --gzvcf ${GTFILE} --temp /usr/users/fsimone \
             --geno-r2 \
             --ld-window-bp ${WINDOW} \
             --min-r2 ${MIN_R2} \
             --out ${OUTFILE} ${KEEPFLAG}
-            # --temp ${TMPDIR}
+
+rm -rf /tmp/*
+
+# ${VCFTOOLS} --gzvcf ${GTFILE} --geno-r2 --ld-window-bp ${WINDOW} --out ${OUTFILE} --positions chr22.list 

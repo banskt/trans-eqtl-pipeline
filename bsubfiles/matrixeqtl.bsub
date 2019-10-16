@@ -36,3 +36,10 @@ Rscript ${SCRIPT} --genotype ${GTFILE} \
                   --outfiletrans ${OUTFILETRANS} \
                   --model ${MATRIXEQTLMODEL} \
                   ${EXTRAFLAGS}
+
+PYENV=_PYENV_
+PYMQTL=_PYMQTL_
+POSFILE=_POSFILE_
+
+${PYENV} ${PYMQTL} --input ${OUTFILECIS} --posfile ${POSFILE}
+${PYENV} ${PYMQTL} --input ${OUTFILETRANS} --posfile ${POSFILE}

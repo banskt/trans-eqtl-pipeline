@@ -1,7 +1,9 @@
 import pandas as pd
 import argparse
 import gzip, os
-from expression_normalization import normalize_expression
+from expression_normalization import qn_normalize, tmm_normalize
+from expression_normalization import QC_expression, QC_expression_v6
+import numpy as np
 
 def parse_args():
 
@@ -37,7 +39,6 @@ def parse_args():
                         metavar='STR',
                         help='output directory')
 
-
     opts = parser.parse_args()
     return opts
 
@@ -62,9 +63,18 @@ def read_gct(gct_file, donor_ids):
     df = df[[i for i in df.columns if '-'.join(i.split('-')[:2]) in donor_ids]]
     return df
 
+def centerscale_expr(Y):
+    if isinstance(Y, pd.DataFrame):
+        Y_cent = (Y.values - np.mean(Y.values, axis = 1).reshape(-1, 1)) / np.std(Y.values, axis = 1).reshape(-1, 1)
+        Y_cent = pd.DataFrame(Y_cent, index=Y.index, columns=Y.columns)
+        Y_cent.index.name = Y.index.name
+    else:
+        Y_cent = (Y - np.mean(Y, axis = 1).reshape(-1, 1)) / np.std(Y, axis = 1).reshape(-1, 1)
+    return Y_cent
+
 opts = parse_args()
-expression_threshold=0.1    # 'Selects genes with > expression_threshold expression in at least min_samples')
-count_threshold=5,          # 'Selects genes with > count_threshold reads in at least min_samples')
+# expression_threshold=0.1    # 'Selects genes with > expression_threshold expression in at least min_samples')
+# count_threshold=5,          # 'Selects genes with > count_threshold reads in at least min_samples')
 min_samples=10              # 'Minimum number of samples that must satisfy thresholds')
 
 
@@ -78,17 +88,45 @@ if expression_df.shape[1] < min_samples:
 expr_ids = list(expression_df.columns)
 tissue_counts_df = counts_df.loc[:,expr_ids]
 
-print('Normalizing using all genes within %i samples ...' % expression_df.shape[1])
-quant_std_df, quant_df = normalize_expression(expression_df, tissue_counts_df,
-                                              expression_threshold=expression_threshold, 
-                                              count_threshold=count_threshold, 
-                                              min_samples=min_samples)
+# match sample ids
+newcolumns = ["-".join(i.split("-")[:2]) for i in expr_ids]
+expression_df.columns = newcolumns
+tissue_counts_df.columns = newcolumns
 
-newcolumns = ["-".join(i.split("-")[:2]) for i in quant_std_df.columns]
-quant_std_df.columns = newcolumns
+print('  * Converting to TPM')
+tpm_expr_df = expression_df/expression_df.sum(0)*1e6
 
-# write normalized expression file
-print("Writing normalized expression for {:s}".format(opts.tissue))
-if not os.path.exists(opts.outdir):
-    os.makedirs(opts.outdir)
-quant_std_df.to_csv(os.path.join(opts.outdir,"{:s}_normalized.txt".format(opts.tissue)), sep='\t')
+# QC filtering
+# TPM filtering
+print('  * QC filtering')
+qc_tpm_expr, qc_counts = QC_expression(tissue_counts_df, tpm_expr_df)
+if not os.path.exists(os.path.join(opts.outdir,"rpkms")):
+    os.makedirs(os.path.join(opts.outdir,"rpkms"))
+if not os.path.exists(os.path.join(opts.outdir,"tpms")):
+    os.makedirs(os.path.join(opts.outdir,"tpms"))
+qc_tpm_expr.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_qcfilter.txt".format(opts.tissue)), sep="\t")
+qc_counts.to_csv(os.path.join(opts.outdir,"rpkms","{:s}_counts_qcfilter.txt".format(opts.tissue)), sep="\t")
+
+# RPKM filtering
+qc_expr, qc_counts = QC_expression(tissue_counts_df, expression_df)
+qc_expr.to_csv(os.path.join(opts.outdir,"rpkms","{:s}_rpkms_qcfilter.txt".format(opts.tissue)), sep="\t")
+
+qc_expr_v6, qc_counts_v6 = QC_expression_v6(tissue_counts_df, expression_df)
+qc_expr_v6.to_csv(os.path.join(opts.outdir,"rpkms","{:s}_rpkms_qcfilter_v6.txt".format(opts.tissue)), sep="\t")
+
+# Apply TMM or QN normalization
+print('  * Applying QN')
+qn_expr  = centerscale_expr(qn_normalize(qc_tpm_expr))
+qn_expr_v6  = centerscale_expr(qn_normalize(qc_expr_v6))
+
+print('  * Applying TMM')
+tmm_expr = centerscale_expr(tmm_normalize(qc_counts))
+
+if not os.path.exists(os.path.join(opts.outdir,"qn")):
+    os.makedirs(os.path.join(opts.outdir,"qn"))
+if not os.path.exists(os.path.join(opts.outdir,"tmm")):
+    os.makedirs(os.path.join(opts.outdir,"tmm"))
+qc_expr.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn.txt".format(opts.tissue)), sep="\t")
+tmm_expr.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm.txt".format(opts.tissue)), sep="\t")
+
+qc_expr_v6.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_v6.txt".format(opts.tissue)), sep="\t")

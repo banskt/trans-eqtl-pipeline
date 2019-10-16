@@ -18,7 +18,7 @@ def timeit(f):
 def myreplace(s):
     todelete = ["(", ")", "-"]
     for ch in todelete:
-        s = s.replace(ch, "")
+        s = s.replace(ch, "", 1)
     return s.replace("  ", " ")
 
 def read_tissues(infile):
@@ -26,7 +26,7 @@ def read_tissues(infile):
     descriptions = []
     with open(infile) as instream:
         for l in instream:
-            if re.search("^#", l):
+            if re.search("^#", l) or re.search("^\s+$", l):
                 continue
             tissues.append(l.split("\t")[1].rstrip())
             descriptions.append(l.split("\t")[0].rstrip())

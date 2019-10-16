@@ -2,48 +2,20 @@
 
 # data directory
 DATADIR="/cbscratch/franco/datasets"
-EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
 GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
 GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 
 # output directory
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_aug2018"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_new"
+# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_gtknn"
+# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_gtknn_notnoisy"
 # OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/fhs_nosqrt_dynamic_onerep"
-
-
-# if [ "${KNN}" -gt "0" ]; then
-#     OUTDIR="${OUTDIR}_knn${KNN}"
-# fi
-
-# if [ "${MAGIC_SQRT}" = "true" ]; then
-#     OUTDIR="${OUTDIR}_sqrt"
-# fi
-
-# if [ "${DYNAMIC_SB}" = "true" ]; then
-#     OUTDIR="${OUTDIR}/dynamic"
-# else
-#     OUTDIR="${OUTDIR}/strict"
-# fi
 
 case "${EXPR_CORR}" in
     "lm")
         OUTDIR="${OUTDIR}/lmcorrected_it"
-        ;;
-    "lmage")
-        OUTDIR="${OUTDIR}/lmcorrected_age"
-        ;;
-    "lmage_precorr")
-        OUTDIR="${OUTDIR}/lmcorrected_age_precorr"
-        ;;
-    "norm_crossmap")
-        OUTDIR="${OUTDIR}/norm_crossmap"
-        ;;
-    "lm_crossmap")
-        OUTDIR="${OUTDIR}/lm_crossmap"
-        ;;
-    "lmage_crossmap")
-        OUTDIR="${OUTDIR}/lmage_crossmap"
         ;;
     "norm")
         OUTDIR="${OUTDIR}/norm"
@@ -57,11 +29,32 @@ case "${EXPR_CORR}" in
     "tmm")
         OUTDIR="${OUTDIR}/tmm"
         ;;
+    "tmm_cclm")
+        OUTDIR="${OUTDIR}/tmm_cclm"
+        ;;
     "qn_lasso")
         OUTDIR="${OUTDIR}/qn_lasso"
         ;;
     "qn")
         OUTDIR="${OUTDIR}/qn"
+        ;;
+    "raw")
+        OUTDIR="${OUTDIR}/raw"
+        ;;
+    "raw_pub")
+        OUTDIR="${OUTDIR}/raw_pub"
+        ;;
+    "rpkms")
+        OUTDIR="${OUTDIR}/rpkms"
+        ;;
+    "raw_lasso")
+        OUTDIR="${OUTDIR}/raw_lasso"
+        ;;
+    "raw_cclm")
+        OUTDIR="${OUTDIR}/raw_cclm"
+        ;;
+    "raw_oneref")
+        OUTDIR="${OUTDIR}/raw_oneref"
         ;;
     *)
         OUTDIR="${OUTDIR}/unknown"
@@ -84,6 +77,21 @@ GTEX_GENO_FMT="${GTEXDIR}/genotypes/dosages_allsamples/GTEx_Analysis_20150112_OM
 GTEX_SAMPLE="${GTEXDIR}/gtex.sample"
 GTEX_GENO_VCF_FMT="${GTEXDIR}/genotypes/vcfs_allsamples/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_imput_info04_PASS_maf01_HWEp1E6_dbSNP135_ConstrVarIDs_chr[CHRM].vcf.gz"
 
+
+# GTEx v8
+GTEXDIR_V8="${DATADIR}/gtex_v8"
+EXPRGTEXDIR_V8_OLD="${GTEXDIR_V8}/expression"
+EXPRGTEXDIR_V8="${EXPRDATADIR}/gtex_v8"
+GTEX_V8_GENO_DIR="${GTEXDIR_V8}/genotypes"
+GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
+GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8.sample"
+GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
+
+# 1KG Genomes
+ONEKGDIR="${DATADIR}/1KG_genomes"
+ONEKG_GENO_DIR="${ONEKGDIR}"
+ONEKG_GENO_VCF_FMT="${ONEKG_GENO_DIR}/ALL.chr[CHRM].phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz"
+
 # Framingham
 FHSDIR="${DATADIR}/FHS"
 FHS_GENO_DIR="${FHSDIR}/genotypes"
@@ -95,10 +103,9 @@ FHS_SAMPLE="${FHS_GENO_DIR}/merged_dosages/chr1.fhs.dosages.sample"
 FHS_1KG_MAF="None"
 
 
+BIOTYPES=`echo $GXSELECTION | sed 's/ \+/_/g'`
+
 case "${EXPR_CORR}" in
-    "lm")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lmcorrected_it/[TISSUE]_lmcorrected.txt.protein_coding_filtered"
-        ;;
     "peer")
         if [ $PEERCOV = "false" ]; then
             GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/peercorrected/normalized/[TISSUE]_${PEERN}_PEER_residuals.txt.protein_coding_filtered"
@@ -113,25 +120,53 @@ case "${EXPR_CORR}" in
     "norm_crossmap")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered.crossmap_filtered"
         ;;
-    "norm")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered"
+    "raw_oneref")
+        # GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered"
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
         ;;
     "lasso")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lasso/[TISSUE]_lasso.txt.protein_coding_filtered"
+        # GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lasso/[TISSUE]_lasso.txt.protein_coding_filtered"
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs_lasso.formatted.expr.one_pedno_rep.txt"
         ;;
+    "tmm_cclm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm/[TISSUE]_tmm_cclm.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tmm/[TISSUE]_tmm_cclm.txt.${BIOTYPES}_filtered"
+        ;;
     "tmm_lasso")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm_lasso/[TISSUE]_tmm_lasso.txt.protein_coding_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm/[TISSUE]_tmm_lasso.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tmm/[TISSUE]_tmm_lasso.txt.${BIOTYPES}_filtered"
         ;;
     "tmm")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm/[TISSUE]_tmm.txt.protein_coding_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tmm/[TISSUE]_tmm.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tmm/[TISSUE]_tmm.txt.${BIOTYPES}_filtered"
+        ;;
+    "qn_cclm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn/[TISSUE]_qn_cclm.txt.${BIOTYPES}_filtered"
+        # GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/qn/[TISSUE]_qn_cclm.txt.protein_coding_filtered"
         ;;
     "qn_lasso")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn_lasso/[TISSUE]_qn_lasso.txt.protein_coding_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn/[TISSUE]_qn_lasso.txt.${BIOTYPES}_filtered"
         ;;
     "qn")
-        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn/[TISSUE]_qn.txt.protein_coding_filtered"
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/qn/[TISSUE]_qn.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.txt"
+        # GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/gtexv8_[TISSUE]_raw_std_protein_coding.txt"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_pub")
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_OLD}/pub/gtex_[TISSUE]_raw_std_protein_coding.txt"
+        ;;        
+    "rpkms")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/rpkms/[TISSUE]_rpkms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_lasso")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_lasso.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_cclm")
+        GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
         ;;
     *)
         GTEX_EXPR_FMT=""
@@ -172,6 +207,22 @@ case "${DATATYPE}" in
         GENO_VCF_FMT=${GTEX_GENO_VCF_FMT}
         SAMPLEFILE=${GTEX_SAMPLE}
         MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
+        GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
+        # file required to add SNP positions in matrixeqtl results
+        GTEX_POSFILE="${GTEX_GENO_DIR}/GTEx_v6p_all_SNPs_pos_filtered.txt"
+        ;;
+    "gtex_v8")
+        DATATYPE="gtex_v8"
+        GENO_DIR=${GTEX_V8_GENO_DIR}
+        EXPRESSIONFILE=${GTEX_V8_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        GENO_FMT=${GTEX_V8_GENO_FMT}
+        GENO_VCF_FMT=${GTEX_V8_GENO_VCF_FMT}
+        SAMPLEFILE=${GTEX_V8_SAMPLE}
+        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v26.txt"
+        GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
+        GTEX_POSFILE="${GTEX_V8_GENO_DIR}/vcfs_0.01/gtex_v8_snpinfo.txt"
         ;;
     "fhs")
         DATATYPE="fhs"
@@ -181,6 +232,11 @@ case "${DATATYPE}" in
         GENO_VCF_FMT=${FHS_GENO_VCF_FMT}
         SAMPLEFILE=${FHS_SAMPLE}
         MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        ;;
+    "1kg")
+        DATATYPE="1kg"
+        GENO_DIR=${ONEKG_GENO_DIR}
+        GENO_VCF_FMT=${ONEKG_GENO_VCF_FMT}
         ;;
     *)
         EXPRESSIONFILE=""

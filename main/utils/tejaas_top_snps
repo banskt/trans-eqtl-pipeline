@@ -3,13 +3,9 @@
 function tejaas_top_snps() {
     local DIR=$1
     local CWD=`pwd`
-    cd $DIR
+    local CUT=$2
+    # cd $DIR
     echo $DIR
-    RRFILE="rr.txt.ld_prune"
-    if [ -f ${RRFILE} ]; then
-        $PYENV $SCRIPTDIR/select_top_rr.py --input $RRFILE --n $TOPN
-    else
-        echo "${RRFILE} does not exist in $DIR"
-    fi
-    cd $CWD
+    $PYENV $SCRIPTDIR/select_top_rr.py --indir $DIR --outdir $DIR --c $CUT
+    # cd $CWD
 }

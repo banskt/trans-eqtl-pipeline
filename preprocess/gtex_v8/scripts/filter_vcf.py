@@ -18,6 +18,12 @@ def parse_args():
                         metavar='FILE',
                         help='output vcf')
 
+    parser.add_argument('--maf',
+                    type=float,
+                    dest='maf_thres',
+                    metavar='FLOAT',
+                    help='output vcf')
+
     opts = parser.parse_args()
     return opts
 
@@ -25,6 +31,7 @@ if __name__ == '__main__':
     
     opts = parse_args()
     vcffile = opts.invcf
+    maf_cutoff=opts.maf_thres
 
     SNP_COMPLEMENT = {'A':'T', 'C':'G', 'G':'C', 'T':'A'}
 
@@ -73,7 +80,7 @@ if __name__ == '__main__':
                     if SNP_COMPLEMENT[ref] == alt:
                         complement_filter +=1
                         continue
-                    if maf < 0.01:
+                    if maf < maf_cutoff or maf > (1 - maf_cutoff):
                         maf_filter +=1
                         continue
 
@@ -81,4 +88,4 @@ if __name__ == '__main__':
                     
         print("{:d} indels deleted".format(indels_filter))
         print("{:d} complement snps deleted".format(complement_filter))
-        print("{:d} SNPs with MAF < 0.01".format(maf_filter))
+        print("{:d} SNPs with MAF < {:d}".format(maf_filter, maf_cutoff))

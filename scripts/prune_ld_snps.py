@@ -104,19 +104,11 @@ def prune_region(region, myldict):
     return sorted(accepted, key=attrgetter('pos'), reverse=False)
 
 if __name__ == '__main__':
-    # tissues = ["gtex-ms"]
-
-    # expressions = ["lasso", "norm"] 
-    # randmethods = ["tejaas_rand_"+str(i) for i in range(11,51)]
-    # methods = ["tejaas", "tejaas_rand"] #randmethods
 
     opts = parse_args()
 
     snp_files = opts.infiles
     print(snp_files)
-    # basedir = "/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_norm/"
-    # chroms = np.arange(1,23)
-    # isworst = True
 
     start = time.time()
     print("Loading CHR ", opts.chrm, end="")

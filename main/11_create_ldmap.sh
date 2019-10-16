@@ -20,29 +20,58 @@ THISJOBDEPS="None"
 
 for MDATA in ${LD_DATASETS}; do
     source ${DATALOAD}
-    OUTDIR_DATA="${GENO_DIR}/ldmap"
+    OUTDIR_DATA="${GENO_DIR}/ldmap_${LDWINDOW}_${LDMIN_R2}"
     if [ ! -d ${OUTDIR_DATA} ]; then mkdir -p ${OUTDIR_DATA}; fi
 
-    JOBDIR_DATA="${JOBSUBDIR}/ldmap/${DATATYPE}"
+    JOBDIR_DATA="${JOBSUBDIR}/ldmap_${LDWINDOW}_${LDMIN_R2}/${DATATYPE}"
     if [ -d ${JOBDIR_DATA} ]; then rm -rf ${JOBDIR_DATA}; fi; mkdir -p ${JOBDIR_DATA}
 
-    for CHRM in ${CHRNUMS}; do
+    if [ -f ${LD_REGIONS_FILE} ]; then
+        while IFS="" read -r line || [ -n "$p" ]
+        do
+            printf '%s\n' "$line"
+            CHRM=`echo ${line} | cut -d" " -f 1`
+            FROM=`echo ${line} | cut -d" " -f 2`
+            TO=`echo ${line} | cut -d" " -f 3`
 
-        JOBNAME="ld_${DATATYPE}_${CHRM}_${RANDSTRING}"
-        VCFFILE="${GENO_VCF_FMT/\[CHRM\]/${CHRM}}"
-        LDOUTFILE="${OUTDIR_DATA}/chr${CHRM}_${MDATA} "
+            JOBNAME="ld_${DATATYPE}_${CHRM}_${FROM}_${TO}_${RANDSTRING}"
+            VCFFILE="${GENO_VCF_FMT/\[CHRM\]/${CHRM}}"
+            LDOUTFILE="${OUTDIR_DATA}/chr${CHRM}_${FROM}_${TO}_${MDATA} "
 
-        sed -e "s|_JOB_NAME|${JOBNAME}|g;
-                s|_VCFTOOL_|${VCFTOOLS}|g;
-                s|_GT_FILE_|${VCFFILE}|g;
-                s|_WINDOW_|${LDWINDOW}|g;
-                s|_MIN_R2_|${LDMIN_R2}|g;
-                s|_OUTF_|${LDOUTFILE}|g;
-                s|_KEEP_|${LDKEEPFILE}|g;
-               " ${MASTER_BSUBDIR}/create_ldmap.bsub > ${JOBDIR_DATA}/${JOBNAME}.bsub
-        
-        # bsub < ${JOBNAME}.bsub
-        submit_job ${JOBDIR_DATA} ${JOBNAME} ${THISJOBDEPS}
-    done
+            sed -e "s|_JOB_NAME|${JOBNAME}|g;
+                    s|_VCFTOOL_|${VCFTOOLS}|g;
+                    s|_GT_FILE_|${VCFFILE}|g;
+                    s|_WINDOW_|${LDWINDOW}|g;
+                    s|_MIN_R2_|${LDMIN_R2}|g;
+                    s|_CHRM_|${CHRM}|g;
+                    s|_OUTF_|${LDOUTFILE}|g;
+                    s|_KEEP_|${LDKEEPFILE}|g;
+                    s|_FROM_|${FROM}|g;
+                    s|_TO_|${TO}|g;
+                   " ${MASTER_BSUBDIR}/create_ldmap_regions.bsub > ${JOBDIR_DATA}/${JOBNAME}.bsub
+            
+            # bsub < ${JOBNAME}.bsub
+            submit_job ${JOBDIR_DATA} ${JOBNAME} ${THISJOBDEPS}
+        done < $LD_REGIONS_FILE
+    else
+        for CHRM in ${CHRNUMS}; do
+
+            JOBNAME="ld_${DATATYPE}_${CHRM}_${RANDSTRING}"
+            VCFFILE="${GENO_VCF_FMT/\[CHRM\]/${CHRM}}"
+            LDOUTFILE="${OUTDIR_DATA}/chr${CHRM}_${MDATA} "
+
+            sed -e "s|_JOB_NAME|${JOBNAME}|g;
+                    s|_VCFTOOL_|${VCFTOOLS}|g;
+                    s|_GT_FILE_|${VCFFILE}|g;
+                    s|_WINDOW_|${LDWINDOW}|g;
+                    s|_MIN_R2_|${LDMIN_R2}|g;
+                    s|_OUTF_|${LDOUTFILE}|g;
+                    s|_KEEP_|${LDKEEPFILE}|g;
+                   " ${MASTER_BSUBDIR}/create_ldmap.bsub > ${JOBDIR_DATA}/${JOBNAME}.bsub
+            
+            # bsub < ${JOBNAME}.bsub
+            submit_job ${JOBDIR_DATA} ${JOBNAME} ${THISJOBDEPS}
+        done
+    fi
     unset_vars ${DATALOAD}
 done

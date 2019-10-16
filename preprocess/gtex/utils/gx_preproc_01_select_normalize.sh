@@ -1,7 +1,7 @@
 #!/bin/bash
-mkdir -p ${RPKMOUTDIR};
-mkdir -p ${NORMOUTDIR}
+# mkdir -p ${RPKMOUTDIR};
 echo "Processing Tissue: $TFULL"
+mkdir -p $RPKMOUTDIR
 RPKMFILE="${RPKMOUTDIR}/${TSHORT}_rpkm.gct"
 
 # Select tissue-specific rpkms
@@ -11,6 +11,6 @@ ${PYENV} ${SELECTSAMPLEPY} --rpkm $SRCRPKM --counts $SRCREAD --output $OUTPREFIX
 # Normalize
 RPKMFILE="${RPKMOUTDIR}/${TSHORT}_rpkm.gct"
 COUNTSFILE="${RPKMOUTDIR}/${TSHORT}_counts.gct"
-${PYENV} ${GTEXNORMALIZEPY} --rpkm $RPKMFILE --counts $COUNTSFILE --tissue $TSHORT --donors $DONORFILE --outdir $NORMOUTDIR
+${PYENV} ${GTEXNORMALIZEPY} --rpkm $RPKMFILE --counts $COUNTSFILE --tissue $TSHORT --donors $DONORFILE --outdir $GXOUTDIR
 
 

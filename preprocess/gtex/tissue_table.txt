@@ -53,15 +53,15 @@
 # Vagina	va
 # Whole Blood	wb
 ####################
-Artery - Aorta	aa
+#Artery - Aorta	aa
 Adipose - Subcutaneous	as
-Artery - Tibial	at
-Esophagus - Mucosa	esom
-Esophagus - Muscularis	esomu
-Cells - Transformed fibroblasts	fib
-Lung	lu
+#Artery - Tibial	at
+#Esophagus - Mucosa	esom
+#Esophagus - Muscularis	esomu
+#Cells - Transformed fibroblasts	fib
+#Lung	lu
 Muscle - Skeletal	ms
-Nerve - Tibial	nt
+#Nerve - Tibial	nt
 Skin - Sun Exposed (Lower leg)	sse
-Thyroid	thy
+#Thyroid	thy
 Whole Blood	wb

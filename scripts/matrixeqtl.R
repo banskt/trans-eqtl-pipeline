@@ -39,7 +39,57 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list, add_help_option = TRUE);
 opt = parse_args(opt_parser);
 
-read_genotype <- function(SNP_file_name, donors_file_name, maf_filter=T, maf_thres=0.1) {
+# read_vcf <- function (vcf_file_name, maf_filter=T, maf_thres=0.05) {
+#     message("Reading Genotype ...")
+#     message(vcf_file_name)
+
+#     # read two times the vcf file, first for the columns names, second for the data
+#     # Read the vcf file to a string
+#     tmp_vcf_strings = readLines(vcf_file_name)
+#     header_colnum = grep("#CHROM", tmp_vcf_strings)
+#     total_colnum  = length(tmp_vcf_strings)
+#     data_colnum   = total_colnum - header_colnum
+
+#     header_string = tmp_vcf_strings[header_colnum] #tmp_vcf_strings[-(header_colnum + 1):-total_colnum]
+#     colnames<-unlist(strsplit(header_string,"\t"))
+
+#     snps_data = read.table(text="", col.names = colnames)
+#     colnames(snps_data) = colnames
+#     data_strings  = tmp_vcf_strings[ (header_colnum + 1): total_colnum]
+
+#     for (i in 1 : data_colnum) {
+#         tmpstrvals = unlist(strsplit(data_strings[i], "\t"))
+#         for (j in 1:9) {
+#             snps_data[i, j] = tmpstrvals[j]
+#         }
+#         for (j in 10:length(colnames)) {
+#             GT = unlist(strsplit(tmpstrvals[j], ":"))[1]
+#             dosage = 0.0
+#             if (GT == "./.") { dosage = as.numeric(unlist(strsplit(tmpstrvals[j], ":")[3]))}
+#             if (GT == "0/0") { dosage = 0.0 }
+#             if (GT == "1/0" || GT == "0/1" ) { dosage = 1.0 }
+#             if (GT == "1/1") { dosage = 2.0 }
+#             snps_data[i, j] = dosage
+#         }
+#     }
+
+#     # get SNPs positions for cis and trans analysis (before cropping the snp matrix)
+#     row_names = snps_data[,3]
+#     snpspos = snps_data[,c(3,1,2)]
+#     if ( !grepl("chr", snps_data[1, 1]) )
+#         { snpspos[,2] = paste("chr", snpspos[,2], sep="") }
+#     colnames(snpspos) = c("snpid","chr","pos")
+#     snpspos[,3] = as.numeric(snpspos[,3])
+
+#     snps_data = snps_data[, 10:ncol(snps_data)]
+#     rownames(snps_data) = row_names
+
+#     snps_mat = as.matrix(snps_data)
+
+#     return (list(snps_mat, snpspos))
+# }
+
+read_genotype <- function(SNP_file_name, donors_file_name, maf_filter=T, maf_thres=0.01) {
     message("Reading Genotype ...")
     message(SNP_file_name)
     snps_mat = read.csv(file=SNP_file_name, sep=" ", stringsAsFactors=F, header=F)
@@ -84,7 +134,12 @@ output_file_name_tra = opt$outfiletrans;
 SNP_file_name = opt$genotype;
 donors_file_name = opt$donors;
 
+# if (grepl("vcf.gz", SNP_file_name)){
+#     res = read_vcf(SNP_file_name)
+# } else {
 res = read_genotype(SNP_file_name, donors_file_name)
+# }
+
 snps_mat = res[[1]] #genotype matrix
 snpspos  = res[[2]] #SNP position info
 

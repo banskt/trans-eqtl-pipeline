@@ -36,21 +36,8 @@ if [ "${NULLMODL}" = "maf" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --maf-file ${MAFFILE}"
 fi
 
-mpirun -n 8 ${RUN_PATH} --oxf          ${GENOFILE} \
-                        --fam          ${SAMPFILE} \
-                        --gx           ${GXPRFILE} \
-                        --gtf          ${GENEINFO} \
-                        --method       ${TJMETHOD} \
-                        --null         ${NULLMODL} \
-                        --outprefix    ${OUTPRFIX} \
-                        --include-SNPs ${INCSTRNG} \
-                        --psnpthres    ${SNPTHRES} \
-                        --pgenethres   ${GENTHRES} \
-                        --prior-sigma  ${SBETA} \
-                        --chrom        ${CHROM} \
-                        ${EXTRAFLAGS}
-
-# mpirun -n 8 ${RUN_PATH} --vcf          ${GENOFILE} \
+# mpirun -n 8 ${RUN_PATH} --oxf          ${GENOFILE} \
+#                         --fam          ${SAMPFILE} \
 #                         --gx           ${GXPRFILE} \
 #                         --gtf          ${GENEINFO} \
 #                         --method       ${TJMETHOD} \
@@ -62,5 +49,18 @@ mpirun -n 8 ${RUN_PATH} --oxf          ${GENOFILE} \
 #                         --prior-sigma  ${SBETA} \
 #                         --chrom        ${CHROM} \
 #                         ${EXTRAFLAGS}
+
+mpirun -n 8 ${RUN_PATH} --vcf          ${GENOFILE} \
+                        --gx           ${GXPRFILE} \
+                        --gtf          ${GENEINFO} \
+                        --method       ${TJMETHOD} \
+                        --null         ${NULLMODL} \
+                        --outprefix    ${OUTPRFIX} \
+                        --include-SNPs ${INCSTRNG} \
+                        --psnpthres    ${SNPTHRES} \
+                        --pgenethres   ${GENTHRES} \
+                        --prior-sigma  ${SBETA} \
+                        --chrom        ${CHROM} \
+                        ${EXTRAFLAGS}
 
 ### ${MPYTHON} ${RUN_PATH} --vcf ${GENOFILE} --gx ${GXPRFILE} --gtf ${GENEINFO} --method ${TJMETHOD} --null ${NULLMODL} --outprefix ${OUTPRFIX} --include-SNPs ${INCSTRNG} --psnpthres ${SNPTHRES} --pgenethres ${GENTHRES} --prior-sigma ${SBETA} --chrom ${CHROM} ${EXTRAFLAGS}

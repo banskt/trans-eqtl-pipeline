@@ -22,7 +22,8 @@ PREPROC_UTILSDIR="${PWD}/utils"
 SELECTSAMPLEPY="${PREPROC_SCRIPTDIR}/select_samples_from_tissue.py"
 GTEXNORMALIZEPY="${PREPROC_SCRIPTDIR}/gtex_normalization.py"  # do_expression_normalization.py
 COMPILEAGECOVPY="${PREPROC_SCRIPTDIR}/compile_age_covariate.py"
-LMCORR_R="${PREPROC_SCRIPTDIR}/correct_expr_lm.R"
+# LMCORR_R="${PREPROC_SCRIPTDIR}/correct_expr_lm.R"
+CORRECTPY="${PREPROC_SCRIPTDIR}/correct_covariates.py"
 PEERSCRIPT_R="${PREPROC_SCRIPTDIR}/PEER.R"
 GENCODEFILTERPY="${PREPROC_SCRIPTDIR}/filter_gencode_expr.py"
 
@@ -44,9 +45,9 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
             source utils/process_expression.sh
         else
             # Expression Files
-            NORMOUTFILE="${NORMOUTDIR}/${TSHORT}_normalized.txt"
-            LMOUTFILE="${LMOUTDIR}/${TSHORT}_lmcorrected.txt"
-            LMOUTFILE_AGE="${LMOUTDIR}/${TSHORT}_age_lmcorrected.txt"
+            # NORMOUTFILE="${NORMOUTDIR}/${TSHORT}_normalized.txt"
+            # LMOUTFILE="${LMOUTDIR}/${TSHORT}_lmcorrected.txt"
+            # LMOUTFILE_AGE="${LMOUTDIR}/${TSHORT}_age_lmcorrected.txt"
             # Covariate Files
             COVARS="${COVOUTDIR}/${TSHORT}_nopeer_covariates.txt"
             COVARS_AGE="${COVOUTDIR}/${TSHORT}_nopeer_covariates_w_age.txt"

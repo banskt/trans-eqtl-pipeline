@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function add_deps() {
+function add_deps_lsf() {
     local _JobDeps=$1
     local _AddJob=$2
     local _Result=""
@@ -8,6 +8,18 @@ function add_deps() {
         _Result="${_JobDeps} && done(${_AddJob})"
     else
         _Result="done(${_AddJob})"
+    fi
+    echo $_Result
+}
+
+function add_deps() {
+    local _JobDeps=$1
+    local _AddJob=$2
+    local _Result=""
+    if [ ! "$_JobDeps" = "None" ]; then
+        _Result="${_JobDeps}:${_AddJob}"
+    else
+        _Result="afterok:${_AddJob}"
     fi
     echo $_Result
 }

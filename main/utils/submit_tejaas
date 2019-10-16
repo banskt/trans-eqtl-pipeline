@@ -39,7 +39,7 @@ function submit_tejaas() {
     ntot=`zcat ${genotype} | wc -l`
     njobs=$(echo $(( ntot/nmax )))
 
-    if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
+    #if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
     if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
 
     for (( i=0; i <= ${njobs}; i++ )); do
@@ -72,7 +72,9 @@ function submit_tejaas() {
              s|_CHRM_NUM|${chrm}|g;
              s|_MAF_FILE|${maffile}|g;
              s|_EXT_FLAG|\"${extraflags}\"|g;
-            " ${bsubdir}/tejaas.bsub > ${jobsubdir}/${jobname}.bsub
+            " ${bsubdir}/tejaas.slurm > ${jobsubdir}/${jobname}.slurm
+
+            #" ${bsubdir}/tejaas.bsub > ${jobsubdir}/${jobname}.bsub
 
         submit_job ${jobsubdir} ${jobname} ${thisjobdep}
         jobdeps=`add_deps "${jobdeps}" ${jobname}`
