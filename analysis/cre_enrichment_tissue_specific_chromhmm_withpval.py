@@ -5,9 +5,7 @@ import argparse
 from utils import utils
 from utils import read_tejaas_results
 
-CHROMATIN_REGIONS = ['Promoter', 'Enhancer', 'Transcribed', 'ZNF', 'Heterochromatin', 'Inactive', 'Quiescent', 'LowConfidence']
-CHROMATIN_REGIONS = ['Active', 'Inactive', 'Silent']
-
+CHROMATIN_REGIONS = ['Promoter', 'Enhancer', 'Transcribed', 'ZNF', 'Heterochromatin', 'Bivalent',  'RepressedPC', 'Quiescent']
 
 def get_label_dict():
     ## returns the index of the global CHROMATIN_REGIONS list
@@ -24,9 +22,9 @@ def get_label_dict():
     labels['10'] = 5
     labels['11'] = 5
     labels['12'] = 5
-    labels['13'] = 5
-    labels['14'] = 5
-    labels['15'] = 6
+    labels['13'] = 6
+    labels['14'] = 6
+    labels['15'] = 7
     return labels
 
 
@@ -48,9 +46,9 @@ def parse_args():
 
     parser.add_argument('--tissue',
                         type=str,
-                        dest='tissuefile',
-                        metavar='FILE',
-                        help='full path of the tissue file')
+                        dest='tissuename',
+                        metavar='STR',
+                        help='short name of the tissue')
 
     parser.add_argument('--out',
                         type=str,
@@ -64,14 +62,6 @@ def parse_args():
                         metavar='DIR',
                         help='name of the result directory')
 
-#    parser.add_argument('--tissue',
-#                        nargs='*',
-#                        type=str,
-#                        dest='tissuelist',
-#                        metavar='TISSUE',
-#                        help='short name of all tissues to be analysed')
-
-
     parser.add_argument('--match',
                         type=str,
                         dest='matchfile',
@@ -84,6 +74,12 @@ def parse_args():
                         dest='eidfile', 
                         metavar='FILE',
                         help='name of the file containing epigenome IDs and their mapping to DHS headers')
+
+    parser.add_argument('--nempr',
+                        type=int,
+                        dest='nempirical',
+                        default=1000,
+                        help='number of empirical iterations for p-value calculation')
 
     opts = parser.parse_args()
     return opts
@@ -103,11 +99,14 @@ def get_epigenome_dict(filename, method):
     return epigenomes
 
 
-def get_random_resdicts(dirname):
+def get_random_resdicts(dirname, ntot, niter):
     rand_dicts = list()
-    for i in range(10):
+    for i in range(niter):
         res_dict = dict()
-        iterdir = os.path.join(dirname, f'random_50000_{i+1 :02d}')
+        if ntot == 50000:
+            iterdir = os.path.join(dirname, f'random_{ntot}_{i+1 :02d}')
+        elif ntot == 4000:
+            iterdir = os.path.join(dirname, f'random_{ntot}_{i+1 :04d}')
         for chrm in range(1, 23):
             chrm_bppos_list = list()
             filename = os.path.join(iterdir, f'chr{chrm}.txt')
@@ -170,94 +169,113 @@ def read_dhsoverlap_outfile(overlapfilelist, labeldict):
     return tannot
 
 
-def get_chromatin_overlap(res_dict, rand_dicts, dhsdir, eidlist, labeldict, tmpoutdir):
-
+def write_chromatin_overlap(res_dict, dhsdir, eidlist, outdir, fileprefix, labeldict, writenew = True):
     filelist = list()
     for eid in eidlist:
-        tmp_overlap_file = os.path.join(tmpoutdir, f'overlapped_regions_{eid}.txt')
-        #dhsfile = os.path.join(dhsdir, f'{eid}_15_coreMarks_hg38lift_stateno_clean.bed')
-        #ofile = open(tmp_overlap_file, 'w')
-        #nannot = find_dhs_overlap(res_dict, dhsfile, ofile)
-        #ofile.close()
-        filelist.append(tmp_overlap_file)
+        overlap_file = os.path.join(outdir, f'{fileprefix}_{eid}.txt')
+        if writenew:
+            dhsfile = os.path.join(dhsdir, f'{eid}_15_coreMarks_hg38lift_stateno_clean.bed')
+            ofile = open(overlap_file, 'w')
+            nannot = find_dhs_overlap(res_dict, dhsfile, ofile)
+            ofile.close()
+        filelist.append(overlap_file)
+    tannot = read_dhsoverlap_outfile(filelist, labeldict)    
+    return tannot
 
-    tannot = read_dhsoverlap_outfile(filelist, labeldict)
-    #tannot = np.zeros(len(CHROMATIN_REGIONS))
+
+def get_chromatin_overlap(res_dict, rand_dicts, dhsdir, eidlist, labeldict, tmpoutdir):
+
+    fileprefix = 'overlapped_regions'
+    tannot = write_chromatin_overlap(res_dict, dhsdir, eidlist, outdir, fileprefix, labeldict)
 
     tannot_rand = [np.zeros(len(CHROMATIN_REGIONS)) for x in rand_dicts]
     for i,rdict in enumerate(rand_dicts):
-        filelist = list()
-        for eid in eidlist:
-            tmp_overlap_file = os.path.join(tmpoutdir, f'rand_overlapped_regions_{i+1 :02d}_{eid}.txt')
-            #dhsfile = os.path.join(dhsdir, f'{eid}_15_coreMarks_hg38lift_stateno_clean.bed')
-            #ofile = open(tmp_overlap_file, 'w')
-            #nannot = find_dhs_overlap(rdict, dhsfile, ofile)
-            #ofile.close()
-            filelist.append(tmp_overlap_file)
-
-        tannot_rand[i] = read_dhsoverlap_outfile(filelist, labeldict)
+        fileprefix = f'rand_overlapped_regions_{i+1 :02d}'
+        tannot_rand[i] = write_chromatin_overlap(rdict, dhsdir, eidlist, outdir, fileprefix, labeldict)
 
     return tannot, tannot_rand
-    
+
+
+def empr_overlap(rand_dicts, dhsdir, eidlist, labeldict, outdir):
+    tannot_rand = [np.zeros(len(CHROMATIN_REGIONS)) for x in rand_dicts]
+    for i, rdict in enumerate(rand_dicts):
+        fileprefix = f'rand_overlapped_regions_{i+1 :04d}'
+        tannot_rand[i] = write_chromatin_overlap(rdict, dhsdir, eidlist, outdir, fileprefix, labeldict)
+    return tannot_rand
+   
 
 random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling"
 
 if __name__ == '__main__':
     opts = parse_args()
-    tissuefile = opts.tissuefile
     resdir = opts.resdir
     dhsdir = opts.dhsdir
     matchfile = opts.matchfile
     eidfile = opts.eidfile
     method = opts.method
     outfile = opts.outfile
+    nempirical = opts.nempirical
 
     matching_eid  = utils.read_matching_eid(matchfile)
     epigenomedict = get_epigenome_dict(eidfile, method)
     labeldict = get_label_dict()
-    tissuelist, tfulls = utils.read_tissues(tissuefile)
-    tissue_names = dict()
-    for tshort, tfull in zip(tissuelist, tfulls):
-        tissue_names[tshort] = tfull
 
-    rand_dicts = get_random_resdicts(random_snp_dir)
+    tissue = opts.tissuename
 
-    fout = open(outfile, 'w')
-    enrichment_string = '\t'.join([x.upper() for x in CHROMATIN_REGIONS])
-    fout.write(f'TISSUE\tN_TRANSEQTLS\t{enrichment_string}\n')
+    resfilename = os.path.join(resdir, tissue, 'trans_eqtls.txt')
+    print("Reading trans-eQTL results.")
+    transeqtls = read_tejaas_results.transeqtls(resfilename)
+    nteqtl = len(transeqtls)
+    eidlist = matching_eid[tissue]
 
-    for tissue in tissuelist:
-        resfilename = os.path.join(resdir, tissue, 'trans_eqtls.txt')
-        transeqtls = read_tejaas_results.transeqtls(resfilename)
-        nteqtl = len(transeqtls)
-        eidlist = matching_eid[tissue]
+    if nteqtl >= 30 and len(eidlist) > 0:
+        epigenomelist = [epigenomedict[x] for x in eidlist]
 
-        if nteqtl > 0 and len(eidlist) > 0:
-            epigenomelist = [epigenomedict[x] for x in eidlist]
+        print (f'{tissue}: {"; ".join(epigenomelist)}')
+        fout = open(outfile, 'w')
 
-            print (f'{tissue_names[tissue]}: {"; ".join(epigenomelist)}')
+        res_dict = dict()
 
-            res_dict = dict()
+        for chrm in range(1, 23):
+            res_dict[chrm] = list()
 
-            for chrm in range(1, 23):
-                res_dict[chrm] = list()
+        for teqtl in transeqtls:
+            chrm = teqtl.chrom
+            spos = teqtl.bp_pos
+            res_dict[chrm].append(spos)
 
-            for teqtl in transeqtls:
-                chrm = teqtl.chrom
-                spos = teqtl.bp_pos
-                res_dict[chrm].append(spos)
+        outdir = os.path.dirname(os.path.abspath(outfile))
+        if not os.path.exists(outdir): os.makedirs(outdir)
 
-            tmpoutdir = os.path.join(os.path.dirname(os.path.abspath(outfile)), tissue)
-            if not os.path.exists(tmpoutdir): os.makedirs(tmpoutdir)
+        print ("Reading random SNPs.")
+        rand_dicts = get_random_resdicts(random_snp_dir, 50000, 10)
+        print ("Checking overlaps.")
+        tannot, tannot_rand = get_chromatin_overlap(res_dict, rand_dicts, dhsdir, eidlist, labeldict, outdir)
 
-            tannot, tannot_rand = get_chromatin_overlap(res_dict, rand_dicts, dhsdir, eidlist, labeldict, tmpoutdir)
+        ### For p-values
+        empr_outdir = os.path.join(outdir, 'empr_overlaps')
+        empr_snpdir = os.path.join(outdir, 'random_sampling')
+        if not os.path.exists(empr_outdir): os.makedirs(empr_outdir)
+        print("Reading random SNPs for empirical p-value calculation.")
+        empr_dicts = get_random_resdicts(empr_snpdir, 4000, nempirical)
+        print("Checking overlaps for empirical p-value calculation.")
+        tannot_empr = empr_overlap(empr_dicts, dhsdir, eidlist, labeldict, empr_outdir)
 
-            tfrac = tannot / nteqtl
-            nx = [sum([len(x) for key, x in rdict.items()]) for rdict in rand_dicts]
-            tfrac_rand = [x / nx[i] for i, x in enumerate(tannot_rand)]
-            bgfrac = np.mean(np.array(tfrac_rand), axis = 0)
-            enrichment = [x / y if y > 0 else np.nan for x, y in zip(tfrac, bgfrac)]
-            enrichment_string = '\t'.join([f'{x :g}' if not np.isnan(x) else 'NA' for x in enrichment])
-            fout.write(f'{tissue}\t{nteqtl}\t{enrichment_string}\n')
-            #print(tissue, enrichment_string[2], enrichment_string[3])
-            print(tissue, tannot)
+        tfrac = tannot / nteqtl
+        nx = [sum([len(x) for key, x in rdict.items()]) for rdict in rand_dicts]
+        tfrac_rand = [x / nx[i] for i, x in enumerate(tannot_rand)]
+        bgfrac = np.mean(np.array(tfrac_rand), axis = 0)
+        
+        nx = [sum([len(x) for key, x in rdict.items()]) for rdict in empr_dicts]
+        tfrac_empr = [x / nx[i] for i, x in enumerate(tannot_empr)]
+
+        for i, cre in enumerate(CHROMATIN_REGIONS):
+            if bgfrac[i] > 0 :
+                enrichment = tfrac[i] / bgfrac[i]
+                empr_enrichments = np.array([x[i] / bgfrac[i] for x in tfrac_empr])
+                pval = (np.sum(empr_enrichments >= enrichment) + 1) / (empr_enrichments.shape[0] + 1)
+                print( cre, enrichment, pval)
+                outstring = f'{cre}\t{int(tannot[i]) :d}\t{enrichment :9.6f}\t{pval :6.4f}\n'
+                fout.write(outstring)
+
+        fout.close()

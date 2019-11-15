@@ -5,7 +5,7 @@ Artery - Aorta	aa	E065
 Artery - Coronary	ac	NA
 Artery - Tibial	at	NA
 ####### Bladder	bl
-Brain - Amygdala	bam
+Brain - Amygdala	bam	NA
 Brain - Anterior cingulate cortex (BA24)	ban	E069
 Brain - Caudate (basal ganglia)	bca	E068
 Brain - Cerebellar Hemisphere	bceh	NA
@@ -35,7 +35,7 @@ Heart - Left Ventricle	hlv	E095
 ####### Kidney - Cortex	kc
 Liver	liv	E066
 Lung	lu	E096
-Minor Salivary Gland	msg
+Minor Salivary Gland	msg	NA
 Muscle - Skeletal	ms	E107,E108
 Nerve - Tibial	nt	NA
 Ovary	ov	E097

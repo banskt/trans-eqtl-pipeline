@@ -1,0 +1,10 @@
+gencode.v26.annotation.gtf
+gencode.v26.annotation.gtf.gz
+hsa.bed.gz
+hsa_piRNA.bed
+hsa_piRNA_sorted.bed
+jobsub
+pirnadb.hg38.gtf
+pirnadb.hg38.gtf.gz
+pirnadb.hg38.sorted.gtf
+pirnadb.hg38.sorted.pos.txt

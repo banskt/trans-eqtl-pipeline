@@ -1,0 +1,2 @@
+ensembl_id	chrom	start	end	name
+ENSG00000236824	2	47335315	47335514	BCYRN1
