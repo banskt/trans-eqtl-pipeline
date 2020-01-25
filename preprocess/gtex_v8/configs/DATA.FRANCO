@@ -1,18 +1,41 @@
 #!/bin/bash
 
-# REQUIRED FILES!! download them from GTEx (for pheno file you need access)
-
 SRCDIR="/cbscratch/franco/datasets/gtex_v8"
 
-# SRCVCF="${SRCDIR}/genotype/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz"
-# SRCLOOKUP="${SRCDIR}/genotype/GTEx_Analysis_2015-01-12_OMNI_2.5M_5M_450Indiv_chr1to22_phased_genot_imput_info04_maf01_HWEp1E6_VarID_Lookup_Table.txt.gz"
+# Collapsed gene model file
+GTFFILE="/cbscratch/franco/datasets/gtex_v8/gencode.v26.collapsed.genes.gtf"
+GENCODEFILE="${SRCDIR}/../GENCODE/gencode.v26.annotation.gtf.gz"
+
 
 # REQUIRED FILES!! download them from GTEx (for pheno file you need access)
-SRCTPM_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz"
-SRCREAD_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct.gz"
+# ----- phASER origdata
+PHASER_INMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix.txt.gz" #phASER_WASP_GTEx_v8_matrix.txt.gz
+PHASER_OUTMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
 
-SRCTPM="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt"
-SRCREAD="${SRCDIR}/expression/phASER_GTEx_v8_matrix_collapsed_counts_fix.txt.gz"
+# ----- RNASeQC read data
+# SRCTPM_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz"
+SRCREAD_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct.gz"
+OUTTPM_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_TPMs_from_reads.gct.gz"
+SRCTPM_PUB=${OUTTPM_PUB}
+
+
+# ---- Files have been superseded by outputs from above
+SRCREAD_PHASER=${PHASER_OUTMTX}
+# SRCREAD_PHASER="${SRCDIR}/expression/phASER_GTEx_v8_matrix_collapsed_counts_fix.txt.gz"
+
+OUTTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt"
+SRCTPM_PHASER=${OUTTPM_PHASER}
+# SRCTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt"
+
+if [ "${bUsePub}" = "true" ]; then
+    SRCREAD=${SRCREAD_PUB}
+    OUTTPM=${OUTTPM_PUB}
+    SRCTPM=${SRCTPM_PUB} # same as OUTTPM_PUB
+else
+    SRCREAD=${SRCREAD_PHASER}
+    OUTTPM=${OUTTPM_PHASER}
+    SRCTPM=${SRCTPM_PHASER}
+fi
 
 SRCPHENO="${SRCDIR}/phenotypes/phs000424.v8.pht002743.v8.p2.c1.GTEx_Sample_Attributes.GRU.txt"
 SRCSUBJCT="${SRCDIR}/phenotypes/phs000424.v8.pht002742.v8.p2.c1.GTEx_Subject_Phenotypes.GRU.txt"
@@ -20,11 +43,24 @@ SRCSUBJCT="${SRCDIR}/phenotypes/phs000424.v8.pht002742.v8.p2.c1.GTEx_Subject_Phe
 
 SRCCOVARS="${SRCDIR}/expression/GTEx_Analysis_v8_eQTL_covariates"
 
-GENCODEFILE="${SRCDIR}/../GENCODE/gencode.v26.annotation.gtf.gz"
- 
- 
- #=========
+#=========
 
 TISSUEFILE="tissue_table.txt"
 DONORFILE="${SRCDIR}/genotypes/gtex_v8.sample"
 VCFDIR="$BASEDIR/genotypes/vcfs_allsamples"
+
+OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc/gtex_v8"
+if [ "${bUsePub}" = "true" ]; then
+    OUTDIR="${OUTDIR}_pub"
+fi
+
+GXOUTDIR="${OUTDIR}/expression"
+GTOUTDIR="${OUTDIR}/genotype"
+
+
+TPMOUTDIR="${GXOUTDIR}/tpms"                  # tissue specific rpkms output dir
+COVOUTDIR="${GXOUTDIR}/covariates"              # covariates outdir
+PEEROUTDIR="${GXOUTDIR}/peercorrected"          # PEER corrected
+AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
+
+

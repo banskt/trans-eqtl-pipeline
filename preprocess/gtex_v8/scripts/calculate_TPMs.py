@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import gzip
 import argparse
+import collections
+import re 
 
 def parse_args():
 
@@ -35,7 +37,7 @@ opts = parse_args()
 ### CHECK https://github.com/broadinstitute/gtex-pipeline/tree/master/gene_model
 ### Important for preprocessing the annotation GTF
 
-infile="/cbscratch/franco/datasets/gtex_v8/gencode.v26.collapsed.genes.gtf"
+infile=opts.gtffile #"/cbscratch/franco/datasets/gtex_v8/gencode.v26.collapsed.genes.gtf"
 outfile="/cbscratch/franco/datasets/gtex_v8/gencode.v26.coding_lengths"
 
 l = 0
@@ -65,8 +67,6 @@ with open(infile) as instream:
                         lead_transcripts[gene_id] = t_id
                     break
         l += 1
-#         if l > 20:
-#             break
 
 with open(outfile, 'w') as outstream:
     for i, gene in enumerate(lead_transcripts.keys()):
@@ -75,7 +75,7 @@ with open(outfile, 'w') as outstream:
         outstream.write("{:s}\t{:d}\n".format(gene, t_length))
 
 ### Read gene lengths file for gencode v26
-lengthsfile = outfile="/cbscratch/franco/datasets/gtex_v8/gencode.v26.coding_lengths"
+lengthsfile = outfile  # this is the same file from above
 gene_len_dict = dict()
 
 with open(lengthsfile) as instream:
@@ -83,43 +83,46 @@ with open(lengthsfile) as instream:
         arr = line.rstrip().split()
         gene_len_dict[arr[0].split(".")[0]] = int(arr[1])
 
-ix = list()
-genenames = [x.split(".")[0] for x in list(reads.Name)]
-for name in genenames:
-    if name in gene_len_dict:
-        ix.append(True)
-    else:
-        ix.append(False)
+# ix = list()
+# genenames = [x.split(".")[0] for x in list(reads.Name)]
+# for name in genenames:
+#     if name in gene_len_dict:
+#         ix.append(True)
+#     else:
+#         ix.append(False)
 
-geneix = np.where(ix)[0]
-filtered_genenames = [genenames[i] for i in geneix]
-genelengths = np.array([gene_len_dict[x] for x in filtered_genenames])
+# geneix = np.where(ix)[0]
+# filtered_genenames = [genenames[i] for i in geneix]
+
 
 ##############################
-# Read count file for phASER expression matrix
+# Read count file of expression matrix
 ##############################
 
-gtex_v8_reads = opts.infile #"/cbscratch/franco/datasets/gtex_v8/expression/phASER_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
-outfile = opts.outfile # "/cbscratch/franco/datasets/gtex_v8/expression/TPMs_phASER_GTEx_v8.matrix.txt"
-reads_phaser = pd.read_csv(gtex_v8_reads, header=0, sep="\t")
+gtex_v8_reads = opts.infile # "phASER_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
+outfile = opts.outfile      # "TPMs_phASER_GTEx_v8.matrix.txt"
 
-
-
-
+if re.search("RNASeQC", gtex_v8_reads):
+    reads_phaser = pd.read_csv(gtex_v8_reads, header=0, sep="\t", skiprows=2)
+    reads_phaser.drop(["Description"], axis=1, inplace=True)
+else:
+    reads_phaser = pd.read_csv(gtex_v8_reads, header=0, sep="\t")
+reads_phaser.columns = [x.strip() for x in reads_phaser.columns]
+genenames = list(reads_phaser.iloc[:,0])
+genelengths = np.array([gene_len_dict[x.split(".")[0]] for x in genenames])
 
 ##############################
 # Calculate TPM values for phASER expression matrix
 ##############################
 
-filtered_reads = reads_phaser.iloc[np.array(ix)]
-TPM_matrix = np.zeros((filtered_reads.shape[0], filtered_reads.shape[1]-1))
-for i in range(1, filtered_reads.shape[1]):
-    rpk = filtered_reads.iloc[:, i] * 1000 / genelengths
+TPM_matrix = np.zeros((reads_phaser.shape[0], reads_phaser.shape[1]-1))
+for i in range(1, reads_phaser.shape[1]):
+    rpk = reads_phaser.iloc[:, i] * 1000 / genelengths
     sf = np.sum(rpk) / 1000000
     tpm = rpk / sf
     TPM_matrix[:,i-1] = tpm
     if i%1000 == 0:
         print("Processed {:d} samples".format(i))
 
-tpm_df = pd.DataFrame(TPM_matrix, index=filtered_reads.name, columns=filtered_reads.columns[1:])
-tpm_df.to_csv(outfile, header=True, sep="\t")
+tpm_df = pd.DataFrame(TPM_matrix, index=reads_phaser.iloc[:,0], columns=reads_phaser.columns[1:])
+tpm_df.to_csv(outfile, header=True, sep="\t", compression='gzip')

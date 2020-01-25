@@ -3,7 +3,7 @@
 ALLGXFILES=()
 
 EXPR_TYPES="tmm tpms"
-CORR_TYPES="lasso cclm"
+CORR_TYPES="cclm cclm_nopc lasso lasso_nopc"
 
 # normalized uncorrected
 ALLGXFILES+=( )

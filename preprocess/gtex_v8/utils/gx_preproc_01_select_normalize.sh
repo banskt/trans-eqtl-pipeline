@@ -3,9 +3,9 @@ echo "Processing Tissue: $TFULL"
 mkdir -p $TPMOUTDIR
 
 TS="${TSHORT}"
-if [ '${bUsePub}' == "true" ]; then
-    TS="${TSHORT}_pub"
-fi
+# if [ '${bUsePub}' == "true" ]; then
+#     TS="${TSHORT}_pub"
+# fi
 
 # Select tissue-specific tpms
 OUTPREFIXFILE="${TPMOUTDIR}/${TS}"

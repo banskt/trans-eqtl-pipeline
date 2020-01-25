@@ -26,6 +26,9 @@ CORRECTPY="${PREPROC_SCRIPTDIR}/correct_covariates.py"
 PEERSCRIPT_R="${PREPROC_SCRIPTDIR}/PEER.R"
 GENCODEFILTERPY="${PREPROC_SCRIPTDIR}/filter_gencode_expr.py"
 
+PYPHASER="${PREPROC_SCRIPTDIR}/process_phASER_counts.py"
+PYTPMS="${PREPROC_SCRIPTDIR}/calculated_TPMs.py"
+
 # Get age covariate only once
 mkdir -p $COVOUTDIR;
 grep -v -P "^#" ${SRCSUBJCT} | cut -f 2,5,15 | grep -i gtex > ${AGE_COVARIATE_FILE}
@@ -50,6 +53,8 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
             # Covariate Files
             COVARS="${COVOUTDIR}/${TSHORT}_nopeer_covariates.txt"
             COVARS_AGE="${COVOUTDIR}/${TSHORT}_nopeer_covariates_w_age.txt"
+            COVARS_NOPC="${COVOUTDIR}/${TSHORT}_nopeer_covariates_nopc.txt"
+            COVARS_AGE_NOPC="${COVOUTDIR}/${TSHORT}_nopeer_covariates_nopc_w_age.txt"
 
             if [ "${bSelectNormalize}" = "true" ]; then source ${PREPROC_UTILSDIR}/gx_preproc_01_select_normalize.sh; fi
             if [ "${bFormatCovariates}" = "true" ]; then source ${PREPROC_UTILSDIR}/gx_preproc_02_format_covariates.sh; fi

@@ -32,6 +32,11 @@ def parse_args():
                         metavar='STR',
                         help='output directory')
 
+    parser.add_argument('--no-pc',
+                        action='store_true', 
+                        dest="nopc",
+                        help='output directory')
+
     opts = parser.parse_args()
     return opts
 
@@ -66,6 +71,9 @@ if __name__ == '__main__':
     diff = (df_cov.T - means) / stds
     scaled_df_cov = diff.T
 
+    # Check if one of the covariates is same value for all, to avoid crashes in lasso
+    
+
     qn_lasso, lasso_coefs = correct_lasso_iterative(qn_df, scaled_df_cov)
     tmm_lasso, lasso_coefs = correct_lasso_iterative(tmm_df, scaled_df_cov)
     raw_lasso, lasso_coefs = correct_lasso_iterative(raw_df, scaled_df_cov)
@@ -74,10 +82,19 @@ if __name__ == '__main__':
     tmm_cclm, coefs = lmcorrect(tmm_df, scaled_df_cov)
     raw_cclm, coefs = lmcorrect(raw_df, scaled_df_cov)
 
-    qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso.txt".format(opts.tissue)), sep="\t")
-    tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso.txt".format(opts.tissue)), sep="\t")
-    raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso.txt".format(opts.tissue)), sep="\t")
+    if opts.nopc:
+        qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso_nopc.txt".format(opts.tissue)), sep="\t")
+        tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso_nopc.txt".format(opts.tissue)), sep="\t")
+        raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso_nopc.txt".format(opts.tissue)), sep="\t")
 
-    qn_cclm.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm.txt".format(opts.tissue)), sep="\t")
-    tmm_cclm.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm.txt".format(opts.tissue)), sep="\t")
-    raw_cclm.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm.txt".format(opts.tissue)), sep="\t")
+        qn_cclm.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+        tmm_cclm.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+        raw_cclm.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+    else:
+        qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso.txt".format(opts.tissue)), sep="\t")
+        tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso.txt".format(opts.tissue)), sep="\t")
+        raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso.txt".format(opts.tissue)), sep="\t")
+
+        qn_cclm.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm.txt".format(opts.tissue)), sep="\t")
+        tmm_cclm.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm.txt".format(opts.tissue)), sep="\t")
+        raw_cclm.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm.txt".format(opts.tissue)), sep="\t")
