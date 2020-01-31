@@ -56,7 +56,7 @@ import mpmath
 mpmath.mp.dps = 500
 def pval(x): return float(1 - 0.5 * (1 + mpmath.erf(x/mpmath.sqrt(2))))
    
-SNPRES_FIELDS = ['rsid', 'chrom', 'pos', 'q', 'mu', 'sigma', 'p', 'logp']
+SNPRES_FIELDS = ['rsid', 'chrom', 'pos', 'q', 'mu', 'sigma', 'p', 'logp', 'maf']
 class SNPRes(collections.namedtuple('_SNPRes', SNPRES_FIELDS)):
     __slots__ = ()
         
@@ -67,25 +67,26 @@ def tejaas_chr(filepath):
         for line in mfile:
             arr   = line.strip().split("\t")
             rsid  = arr[0]
-            pos   = int(arr[1])
-            chrom = int(arr[6])
-            p     = float(arr[5])
-            q     = float(arr[2])
-            mu    = float(arr[3])
-            sigma = float(arr[4])
+            chrom = int(arr[1])
+            pos   = int(arr[2])
+            maf   = float(arr[3])
+            q     = float(arr[4])
+            mu    = float(arr[5])
+            sigma = float(arr[6])
+            p     = float(arr[7])
             if sigma == 0:
                 continue
             p = p if p != 0 else pval( (q - mu) / sigma)
             logp = np.log10(p) # mpmath.log10
-            res.append(SNPRes(rsid=rsid, chrom=chrom, pos=pos, q=q, mu=mu, sigma=sigma, p=p, logp=-logp))
+            res.append(SNPRes(rsid=rsid, chrom=chrom, pos=pos, q=q, mu=mu, sigma=sigma, p=p, logp=-logp, maf=maf))
     return res
 
 def tejaas_write(snplist, filepath):
     with open(filepath, 'w') as mfile:
-        mfile.write("ID\tPos\tQ\tMu\tSigma\tP\tCHR\n")
+        mfile.write("ID\tCHR\tPos\tMAF\tQ\tMu\tSigma\tP\n")
         for snp in snplist:
-            fmtstring = "{:s}\t{:d}\t{:g}\t{:g}\t{:g}\t{:g}\t{:d}\n"
-            mfile.write(fmtstring.format(snp.rsid, snp.pos, snp.q, snp.mu, snp.sigma, snp.p, snp.chrom))
+            fmtstring = "{:s}\t{:d}\t{:d}\t{:g}\t{:g}\t{:g}\t{:g}\t{:g}\n"
+            mfile.write(fmtstring.format(snp.rsid, snp.chrom, snp.pos, snp.maf, snp.q, snp.mu, snp.sigma, snp.p))
 
 def prune_region(region, myldict):
     start = time.time()
@@ -138,7 +139,7 @@ def write_ld_region(pruned_snps, ld_regions, outfile):
             chrm_snps_sorted = sorted(chrm_snps, key=attrgetter('pos'), reverse=False)
             for leadsnp in chrm_snps_sorted:
                 ldr = [str(x) for x in ld_regions[leadsnp.rsid]]
-                str_fmt = "{:d}\t{:s}\t{:d}\t{:g}\t{:s}\n".format(leadsnp.chrom, leadsnp.rsid, leadsnp.pos, leadsnp.p, ",".join(ldr))
+                str_fmt = "{:s}\t{:d}\t{:d}\t{:g}\t{:s}\n".format(leadsnp.rsid, leadsnp.chrom, leadsnp.pos, leadsnp.p, ",".join(ldr))
                 outstream.write(str_fmt)
 
 if __name__ == '__main__':

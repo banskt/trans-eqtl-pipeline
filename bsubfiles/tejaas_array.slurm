@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH -p hh
-#SBATCH -t 0-6:00:00
+#SBATCH -t 0-12:00:00
 #SBATCH -n 8
 #SBATCH -N 1
-#SBATCH -J _JOB_NAME
-#SBATCH -o _JOB_NAME.out
-#SBATCH -e _JOB_NAME.err
+#SBATCH -J _JOB_NAME_%a
+#SBATCH -o _JOB_NAME_%a.out
+#SBATCH -e _JOB_NAME_%a.err
 
 module load intel/compiler/64/2017/17.0.2
 module load intel/mkl/64/2017/2.174
@@ -21,14 +21,23 @@ GENEINFO=_GEN_POSF
 
 TJMETHOD=_TJ_METHD
 NULLMODL=_NULL_MDL
-OUTPRFIX=_OUT_PRFX
-INCSTRNG=_STRT_END
+INDEX=`echo ${SLURM_ARRAY_TASK_ID} | awk '{printf "%03d", $1}'`
+OUTPRFIX=_OUT_PRFX${INDEX}
 SNPTHRES=_SNP_CUT_
 GENTHRES=_GEN_CUT_
 SBETA=_SIG_BETA
 CHROM=_CHRM_NUM
 MAFFILE=_MAF_FILE
 EXTRAFLAGS=_EXT_FLAG
+
+NMAX=_NUM_MAX_
+NTOT=_NUM_TOT_
+startsnp=$(( NMAX * SLURM_ARRAY_TASK_ID + 1 ))
+endsnp=$(( NMAX * (SLURM_ARRAY_TASK_ID + 1) ))
+if [ $endsnp -gt $NTOT ]; then
+    endsnp=${NTOT}
+fi
+INCSTRNG="${startsnp}:${endsnp}"
 
 if [ "${NULLMODL}" = "maf" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --maf-file ${MAFFILE}"

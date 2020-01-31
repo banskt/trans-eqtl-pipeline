@@ -2,16 +2,19 @@
 
 # data directory
 DATADIR="/cbscratch/franco/datasets"
-EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc" #new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
 GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
 GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 
 # output directory
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_new"
-# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_gtknn"
-# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v6_gtknn_notnoisy"
-# OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/fhs_nosqrt_dynamic_onerep"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_lncRNA_freeze" #jan2020_tryouts"
+
+
+########################### ATTENTION!!!!
+###### This is used in 04_do_RR_lasso.sh but IS WRONG, the summary folder changes now for Keffs and sbetas
+OUTDIR_SUMMARY="${OUTDIR}/summary_${TEJAAS_CUTOFF}"
+
 
 case "${EXPR_CORR}" in
     "lm")
@@ -41,6 +44,9 @@ case "${EXPR_CORR}" in
     "raw")
         OUTDIR="${OUTDIR}/raw"
         ;;
+    "raw_fixed")
+        OUTDIR="${OUTDIR}/raw_fixed"
+        ;;
     "raw_pub")
         OUTDIR="${OUTDIR}/raw_pub"
         ;;
@@ -52,6 +58,9 @@ case "${EXPR_CORR}" in
         ;;
     "raw_cclm")
         OUTDIR="${OUTDIR}/raw_cclm"
+        ;;
+    "raw_cclm_nopc")
+        OUTDIR="${OUTDIR}/raw_cclm_nopc"
         ;;
     "raw_oneref")
         OUTDIR="${OUTDIR}/raw_oneref"
@@ -80,12 +89,13 @@ GTEX_GENO_VCF_FMT="${GTEXDIR}/genotypes/vcfs_allsamples/GTEx_Analysis_20150112_O
 
 # GTEx v8
 GTEXDIR_V8="${DATADIR}/gtex_v8"
-EXPRGTEXDIR_V8_OLD="${GTEXDIR_V8}/expression"
+EXPRGTEXDIR_V8_PUB="${EXPRDATADIR}/gtex_v8_pub"
 EXPRGTEXDIR_V8="${EXPRDATADIR}/gtex_v8"
 GTEX_V8_GENO_DIR="${GTEXDIR_V8}/genotypes"
 GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
 GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8.sample"
 GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
+# GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_chr[CHRM].vcf.gz"
 
 # 1KG Genomes
 ONEKGDIR="${DATADIR}/1KG_genomes"
@@ -157,16 +167,25 @@ case "${EXPR_CORR}" in
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
         ;;
     "raw_pub")
-        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_OLD}/pub/gtex_[TISSUE]_raw_std_protein_coding.txt"
-        ;;        
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;; 
+    "raw_fixed")
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.collinear_filtered.txt.${BIOTYPES}_filtered"
+        ;;       
     "rpkms")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/rpkms/[TISSUE]_rpkms_qcfilter.txt.${BIOTYPES}_filtered"
         ;;
     "raw_lasso")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_lasso.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_lasso.txt.${BIOTYPES}_filtered"
         ;;
     "raw_cclm")
         GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_cclm_nopc")
+        #GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/tpms/[TISSUE]_tpms_cclm_nopc.txt.${BIOTYPES}_filtered"
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm_nopc.txt.${BIOTYPES}_filtered"
         ;;
     *)
         GTEX_EXPR_FMT=""
@@ -223,6 +242,7 @@ case "${DATATYPE}" in
         GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v26.txt"
         GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
         GTEX_POSFILE="${GTEX_V8_GENO_DIR}/vcfs_0.01/gtex_v8_snpinfo.txt"
+        # GTEX_POSFILE="${GTEX_V8_GENO_DIR}/vcfs/gtex_v8_snpinfo.txt"
         ;;
     "fhs")
         DATATYPE="fhs"

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+THISMETHOD="tejaas"
+THISJOBDEPS="None"
+
+echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
+# source ${UTILSDIR}/submit_tejaas
+source ${UTILSDIR}/submit_tejaas_array
+
+# if [ "${DATATYPE}" == "cardiogenics" ]; then
+#     EXTRAFLAGS="$EXTRAFLAGS --trim"
+# fi
+
+# if [ "${DATATYPE}" == "fhs" ]; then
+#     GENEINFOFILE=${PROBEINFOFILE}
+# fi
+
+if [ "${SHUFFLE}" == "true" ]; then
+    THISMETHOD="tejaas_rand"
+    # EXTRAFLAGS="$EXTRAFLAGS --shuffle-with $SHUFFLED_ID_FILE"
+    SHUFFLE=false
+fi
+
+for CHRM in ${CHRNUMS}; do
+    # GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+    GENOTYPEFILE=${GENO_VCF_FMT/\[CHRM\]/${CHRM}}
+    if [ "${DATATYPE}" == "fhs" ]; then
+        GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+    fi
+
+      for NULL in ${TEJAAS_NULL}; do
+          
+          SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+          SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+
+
+          submit_tejaas ${TEJAAS} 
+          ${CHRM} 
+          ${GENOTYPEFILE} 
+          ${EXPRESSIONFILE} 
+          ${SAMPLEFILE} \
+          ${GENEINFOFILE} 
+          ${SPECIFIC_JOBSUBDIR} 
+          ${SPECIFIC_OUTDIR} 
+          ${JOBPREFIX} \
+          ${MAX_NSNP_PERJOB} \
+      done
+
+    fi
+done

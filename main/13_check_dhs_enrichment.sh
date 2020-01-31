@@ -35,24 +35,43 @@ for EXPR_CORR in ${EXPRESSIONS}; do
             fi
 
             echo "${DESC}"
+            if [ ${DYNAMIC_SB} == "true" ]; then
+                for KEFF in $KEFFS; do
+                    if [ "${bTejaas}" = "true" ] && [ "${bTjsRandom}" = "true" ];   then
+                        RESULTS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune"
+                        NULL_RESULTS="${OUTDIR_DATA}/tejaas_rand/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune" 
+                    fi
+                
+                    ANNOTSNPS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/SNPs_annots.txt"
+                    PLOT_OUTFILE="${OUTDIR}/../${MDATA}_tejaas_${SBETA}_${DESC}.png"
 
-            for SBETA in $TEJAAS_SIGMA_BETA_PERM; do
-                if [ "${bTejaas}" = "true" ] && [ "${bTjsRandom}" = "true" ];   then
-                    RESULTS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune"
-                    NULL_RESULTS="${OUTDIR_DATA}/tejaas_rand/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune" 
-                fi
-            
-                ANNOTSNPS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/SNPs_annots.txt"
-                PLOT_OUTFILE="${OUTDIR}/../${MDATA}_tejaas_${SBETA}_${DESC}.png"
+                    ${PYENV} ${PYDHS} --snpfile ${RESULTS} \
+                                    --dhsfile ${DHS_FILE}\
+                                    --annotfile ${ANNOTSNPS} \
+                                    --outfile ${PLOT_OUTFILE} \
+                                    --desc ${DESC} \
+                                    --null-snpfile ${NULL_RESULTS}
 
-                ${PYENV} ${PYDHS} --snpfile ${RESULTS} \
-                                  --dhsfile ${DHS_FILE}\
-                                  --annotfile ${ANNOTSNPS} \
-                                  --outfile ${PLOT_OUTFILE} \
-                                  --desc ${DESC} \
-                                  --null-snpfile ${NULL_RESULTS}
+                done
+            else
+                for SBETA in $TEJAAS_SIGMA_BETA_PERM; do
+                    if [ "${bTejaas}" = "true" ] && [ "${bTjsRandom}" = "true" ];   then
+                        RESULTS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune"
+                        NULL_RESULTS="${OUTDIR_DATA}/tejaas_rand/permnull_sb${SBETA}/chr{:d}/rr.txt.ld_prune" 
+                    fi
+                
+                    ANNOTSNPS="${OUTDIR_DATA}/tejaas/permnull_sb${SBETA}/SNPs_annots.txt"
+                    PLOT_OUTFILE="${OUTDIR}/../${MDATA}_tejaas_${SBETA}_${DESC}.png"
 
-            done
+                    ${PYENV} ${PYDHS} --snpfile ${RESULTS} \
+                                    --dhsfile ${DHS_FILE}\
+                                    --annotfile ${ANNOTSNPS} \
+                                    --outfile ${PLOT_OUTFILE} \
+                                    --desc ${DESC} \
+                                    --null-snpfile ${NULL_RESULTS}
+
+                done
+            fi
         done
     done
 done

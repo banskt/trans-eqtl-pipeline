@@ -74,6 +74,8 @@ PREPROC_UTILSDIR=_PUTILS_DIR_
 # Covariate Files
 COVARS="${COVOUTDIR}/${TSHORT}_nopeer_covariates.txt"
 COVARS_AGE="${COVOUTDIR}/${TSHORT}_nopeer_covariates_w_age.txt"
+COVARS_NOPC="${COVOUTDIR}/${TSHORT}_nopeer_covariates_nopc.txt"
+COVARS_AGE_NOPC="${COVOUTDIR}/${TSHORT}_nopeer_covariates_nopc_w_age.txt"
 
 # Select tissue-specific rpkms and normalize
 echo "01 - QC and Normalization"

@@ -9,3 +9,14 @@ function tejaas_top_snps() {
     $PYENV $SCRIPTDIR/select_top_rr.py --indir $DIR --outdir $DIR --c $CUT
     # cd $CWD
 }
+
+#!/bin/bash
+
+function tejaas_summary() {
+    local DIR=$1
+    local CWD=`pwd`
+    local PREPROCS=$2
+    local TISSUEFILE=$3
+
+    $PYENV $SCRIPTDIR/reorganize_tejaas_results.py --indir $DIR --tissue-file $TISSUEFILE --preprocs $PREPROCS
+}

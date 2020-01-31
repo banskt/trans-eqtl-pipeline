@@ -4,7 +4,8 @@ THISMETHOD="tejaas"
 THISJOBDEPS="None"
 
 echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
-source ${UTILSDIR}/submit_tejaas
+# source ${UTILSDIR}/submit_tejaas
+source ${UTILSDIR}/submit_tejaas_array
 
 EXTRAFLAGS="--dosage"
 _VARIANT=""
@@ -47,9 +48,9 @@ fi
 for CHRM in ${CHRNUMS}; do
     # GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
     GENOTYPEFILE=${GENO_VCF_FMT/\[CHRM\]/${CHRM}}
-    if [ "${DATATYPE}" == "fhs" ]; then
-        GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
-    fi
+    # if [ "${DATATYPE}" == "fhs" ]; then
+    #     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+    # fi
     MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
 
     if [ "${RUNJPA}" = "true" ]; then
@@ -78,26 +79,51 @@ for CHRM in ${CHRNUMS}; do
             if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
             if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
             if [ ${DYNAMIC_SB} == "true" ]; then
-                METHOD_VARIANT="${NULL}null_sbDynamic"
+                for KEFF in ${KEFFS}; do
+                    METHOD_VARIANT="${NULL}null_sbDynamic${KEFF}"
+                    SBETA="0.00"
+                    EXTRAFLAGS="$EXTRAFLAGS --dynamic ${KEFF}"
+                    if [ "${_VARIANT}" != "" ]; then
+                        METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"
+                    fi
+
+                    SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+                    SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
+
+                    JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TISSUEID}_chr${CHRM}_${RANDSTRING}"
+
+                    submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
+                                ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                                ${TEJAAS_MODEL} ${NULL} \
+                                ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                                "${EXTRAFLAGS}" \
+                                ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                                ${MAX_NSNP_PERJOB} \
+                                ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                                JOBDEPS "${JOBDEPS}"
+                done
+            elif [ ${MML_OPT} == "true" ]; then
+                METHOD_VARIANT="${NULL}null_sbMMLopt"
                 SBETA="0.00"
-                EXTRAFLAGS="$EXTRAFLAGS --dynamic"
+                EXTRAFLAGS="$EXTRAFLAGS --mml"
                 if [ "${_VARIANT}" != "" ]; then
                     METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"
                 fi
-                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TISSUEID}_chr${CHRM}_${RANDSTRING}"
 
                 SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
                 SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
 
+                JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TISSUEID}_chr${CHRM}_${RANDSTRING}"
+
                 submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
-                              ${GENEINFOFILE} ${MAF_1KG_FILE} \
-                              ${TEJAAS_MODEL} ${NULL} \
-                              ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
-                              "${EXTRAFLAGS}" \
-                              ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
-                              ${MAX_NSNP_PERJOB} \
-                              ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                              JOBDEPS "${JOBDEPS}"
+                            ${GENEINFOFILE} ${MAF_1KG_FILE} \
+                            ${TEJAAS_MODEL} ${NULL} \
+                            ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\
+                            "${EXTRAFLAGS}" \
+                            ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
+                            ${MAX_NSNP_PERJOB} \
+                            ${THISJOBDEPS} ${MASTER_BSUBDIR} \
+                            JOBDEPS "${JOBDEPS}"
             else
                 for SBETA in ${TEJAAS_SIGMA_BETA}; do
                     METHOD_VARIANT="${NULL}null_sb${SBETA}"

@@ -40,6 +40,7 @@ function submit_tejaas() {
     njobs=$(echo $(( ntot/nmax )))
 
     #if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
+    if [ ! -d ${jobsubdir} ]; then mkdir -p ${jobsubdir}; fi;
     if [ ! -d ${outdir} ]; then mkdir -p ${outdir}; fi
 
     for (( i=0; i <= ${njobs}; i++ )); do

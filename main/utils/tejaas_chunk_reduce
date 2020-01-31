@@ -1,4 +1,4 @@
-#!/bin/bash
+    #!/bin/bash
 
 function tejaas_chunk_reduce() {
     local DIR=$1
@@ -15,7 +15,11 @@ function tejaas_chunk_reduce() {
             do
                 NLINES=0
                 ERROR=false
-                head -n 1 chunk000_${EXT} > ${EXT}
+                if [ $EXT == "rr.txt" ]; then
+                    echo -e "ID\tPos\tQ\tMu\tSigma\tP\tCHR\tMAF" > ${EXT}
+                else
+                    head -n 1 chunk000_${EXT} > ${EXT}
+                fi                
 
                 for ((i=0; i<$NCHUNK; i++)); do
                     NUM=`echo $i | awk '{printf "%03d\n", $1}'`

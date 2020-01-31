@@ -56,10 +56,12 @@ for EXPR_CORR in ${EXPRESSIONS}; do
                         if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
 
                         if [ ${DYNAMIC_SB} == "true" ]; then
-                            METHOD_VARIANT="${NULL}null_sbDynamic"
-                            if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
-                            if [ "${bTejaas}" = "true" ];    then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/chr${CHRM}"; fi
-                            if [ "${bTjsRandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/chr${CHRM}"; fi
+                            for KEFF in ${KEFFS}; do
+                                METHOD_VARIANT="${NULL}null_sbDynamic${KEFF}"
+                                if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
+                                if [ "${bTejaas}" = "true" ];    then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/chr${CHRM}"; fi
+                                if [ "${bTjsRandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/chr${CHRM}"; fi
+                            done
                         else
                             for SBETA in ${TEJAAS_SIGMA_BETA}; do
                                 METHOD_VARIANT="${NULL}null_sb${SBETA}"
