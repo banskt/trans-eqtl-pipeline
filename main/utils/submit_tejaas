@@ -6,23 +6,24 @@ function submit_tejaas() {
     local chrm=$3
     local genotype=$4
     local expression=$5
-    local geneinfo=$6
-    local maffile=$7
-    local method=$8
-    local null=${9}
-    local snpthres=${10}
-    local genethres=${11}
-    local sbeta=${12}
-    local extraflags=${13}
-    local jobsubdir=${14}
-    local outdir=${15}
-    local jobprefix=${16}
-    local nmax=${17}
-    local thisjobdep=${18}
-    local bsubdir=${19}
-    local __jobdeps=${20} ## name of the bash variable
-    local jobdeps=${21}   ## contents of the bash variable
-    local ntot=${22}
+    local corrected_expression=$6
+    local geneinfo=$7
+    local maffile=$8
+    local method=$9
+    local null=${10}
+    local snpthres=${11}
+    local genethres=${12}
+    local sbeta=${13}
+    local extraflags=${14}
+    local jobsubdir=${15}
+    local outdir=${16}
+    local jobprefix=${17}
+    local nmax=${18}
+    local thisjobdep=${19}
+    local bsubdir=${20}
+    local __jobdeps=${21} ## name of the bash variable
+    local jobdeps=${22}   ## contents of the bash variable
+    local ntot=${23}
     local jobname=0
     local i=0
     local index=0
@@ -63,6 +64,7 @@ function submit_tejaas() {
              s|_TJS_BINR|${tejaas}|g;
              s|_GT_FILE_|${genotype}|g;
              s|_EXPR_FL_|${expression}|g;
+             s|_GX_CRFL_|${corrected_expression}|g;
              s|_GEN_POSF|${geneinfo}|g;
              s|_TJ_METHD|${method}|g;
              s|_NULL_MDL|${null}|g;

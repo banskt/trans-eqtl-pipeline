@@ -8,6 +8,7 @@
 #SBATCH -J _JOB_NAME
 #SBATCH -o _JOB_NAME.out
 #SBATCH -e _JOB_NAME.err
+#SBATCH -A all
 
 module load intel/compiler/64/2017/17.0.2
 module load intel/mkl/64/2017/2.174
@@ -19,6 +20,7 @@ MPYTHON=_PYT_ENV_
 RUN_PATH=_TJS_BINR
 GENOFILE=_GT_FILE_
 GXPRFILE=_EXPR_FL_
+GXCORRFL=_GX_CRFL_
 GENEINFO=_GEN_POSF
 
 TJMETHOD=_TJ_METHD
@@ -39,6 +41,7 @@ fi
 
 mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \
                                    --gx           ${GXPRFILE} \
+                                   --gxcorr       ${GXCORRFL} \
                                    --gtf          ${GENEINFO} \
                                    --method       ${TJMETHOD} \
                                    --null         ${NULLMODL} \
@@ -50,4 +53,4 @@ mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \
                                    --chrom        ${CHROM} \
                                    ${EXTRAFLAGS}
 
-### ${MPYTHON} ${RUN_PATH} --vcf ${GENOFILE} --gx ${GXPRFILE} --gtf ${GENEINFO} --method ${TJMETHOD} --null ${NULLMODL} --outprefix ${OUTPRFIX} --include-SNPs ${INCSTRNG} --psnpthres ${SNPTHRES} --pgenethres ${GENTHRES} --prior-sigma ${SBETA} --chrom ${CHROM} ${EXTRAFLAGS}
+### ${MPYTHON} ${RUN_PATH} --vcf ${GENOFILE} --gx ${GXPRFILE} --gxcorr ${GXCORRFL} --gtf ${GENEINFO} --method ${TJMETHOD} --null ${NULLMODL} --outprefix ${OUTPRFIX} --include-SNPs ${INCSTRNG} --psnpthres ${SNPTHRES} --pgenethres ${GENTHRES} --prior-sigma ${SBETA} --chrom ${CHROM} ${EXTRAFLAGS}

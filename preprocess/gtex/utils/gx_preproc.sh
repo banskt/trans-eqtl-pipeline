@@ -12,6 +12,7 @@
 # TISSUEOUTDIR
 # PREGXOUTDIR
 # PREPROC_UTILSDIR
+# GXOUTDIR
 # COVARDIR
 # NORMQCPY
 #
@@ -24,9 +25,6 @@
 # SAMPLE_FRAC_THRESHOLD
 # QCMETHODS
 # GXSELECTION 
-
-## Collect all covariates. This is a placeholder. Change later
-if [ "${bCollectCovs}" = "true" ]; then cp ${COVARDIR}/cov_gender_age_trischd.txt ${TISSUEOUTDIR}/covariates.txt; fi
 
 ## Select samples belonging to the particular tissue // Bash
 if [ "${bSelectTissue}" = "true" ]; then 
@@ -56,7 +54,7 @@ if [ "${bNormalizeQC}" = "true" ]; then
                          --counts ${TISSUEOUTDIR}/all_genes_counts.gct \
                          --vcf_sample_list ${PREGXOUTDIR}/vcf_samples.list \
                          --out ${TISSUEOUTDIR}/gtex_${TSHORT}.txt \
-                         --cov ${TISSUEOUTDIR}/covariates.txt \
+                         --cov ${TISSUEOUTDIR}/gtex_covariates.txt \
                          --tpm_threshold ${TPM_THRESHOLD} \
                          --count_threshold ${COUNTS_THRESHOLD} \
                          --sample_frac_threshold ${SAMPLE_FRAC_THRESHOLD} \

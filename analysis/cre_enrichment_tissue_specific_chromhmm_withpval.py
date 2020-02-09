@@ -62,6 +62,13 @@ def parse_args():
                         metavar='DIR',
                         help='name of the result directory')
 
+
+    parser.add_argument('--resfile',
+                        type=str,
+                        dest='resfile',
+                        metavar='FILE',
+                        help='name of the result file (without directory path)')
+
     parser.add_argument('--match',
                         type=str,
                         dest='matchfile',
@@ -209,6 +216,7 @@ random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_samplin
 if __name__ == '__main__':
     opts = parse_args()
     resdir = opts.resdir
+    resfile = opts.resfile
     dhsdir = opts.dhsdir
     matchfile = opts.matchfile
     eidfile = opts.eidfile
@@ -222,7 +230,7 @@ if __name__ == '__main__':
 
     tissue = opts.tissuename
 
-    resfilename = os.path.join(resdir, tissue, 'trans_eqtls.txt')
+    resfilename = os.path.join(resdir, tissue, resfile)
     print("Reading trans-eQTL results.")
     transeqtls = read_tejaas_results.transeqtls(resfilename)
     nteqtl = len(transeqtls)

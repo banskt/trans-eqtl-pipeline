@@ -20,7 +20,7 @@ def transeqtls(filename, debug = False):
             varid = linesplit[0].strip()
             chrm = int(linesplit[1].strip())
             bppos = int(linesplit[2].strip())
-            pval = float(linesplit[3].strip())
+            pval = float(linesplit[7].strip())
 
             idlist.append(varid)
             chrmlist.append(chrm)

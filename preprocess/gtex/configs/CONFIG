@@ -14,19 +14,19 @@ COVARDIR="${OUTDIR}/covariates"
 # GENEPOSFILE="${GXOUTDIR}/genepos.gencode.v19.txt"
 
 #---- Options for gene expression pre-filtering
-USE_SLURM=false
+USE_SLURM=true
 USE_LSF=false
-GXSELECTION="protein_coding"   # a list of biotypes to be selected for analysis
-QCMETHODS="raw raw_std"
+GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
+QCMETHODS="raw raw_std raw_cclm_std raw_cclasso_std"
 TPM_THRESHOLD=0.1
 COUNTS_THRESHOLD=6
 SAMPLE_FRAC_THRESHOLD=0.2
+bCollectCovs=true
 bSelectTissue=true
 bNormalizeQC=true
-bCollectCovs=true
 
 #---- Genotype filtering
-MAFMIN=0.1
+MAFMIN=0.01
 REMOVE_INDELS=true
 REMOVE_AMBIGUOUS=true
 IMPUTE_MISSING=true

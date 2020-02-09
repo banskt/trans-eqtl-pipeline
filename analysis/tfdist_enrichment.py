@@ -33,6 +33,12 @@ def parse_args():
                         metavar='DIR',
                         help='name of the result directory')
 
+    parser.add_argument('--resfile',
+                        type=str,
+                        dest='resfile',
+                        metavar='FILE',
+                        help='name of the result file')
+
     parser.add_argument('--tissue',
                         nargs='*',
                         type=str,
@@ -133,7 +139,7 @@ fout.write(f'TISSUE\tN_TRANSEQTLS\tCISTF_FRAC\tENRICHMENT\tP_VALUE\n')
 
 for tissue in tissuelist:
 
-    resfilename = os.path.join(opts.resdir, tissue, 'trans_eqtls.txt')
+    resfilename = os.path.join(opts.resdir, tissue, opts.resfile)
     transeqtls = read_tejaas_results.transeqtls(resfilename)
     print(f'{tissue}: {len(transeqtls)} trans-eQTLs')
     nteqtl = len(transeqtls)

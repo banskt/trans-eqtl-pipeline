@@ -1,13 +1,15 @@
-#!/bin/sh
-#BSUB -q mpi-short
-#BSUB -W 2:00
-#BSUB -n 4
-#BSUB -R span[hosts=1]
-#BSUB -R scratch
-#BSUB -a openmp
-#BSUB -J _JOB_NAME
-#BSUB -o _JOB_NAME.out
-#BSUB -e _JOB_NAME.err
+#!/bin/bash
+#SBATCH -p medium
+#SBATCH --qos=short
+#SBATCH -t 0-2:00:00
+#SBATCH -n 4
+#SBATCH -N 1
+#SBATCH -C scratch
+#SBATCH -A all
+#SBATCH -J _JOB_NAME
+#SBATCH -o _JOB_NAME.out
+#SBATCH -e _JOB_NAME.err
+
 
 PYENV=_PYT_ENV_
 

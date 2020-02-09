@@ -288,7 +288,7 @@ if __name__ == '__main__':
 
     # Read GTF file for filtering genes
     print (f'Reading GENCODE file to keep {", ".join(opts.biotype)} genes')
-    gene_info = readgtf.gencode_v12(opts.gtf_file, trim=False, biotype=opts.biotype)
+    gene_info = readgtf.gencode(opts.gtf_file, trim=False, biotype=opts.biotype)
 
     # Filter genes and write output
     print ("Writing all outputs.")

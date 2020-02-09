@@ -1,16 +1,16 @@
 #!/bin/bash
 
-DATALOAD="GTEXV8.SAIKAT_HOME"
+DATALOAD="GTEXV8.SAIKAT"
 DATASET="GTEx"
 CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
 #CHRNUMS="1 2"
 GXNPEER="0"
-GXSELECTION="protein_coding"
+GXSELECTION="protein_coding lncRNA"
 
 # MatrixEQTL options
 bMatrixEqtl=false			# run the method if true
 bMEqtlRandom=false			# run the method if true
-MEQTL_PREPROC_STR="tmm_std_cclm"
+MEQTL_PREPROC_STR="tmm_cclm_std"
 AGE_CORRECTION="true"
 MEQTL_PVALTHRES_CIS=0.001
 MEQTL_PVALTHRES_TRANS=0.001
@@ -20,13 +20,14 @@ MATRIXEQTL_MODEL="modelLINEAR"
 bTejaas=true				# run the method if true
 bTjsRandom=false
 TEJAAS_PREPROC_STR="raw_std"
-TEJAAS_MODEL="jpa-rr" 			# only one model allowed
+TEJAAS_TARGETGENE_PREPROC_STR="raw_cclasso_std"
+TEJAAS_MODEL="rr" 			# only one model allowed
 TEJAAS_NULL="perm" 			# list of null models
 TEJAAS_SIGMA_BETA_PERM="0.1"            # list of sigma beta for perm null
 TEJAAS_SIGMA_BETA_MAF="0.01" 		# list of sigma beta for MAF null
 MAX_NSNP_PERJOB=20000 			# number of SNPs for analysis by TEJAAS per job
-TEJAAS_SNPS_THRES=0.001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
-TEJAAS_GENE_THRES=0.001 		# even for the above, not all target genes are printed; only those with p-values below this threshold
+TEJAAS_SNPS_THRES=0.0001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
+TEJAAS_GENE_THRES=0.0001 		# even for the above, not all target genes are printed; only those with p-values below this threshold
 TEJAAS_KNN=true
 
 # CPMA options

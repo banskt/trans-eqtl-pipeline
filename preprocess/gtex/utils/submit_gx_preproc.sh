@@ -28,6 +28,7 @@ sed -e "s|_PYENV_|${PYENV}|g;
         s|_OUT_DIR_|${OUTDIR}|g;
         s|_TIS_OUT_|${TISSUEOUTDIR}|g;
         s|_PRE_GXO_|${PREGXOUTDIR}|g;
+        s|_GXF_OUT_|${GXOUTDIR}|g;
         s|_COV_DIR_|${COVARDIR}|g;
         s|_NORM_QC_PY_|${NORMQCPY}|g;
         s|_TPM_THR_|${TPM_THRESHOLD}|g;

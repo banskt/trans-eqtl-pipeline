@@ -4,6 +4,7 @@ THISMETHOD="tejaas"
 THISJOBDEPS="None"
 
 EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}
+CC_EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_TARGETGENE_PREPROC_STR}}
 
 source ${UTILSDIR}/submit_tejaas
 
@@ -32,7 +33,7 @@ for CHRM in ${CHRNUMS}; do
             METHOD_VARIANT="${NULL}null_sb${SBETA}"
             __EFLAGS="${EXTRAFLAGS}" ## because we don't want inplace modification of $EXTRAFLAGS within the loop
             if [ "${TEJAAS_KNN}" = "true" ]; then
-                __EFLAGS="${__EFLAGS} --knn"
+                __EFLAGS="${__EFLAGS} --knn 30"
                 METHOD_VARIANT="${METHOD_VARIANT}_knn"
             fi
 
@@ -40,7 +41,7 @@ for CHRM in ${CHRNUMS}; do
             SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}"
             JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TSHORT}_chr${CHRM}_${RANDSTRING}"
 
-            submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} \
+            submit_tejaas ${PYTHON36} ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${CC_EXPRESSIONFILE} \
                           ${GENEINFOFILE} ${MAF_1KG_FILE} \
                           ${TEJAAS_MODEL} ${NULL} \
                           ${TEJAAS_SNPS_THRES} ${TEJAAS_GENE_THRES} ${SBETA}\

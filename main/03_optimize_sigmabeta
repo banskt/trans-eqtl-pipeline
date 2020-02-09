@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ "$PS1" ]; then echo -e "This script cannot be sourced. Use \"${BASH_SOURCE[0]}\" instead." ; return ; fi
+
+CONFIGFILE=$1
+if [ -z ${CONFIGFILE} ] || [ ! -f ${CONFIGFILE} ]; then
+    echo "Fatal! No configuration file found.";
+    echo "Use this script as: ${BASH_SOURCE[0]} CONFIGFILE";
+    exit 1;
+fi
+
+source ${CONFIGFILE}
+source PATHS
+source ${UTILSDIR}/submit_job
+source ${UTILSDIR}/add_deps
+source ${UTILSDIR}/unset_vars
+source ${UTILSDIR}/gx_preproc_string
+source EXTERNAL
+
+RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
+JOBDEPS="None" 	# used for controlling job dependencies
+SUBMITTED_JOBIDS="" # used for controlling jobid reporting
+
+source ${DATALOAD}
+
+while IFS='' read -r LINE || [ -n "$LINE" ]; do
+    if [[ $LINE =~ ^[^\#] ]]; then
+
+        # Get the name of the tissue
+        TFULL=$( echo "${LINE}" | cut -f 1 )
+        TSHORT=$( echo "${LINE}" | cut -f 2 )
+        TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
+
+        JOBSUBDIR_DATA="${JOBSUBDIR}"
+        OUTDIR_DATA="${OUTDIR}"
+
+        GX_TISSUE_FMT=${EXPR_FMT/\[TISSUE\]/${TSHORT}}
+        EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}
+
+        if [ ! -z "$EXPRESSIONFILE" ]; then
+            source ${UTILSDIR}/sb_optimize
+            echo "    ${SBOPTIM_JOBID} > Optimize sigmabeta (${TSHORT})"
+        fi
+    fi
+done < ${TISSUEFILE}
+
+unset_vars ${CONFIGFILE}
+unset_vars PATHS
+unset_vars EXTERNAL

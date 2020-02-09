@@ -3,17 +3,18 @@
 # REQUIRED FILES!! download them from GTEx (for pheno file you need access)
 
 SRCDIR="/scratch/sbanerj/data/GTEx/v8"
-#SRCVCF="${SRCDIR}/genotype/GTEx_Analysis_20150112_OMNI_2.5M_5M_450Indiv_chr1to22_genot_imput_info04_maf01_HWEp1E6_ConstrVarIDs.vcf.gz"
-#SRCLOOKUP="${SRCDIR}/genotype/GTEx_Analysis_2015-01-12_OMNI_2.5M_5M_450Indiv_chr1to22_phased_genot_imput_info04_maf01_HWEp1E6_VarID_Lookup_Table.txt.gz"
+SRCVCF="${SRCDIR}/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.vcf.gz"
+SRCLOOKUP="${SRCDIR}/genotype/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz"
 
 SRCREAD="${SRCDIR}/expression/GTEx_Analysis_v8_RNA-seq_gene_read.gct.gz"
 SRCTPM="${SRCDIR}/expression/GTEx_Analysis_v8_RNA-seq_gene_tpm.gct.gz"
-#SRCCOVARS="${SRCDIR}/expression/GTEx_Analysis_v6p_eQTL_covariates"
-#SRCREAD="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.gct.gz"
-#SRCTPM="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz"
+SRCCOVARS="${SRCDIR}/covariates/GTEx_Analysis_v8_eQTL_covariates"
+SRCCOVARFMT="${SRCCOVARS}/[TISSUE].v8.covariates.txt"
 
 SRCPHENO="${SRCDIR}/phenotype/phs000424.v8.pht002743.v8.p2.c1.GTEx_Sample_Attributes.GRU.txt"
 SRCSUBJCT="${SRCDIR}/phenotype/phs000424.v8.pht002742.v8.p2.c1.GTEx_Subject_Phenotypes.GRU.txt"
 
 GENCODEFILE="/scratch/sbanerj/data/GENCODE/gencode.v26.annotation.gtf.gz"
+
+# created a sample file from the VCF with all 838 genotype donors
 DONORFILE="${SRCDIR}/gtex.sample"

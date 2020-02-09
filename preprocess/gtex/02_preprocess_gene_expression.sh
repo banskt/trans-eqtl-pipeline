@@ -28,7 +28,7 @@ zcat ${SRCTPM} | head -n 3 | tail -n 1 | sed 's/\t/\n/g' > ${PREGXOUTDIR}/rnaseq
 cut -d" " -f1 ${DONORFILE} | tail -n +3 > ${PREGXOUTDIR}/vcf_samples.list
 
 #Collect covariates
-source ${PREPROC_UTILSDIR}/collect_age_gender_trischd.sh
+#source ${PREPROC_UTILSDIR}/collect_age_gender_trischd.sh
 
 ## control job dependencies
 GX_TISSUE_JOBDEPS="None"
@@ -42,6 +42,13 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
         TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
         TISSUEOUTDIR="${PREGXOUTDIR}/${TSHORT}"
         if [ ! -d ${TISSUEOUTDIR} ]; then mkdir -p ${TISSUEOUTDIR}; fi
+        GTEX_COVFILE=${SRCCOVARFMT/\[TISSUE\]/${TBASE}}
+
+        ### Collect GTEx covariates.
+        if [ "${bCollectCovs}" = "true" ]; then 
+            cp ${GTEX_COVFILE} ${TISSUEOUTDIR}/gtex_covariates_with_peer.txt
+            grep -v "InferredCov" ${TISSUEOUTDIR}/gtex_covariates_with_peer.txt > ${TISSUEOUTDIR}/gtex_covariates.txt
+        fi
 
         echo $TFULL
 

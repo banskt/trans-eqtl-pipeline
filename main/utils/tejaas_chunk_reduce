@@ -1,73 +1,77 @@
 #!/bin/bash
 
+function expected_nchunk() {
+    local GTFMT=$1
+    local CHRM=$2
+    local NMAX=$3
+    GENOTYPEFILE=${GTFMT/\[CHRM\]/${CHRM}}
+    #NSNPS=$( zcat ${GENOTYPEFILE} | wc -l )
+    #NSNPS=$( echo $(( NSNPS - 1 )) ) # only one line of header
+    #NCHUNK=$( echo $(( (NSNPS + NMAX - 1)/NMAX )) )
+    NSNPS=$( zcat ${GENOTYPEFILE} | sed '/^\s*#/d;/^\s*$/d' | wc -l )
+    NCHUNK=$( echo $(( (NSNPS + NMAX - 1)/NMAX )) )
+    echo $NCHUNK
+}
+
 function tejaas_chunk_reduce() {
+
     local DIR=$1
-    local CWD=`pwd`
+    local NCHUNK=$2
+    local CWD=$( pwd )
     cd $DIR
     for EXT in rr.txt gene_snp_list.txt; do
     # for EXT in jpa.txt rr.txt gene_snp_list.txt rr_it0.txt rr_it1.txt; do
+
+        # start the process only if chunk000 has been created
         if [ -f chunk000_${EXT} ]; then
-            NCHUNK=`wc -l chunk*_${EXT} | wc -l | awk '{print $1-1}'`
-            NLINES=0
-            ERROR=false
 
-            while :
-            do
-                NLINES=0
-                ERROR=false
-                head -n 1 chunk000_${EXT} > ${EXT}
+            # check write access in the target folder / also copy the header line
+            head -n 1 chunk000_${EXT} > ${EXT}
+            if [ -f ${EXT} ]; then
 
-                for ((i=0; i<$NCHUNK; i++)); do
-                    NUM=`echo $i | awk '{printf "%03d\n", $1}'`
+                # calculate total number of chunks expected
+                #GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+                #NSNPS=$( zcat ${GENOTYPEFILE} | wc -l )
+                #NCHUNK=$(echo $(( NSNPS/MAX_NSNP_PERJOB )))
+                #echo "${DIR} --> ${EXT} --> ${NCHUNK} chunks."
+    
+                # loop over all chunks and count the number of SNPs for which the statistic has been calculated
+                NCALCSNPS=1
+                COLLECT=true
+                for (( i=0; i<${NCHUNK}; i++ )); do
+                    NUM=$( echo $i | awk '{printf "%03d\n", $1}' )
                     FILENAME="chunk${NUM}_${EXT}"
+                    # If the chunk exists, concatenate.
                     if [ -f ${FILENAME} ]; then
                         tail -n +2 ${FILENAME} >> ${EXT}
-                        # sed 1,1d ${FILENAME} >> ${EXT}
-                        Nacum=`wc -l ${EXT} | awk '{print $1}'`
-                        N=`wc -l ${FILENAME} | awk '{print $1}'`
+                        N=$( wc -l ${FILENAME} | awk '{print $1}' )
+                        NCALCSNPS=$((NCALCSNPS + N - 1))
                     else
-                        echo "Error in ${DIR}: ${FILENAME} does not exist."
-                        ERROR=true
+                        echo "${DIR} --> ${EXT} --> Could not find chunk${NUM}."
+                        COLLECT=false
                     fi
-                    NLINES=$((NLINES + N - 1))
                 done
-
-                NLINES=$((NLINES + 1))
-                N=`wc -l ${EXT} | awk '{print $1}'`
-                echo "$NLINES vs $Nacum"
-                if [ "$N" -eq "$NLINES" ]; then
-                    echo "Succesfully reduced chunks for $EXT in $DIR"
-                    echo "Done."
-                    break
-                else
-                    echo "Error in copying chunks for $EXT in $DIR"
-                    echo "--->RETRYING.."
-                fi
-            done
-
-
-            if [ "${ERROR}" = "false" ]; then
-                if [ -f ${EXT} ]; then
-                    N=`wc -l ${EXT} | awk '{print $1}'`
-                    if [ "$N" -eq "$NLINES" ]; then
-                        echo "Succesfully reduced chunks for $EXT in $DIR"
-                        echo "Done."
+    
+                # after all files have been collected (COLLECT=true), check if the line numbers match
+                # if the line numbers don't match, then there is some unknown error.
+                # Investigate.
+                if [ "${COLLECT}" = "true" ]; then
+                    NLINES_EXT=$( wc -l ${EXT} | awk '{print $1}' )
+                    if [ "${NLINES_EXT}" -eq "${NCALCSNPS}" ]; then
+                        echo "${DIR} --> ${EXT} --> Done."
+                        # Now you can remove the chunks
+                        rm -rf chunk*_${EXT} 
                     else
-                        echo "Error in copying chunks for $EXT in $DIR"
-                        echo "$N vs $NLINES"
-                        exit
+                        echo "${DIR} --> ${EXT} --> Line numbers do not match."
                     fi
-                else
-                    echo "Could not create $EXT in $DIR"
-                    exit
                 fi
-            else
-                echo "Job error for $EXT in $DIR"
-                exit
-            fi
+           else
+                echo "${DIR} --> ${EXT} --> Could not create target file, check write access." 
+           fi
         else
-            echo "chunk000_${EXT} does not exist in $DIR"
+            echo "${DIR} --> ${EXT} --> Could not find the first chunk."
         fi
+
     done
     cd $CWD
 }

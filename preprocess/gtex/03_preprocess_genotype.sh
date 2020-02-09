@@ -24,6 +24,7 @@ CONVERT_ANNOT_PY="${SCRIPTDIR}/vcf_change_annot.py"
 VCF_FILTER_PY="${SCRIPTDIR}/vcf_filter.py"
 IMPUTE_MISSING_PY="${SCRIPTDIR}/vcf_impute_missingGT.py"
 
+GTFILE_BASENAME=$( basename ${SRCVCF} .vcf.gz )
 RANDSTRING=$( cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1 )
 OUTFILE_BASE="${GTOUT_ALL}/${GTFILE_BASENAME}_maf${MAFMIN#*.}"
 if [ "${REMOVE_INDELS}" = "true" ]; then OUTFILE_BASE="${OUTFILE_BASE}_noindels"; fi

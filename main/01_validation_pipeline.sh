@@ -37,6 +37,9 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
         JOBSUBDIR_DATA="${JOBSUBDIR}/${TSHORT}"
         OUTDIR_DATA="${OUTDIR}/${TSHORT}"
         SHUFFLED_ID_FILE="${OUTDIR}/shuffled_donor_ids.txt"
+        if grep -Fwq ${TSHORT} ${TEJAAS_SIGMA_BETA_PERM_FILE}; then 
+            TEJAAS_SIGMA_BETA_PERM=$( grep -w ${TSHORT} ${TEJAAS_SIGMA_BETA_PERM_FILE} | cut -f3 )
+        fi
 
         GX_TISSUE_FMT=${EXPR_FMT/\[TISSUE\]/${TSHORT}}
         EXPRESSIONFILE=${GX_TISSUE_FMT/\[PREPROC_STRING\]/${TEJAAS_PREPROC_STR}}

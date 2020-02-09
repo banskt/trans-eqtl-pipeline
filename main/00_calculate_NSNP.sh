@@ -15,18 +15,18 @@ source ${UTILSDIR}/unset_vars
 
 source ${DATALOAD}
 
-#CHRM_NTOT_FILE="$( dirname ${GENO_FMT} )/ntot_per_chromosome.txt"
+CHRM_NTOT_FILE="$( dirname ${GENO_FMT} )/ntot_per_chromosome.txt"
 
-#if [ -f ${CHRM_NTOT_FILE} ]; then rm -f ${CHRM_NTOT_FILE}; touch ${CHRM_NTOT_FILE}; fi
+if [ -f ${CHRM_NTOT_FILE} ]; then rm -f ${CHRM_NTOT_FILE}; touch ${CHRM_NTOT_FILE}; fi
 
 for CHRM in ${CHRNUMS}; do
     GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
     SNPLISTFILE="$( dirname ${GENOTYPEFILE} )/$( basename ${GENOTYPEFILE} .vcf.gz ).snplist"
     echo $SNPLISTFILE
     zcat ${GENOTYPEFILE} | cut -f1-3 | sed '/^\s*#/d;/^\s*$/d' | cut -f3 > ${SNPLISTFILE}
-    #NTOT=$( zcat ${GENOTYPEFILE} | sed '/^\s*#/d;/^\s*$/d' | wc -l )
-    #echo "${CHRM}: ${NTOT} SNPs"
-    #echo "${CHRM} ${NTOT}" >> ${CHRM_NTOT_FILE}
+    NTOT=$( wc -l ${SNPLISTFILE} | awk '{print $1}' )
+    echo "${CHRM}: ${NTOT} SNPs"
+    echo "${CHRM} ${NTOT}" >> ${CHRM_NTOT_FILE}
 done
 
 unset_vars ${CONFIGFILE}
