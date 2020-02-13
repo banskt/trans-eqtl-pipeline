@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH -p hh
-#SBATCH -t 0-2:00:00
+#SBATCH -t 0-6:00:00
 #SBATCH -n 4
 #SBATCH -N 1
 #SBATCH -J _JOB_NAME

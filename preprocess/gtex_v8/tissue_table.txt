@@ -1,54 +1,54 @@
 #### GTEx v8!!
-#Adipose - Subcutaneous	as
-Adipose - Visceral (Omentum)	av
-Adrenal Gland	ag
-Artery - Aorta	aa
-Artery - Coronary	ac
-Artery - Tibial	at
-Brain - Amygdala	bam
-Brain - Anterior cingulate cortex (BA24)	ban
-Brain - Caudate (basal ganglia)	bca
-Brain - Cerebellar Hemisphere	bceh
-Brain - Cerebellum	bce
-Brain - Cortex	bco
-Brain - Frontal Cortex (BA9)	bfr
-Brain - Hippocampus	bhi
-Brain - Hypothalamus	bhy
-Brain - Nucleus accumbens (basal ganglia)	bnu
-Brain - Putamen (basal ganglia)	bpu
-Brain - Spinal cord (cervical c-1)	bsp
-Brain - Substantia nigra	bsu
-Breast - Mammary Tissue	br
-Cells - EBV-transformed lymphocytes	ebv
-Cells - Cultured fibroblasts	fib
-Colon - Sigmoid	cols
-Colon - Transverse	colt
-Esophagus - Gastroesophageal Junction	esog
-Esophagus - Mucosa	esom
-Esophagus - Muscularis	esomu
-Heart - Atrial Appendage	haa
-Heart - Left Ventricle	hlv
-Kidney - Cortex	kc
-Liver	liv
-Lung	lu
-Minor Salivary Gland	msg
-Muscle - Skeletal	ms
-Nerve - Tibial	nt
-Pancreas	pan
-Pituitary	pit
-Skin - Not Sun Exposed (Suprapubic)	snse
-Skin - Sun Exposed (Lower leg)	sse
-Small Intestine - Terminal Ileum	si
-Spleen	spl
-Stomach	sto
-Thyroid	thy
-Whole Blood	wb
-Ovary	ov	##no covariates available
-Prostate	pro	##no covariates available
-Testis	tes	##no covariates available
-Uterus	ut	##no covariates available
-Vagina	va	##no covariates available
-Bladder	bl	##no covariates available
+Adipose - Subcutaneous	as	60
+Adipose - Visceral (Omentum)	av	60
+#Adrenal Gland	ag	30
+Artery - Aorta	aa	60
+#Artery - Coronary	ac	30
+Artery - Tibial	at	60
+#Brain - Amygdala	bam	15
+#Brain - Anterior cingulate cortex (BA24)	ban	15
+#Brain - Caudate (basal ganglia)	bca	30
+#Brain - Cerebellar Hemisphere	bceh	30
+#Brain - Cerebellum	bce	30
+#Brain - Cortex	bco	30
+#Brain - Frontal Cortex (BA9)	bfr	30
+#Brain - Hippocampus	bhi	30
+#Brain - Hypothalamus	bhy	30
+#Brain - Nucleus accumbens (basal ganglia)	bnu	30
+#Brain - Putamen (basal ganglia)	bpu	30
+#Brain - Spinal cord (cervical c-1)	bsp	15
+#Brain - Substantia nigra	bsu	15
+Breast - Mammary Tissue	br	60
+#Cells - EBV-transformed lymphocytes	ebv	15
+Cells - Cultured fibroblasts	fib	60
+#Colon - Sigmoid	cols	45
+#Colon - Transverse	colt	60
+#Esophagus - Gastroesophageal Junction	esog	45
+Esophagus - Mucosa	esom	60
+Esophagus - Muscularis	esomu	60
+#Heart - Atrial Appendage	haa	60
+Heart - Left Ventricle	hlv	60
+#Kidney - Cortex	kc	15
+#Liver	liv	30
+Lung	lu	60
+#Minor Salivary Gland	msg	15
+#Muscle - Skeletal	ms	60
+#Nerve - Tibial	nt	60
+#Pancreas	pan	45
+#Pituitary	pit	30
+Skin - Not Sun Exposed (Suprapubic)	snse	60
+Skin - Sun Exposed (Lower leg)	sse	60
+#Small Intestine - Terminal Ileum	si	30
+#Spleen	spl	30
+#Stomach	sto	45
+Thyroid	thy	60
+#Whole Blood	wb	60
+#Ovary	ov	30
+#Prostate	pro	30
+#Testis	tes	45
+#Uterus	ut	15
+#Vagina	va	15
+#Bladder	bl	15
 # # Cells - Leukemia cell line (CML)	leu
 # #Cervix - Ectocervix	ect
 # #Cervix - Endocervix	end

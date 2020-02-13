@@ -42,6 +42,7 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
         TFULL=$( echo "${LINE}" | cut -f 1 )
         TSHORT=$( echo "${LINE}" | cut -f 2 )
         TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
+        GXNPEERS=$( echo "${LINE}" | cut -f 3 )
 
         if [ "${USE_BSUB}" = "true" ]; then
             source utils/process_expression.sh
