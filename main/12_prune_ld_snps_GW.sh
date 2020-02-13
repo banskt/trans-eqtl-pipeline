@@ -22,22 +22,25 @@ RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
 THISJOBDEPS="None"
 
 CURRENT_DTYPE=""
+INFILES=""
 for CUTOFF in ${TEJAAS_CUTOFF}; do
-    INFILES=""
     for EXPR_CORR in ${EXPRESSIONS}; do
         for MDATA in ${DATASETS}; do
-            source ${DATALOAD}
+            # source ${DATALOAD}
+
+            DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
+            TISSUEID=`echo ${MDATA} | cut -d'-' -f2`
 
             # This looks stupid, but is to be able to run LD across chromosomes always on the same dataset
             # If multiple datasets are to be run, then this will raise an error
             if [ "${CURRENT_DTYPE}" = "" ]; then CURRENT_DTYPE=$DATATYPE; fi
             if [ "${CURRENT_DTYPE}" != "${DATATYPE}" ]; then echo "Different datasets! abort"; exit; fi
 
-            JOBDIR_DATA="${JOBSUBDIR}/ldprune/${DATATYPE}"
-            if [ -d ${JOBDIR_DATA} ]; then rm -rf ${JOBDIR_DATA}; fi; mkdir -p ${JOBDIR_DATA}
-            JOBNAME="ldprune_${DATATYPE}_${CHRM}_${RANDSTRING}"
+            # JOBDIR_DATA="${JOBSUBDIR}/ldprune/${DATATYPE}"
+            # if [ -d ${JOBDIR_DATA} ]; then rm -rf ${JOBDIR_DATA}; fi; mkdir -p ${JOBDIR_DATA}
+            # JOBNAME="ldprune_${DATATYPE}_${CHRM}_${RANDSTRING}"
 
-            OUTDIR_DATA="${OUTDIR}/${MDATA}"
+            OUTDIR_DATA="${SOURCEDIR}/${EXPR_CORR}/summary_${CUTOFF}/${TISSUEID}"
             # if [ "${bMatrixEqtl}" = "true" ];  then source ${UTILSDIR}/matrix_eqtl; fi
             # if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; fi
 
@@ -49,31 +52,33 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
                     _VARIANT=""
                     if [ "${KNN}" -gt "0" ]; then _VARIANT="${_VARIANT}_knn${KNN}"; fi
                     if [ "${CISMASK}" != "true" ]; then _VARIANT="${_VARIANT}_nocismask"; fi
+                    if [ "${CROSSMAP}" == "true" ]; then _VARIANT="${_VARIANT}_crossmap"; fi
                     if [ "${MAGIC_SQRT}" == "true" ]; then _VARIANT="${_VARIANT}_sqrt"; fi
 
-                    if [ ${DYNAMIC_SB} == "true" ]; then
-                        METHOD_VARIANT="${NULL}null_sbDynamic"
-                        if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
-                        if [ "${bTejaas}" = "true" ];   then
-                            NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls_${CUTOFF}.txt"
-                            INFILES="${INFILES}${NEWFILE} " ; fi
-                        if [ "${bTjsRandom}" = "true" ];then
-                            NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls_${CUTOFF}.txt" 
-                            INFILES="${INFILES}${NEWFILE} " ; fi
+                    if [ "${DYNAMIC_SB}" == "true" ]; then
+                        for KEFF in ${KEFFS}; do
+                            METHOD_VARIANT="${NULL}null_sbDynamic${KEFF}"
+                            if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
+
+                            if [ "${bTejaas}" = "true" ];   then
+                                NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls.txt"
+                                INFILES="${INFILES}${NEWFILE} " ; fi
+                            if [ "${bTjsRandom}" = "true" ];then
+                                NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls.txt" 
+                                INFILES="${INFILES}${NEWFILE} " ; fi
+                        done
                     else
                         for SBETA in $TEJAAS_SIGMA_BETA_PERM; do
                             METHOD_VARIANT="${NULL}null_sb${SBETA}"
                             if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
                             if [ "${bTejaas}" = "true" ];   then
-                                NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls_${CUTOFF}.txt"
+                                NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls.txt"
                                 INFILES="${INFILES}${NEWFILE} " ; fi
                             if [ "${bTjsRandom}" = "true" ];then
-                                NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls_${CUTOFF}.txt" 
+                                NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls.txt" 
                                 INFILES="${INFILES}${NEWFILE} " ; fi
                         done
-                    fi
-                    # if [ "${bTejaasJPA}" = "true" ];   then RUNJPA=true; source ${UTILSDIR}/tejaas; fi
-                    # if [ "${bJPARandom}" = "true" ];   then SHUFFLE=true; RUNJPA=true; source ${UTILSDIR}/tejaas; fi                
+                    fi            
                 done
             done
         done
@@ -95,6 +100,4 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
 
     # submit_job ${JOBDIR_DATA} ${JOBNAME} ${THISJOBDEPS}
 done
-
-
 

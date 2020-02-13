@@ -25,10 +25,10 @@ done < ${TISSUEFILE}
 ANNOTS="multi_tissue DHSindex"
 
 
-# DATASETS="gtex_v8-sse"
+# DATASETS="gtex_v8-sse" 
 # DATASETS="fhs"
 echo "DATASETS: $DATASETS"
-EXPRESSIONS="raw" # raw_pub" #"raw raw_cclm_nopc" #"raw_cclm tmm_cclm" # #"raw_oneref" #"tmm tmm_cclm" "raw_pub"
+EXPRESSIONS="raw raw_cclm" #"raw raw_cclm_nopc" # #"raw_oneref" #"tmm tmm_cclm" "raw_pub"
 GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
 CHRNUMS="22"
 
@@ -37,33 +37,32 @@ CHRNUMS="22"
 TEJAAS_CUTOFF="5e-08"
 CISMASK=true
 KNNS="30"
-CROSSMAP=true
 MAGIC_SQRT=false
-MML_OPT=false
+MML_OPT=true
 DYNAMIC_SB=false
-KEFFS="0.4"
+KEFFS="0.4 0.6"
 
 SHUFFLE_SPECIAL=false
 # CENTERSCALE=false/true
 
 # MatrixEQTL options
-bMatrixEqtl=false			# run the method if true
-bMEqtlRandom=false      	# run the method if true
+bMatrixEqtl=false           # run the method if true
+bMEqtlRandom=false          # run the method if true
 MEQTL_PVALTHRES_CIS=0.001
 MEQTL_PVALTHRES_TRANS=0.001
 MATRIXEQTL_MODEL="modelLINEAR"
 AGE_CORRECTION="true"
 
 # TEJAAS options
-bTejaas=true				# run the method if true
+bTejaas=true                # run the method if true
 bTjsRandom=false
-TEJAAS_MODEL="jpa-rr" 			# only one model allowed
-TEJAAS_NULL="perm" # maf" 			# list of null models
-TEJAAS_SIGMA_BETA_PERM="0.1" # "0.005 0.007" 		# list of sigma beta for perm null
-TEJAAS_SIGMA_BETA_MAF="0.001" 		# list of sigma beta for MAF null
-MAX_NSNP_PERJOB=20000 			# number of SNPs for analysis by TEJAAS per job
-TEJAAS_SNPS_THRES=0.001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
-TEJAAS_GENE_THRES=0.001 		# even for the above, not all target genes are printed; only those with p-values below this threshold
+TEJAAS_MODEL="jpa-rr"           # only one model allowed
+TEJAAS_NULL="perm" # maf"           # list of null models
+TEJAAS_SIGMA_BETA_PERM="0.1"        # list of sigma beta for perm null
+TEJAAS_SIGMA_BETA_MAF="0.001"       # list of sigma beta for MAF null
+MAX_NSNP_PERJOB=20000           # number of SNPs for analysis by TEJAAS per job
+TEJAAS_SNPS_THRES=0.001         # all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
+TEJAAS_GENE_THRES=0.001         # even for the above, not all target genes are printed; only those with p-values below this threshold
 
 
 

@@ -35,6 +35,10 @@ for EXPR_CORR in ${EXPRESSIONS}; do
             _VARIANT="${_VARIANT}_nocismask"
         fi
 
+        if [ "${CROSSMAP}" == "true" ]; then
+            _VARIANT="${_VARIANT}_crossmap"
+        fi
+
         for NULL in ${TEJAAS_NULL}; do
             if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
             if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi

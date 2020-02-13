@@ -21,6 +21,11 @@ else
     _VARIANT="${_VARIANT}_nocismask"
 fi
 
+if [ "${CROSSMAP}" == "true" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --crossmap ${CROSSMAPFILE}"
+    _VARIANT="${_VARIANT}_crossmap"
+fi
+
 if [ "${MAGIC_SQRT}" == "true" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --magic_sqrt"
     _VARIANT="${_VARIANT}_sqrt"

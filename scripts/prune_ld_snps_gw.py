@@ -101,7 +101,6 @@ def prune_region(region, myldict):
             for r in myldict[str(snp.pos)].keys():
                 rejected[r] = True
     took = time.time() - start
-    # print("LD prunning took", took)
     return sorted(accepted, key=attrgetter('pos'), reverse=False)
 
             
@@ -114,6 +113,7 @@ def prune_region_GW(region, myldict):
     for i in range(1,23):
         rejected[i] = collections.defaultdict(lambda: False)
     accepted = []
+    accepted_count = collections.defaultdict(int)
     for snp in sorted_region:
         if rejected[snp.chrom][str(snp.pos)]:
             ## add to region
@@ -146,11 +146,11 @@ if __name__ == '__main__':
 
     opts = parse_args()
 
-    print(opts.ldfile)
+    print("LDfile:", opts.ldfile)
     chroms = np.arange(1,23)
     LD_gw_dict = dict()
-    start = time.time()
     for chrm in chroms:
+        start = time.time()
         print("Loading CHR ", chrm, end="")
         myldict = read_ldfile(opts.ldfile.format(chrm))
         LD_gw_dict[chrm] = myldict

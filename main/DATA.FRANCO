@@ -6,9 +6,10 @@ EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc" #new_prep
 GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
 GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
+CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
 # output directory
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_lncRNA_freeze" #jan2020_tryouts"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_realease_test" #gtex_v8_lncRNA_freeze" #jan2020_tryouts"
 
 
 ########################### ATTENTION!!!!
@@ -195,7 +196,7 @@ esac
 
 case "${ANNOT_TYPE}" in
     "multi_tissue")
-        DHS_FILE="${DATADIR}/multi-tissue.master.ntypes.simple.hg19.bed"
+        DHS_FILE="${DATADIR}/multi-tissue.master.ntypes.simple.hg19_hglift_hg38_clean_sorted.bed"
         ;;
     "DHSindex")
         DHS_FILE="${DATADIR}/DHSindex/DHS_Index_downlift_hg19.txt"

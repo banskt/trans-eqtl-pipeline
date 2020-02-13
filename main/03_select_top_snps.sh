@@ -34,6 +34,10 @@ for EXPR_CORR in ${EXPRESSIONS}; do
                     _VARIANT="${_VARIANT}_nocismask"
                 fi
 
+                if [ "${CROSSMAP}" == "true" ]; then
+                    _VARIANT="${_VARIANT}_crossmap"
+                fi
+
                 if [ "${MAGIC_SQRT}" == "true" ]; then
                     _VARIANT="${_VARIANT}_sqrt"
                 fi
