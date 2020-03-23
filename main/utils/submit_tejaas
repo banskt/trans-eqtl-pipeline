@@ -22,6 +22,7 @@ function submit_tejaas() {
     local bsubdir=${19}
     local __jobdeps=${20} ## name of the bash variable
     local jobdeps=${21}   ## contents of the bash variable
+    local ntot=${22}
     local jobname=0
     local i=0
     local index=0
@@ -36,7 +37,8 @@ function submit_tejaas() {
     ## echo $jobsubdir $outdir $jobprefix
     ## echo $nmax $thisjobdep $bsubdir $__jobdeps $jobdeps
 
-    ntot=`zcat ${genotype} | wc -l`
+    ## header lines are removeed with the sed construct
+    # ntot=`zcat ${genotype} | sed '/^\s*#/d;/^\s*$/d' | wc -l`
     njobs=$(echo $(( ntot/nmax )))
 
     #if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
@@ -106,6 +108,7 @@ function submit_tejaas_1chunk() {
     local bsubdir=${19}
     local __jobdeps=${20} ## name of the bash variable
     local jobdeps=${21}   ## contents of the bash variable
+    local ntot=${22}
     local jobname=0
     local i=0
     local index=0

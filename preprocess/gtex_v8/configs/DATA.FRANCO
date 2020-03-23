@@ -9,8 +9,12 @@ GENCODEFILE="${SRCDIR}/../GENCODE/gencode.v26.annotation.gtf.gz"
 
 # REQUIRED FILES!! download them from GTEx (for pheno file you need access)
 # ----- phASER origdata
-PHASER_INMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix.txt.gz" #phASER_WASP_GTEx_v8_matrix.txt.gz
-PHASER_OUTMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
+# PHASER_INMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix.txt.gz" #phASER_WASP_GTEx_v8_matrix.txt.gz
+# PHASER_OUTMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
+PHASER_INMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_WASP_GTEx_v8_matrix.txt.gz"
+PHASER_OUTMTX="/cbscratch/franco/datasets/gtex_v8/expression/dbGaP_expr/phASER_WASP_GTEx_v8_matrix_collapsed_counts_new.txt.gz"
+
+
 
 # ----- RNASeQC read data
 # SRCTPM_PUB="${SRCDIR}/expression/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz"
@@ -21,9 +25,9 @@ SRCTPM_PUB=${OUTTPM_PUB}
 
 # ---- Files have been superseded by outputs from above
 SRCREAD_PHASER=${PHASER_OUTMTX}
-# SRCREAD_PHASER="${SRCDIR}/expression/phASER_GTEx_v8_matrix_collapsed_counts_fix.txt.gz"
 
-OUTTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt"
+# OUTTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt.gz"
+OUTTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_WASP_GTEx_v8.matrix.txt.gz"
 SRCTPM_PHASER=${OUTTPM_PHASER}
 # SRCTPM_PHASER="${SRCDIR}/expression/TPMs_phASER_GTEx_v8.matrix.txt"
 
@@ -49,7 +53,8 @@ TISSUEFILE="tissue_table.txt"
 DONORFILE="${SRCDIR}/genotypes/gtex_v8.sample"
 VCFDIR="$BASEDIR/genotypes/vcfs_allsamples"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc/gtex_v8"
+# OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc/gtex_v8"
+OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_mar2020_WASP/gtex_v8"
 if [ "${bUsePub}" = "true" ]; then
     OUTDIR="${OUTDIR}_pub"
 fi

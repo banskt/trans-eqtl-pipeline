@@ -65,36 +65,38 @@ if __name__ == '__main__':
     covfile = opts.covpath # +"covariates/{:s}_nopeer_covariates_w_age.txt".format(tissue)
     df_cov = pd.read_table(covfile, header=0, index_col=0)
 
+    # Check if one of the covariates is same value for all, to avoid crashes in lasso
+    ix2rmv = np.where([np.all(df_cov.iloc[i,:] == df_cov.iloc[i,0]) for i in range(df_cov.shape[0])])[0]
+    if len(ix2rmv) > 0:
+        df_cov.drop(df_cov.index[ix2rmv], inplace=True)
+
     # scale covariates
     means = np.mean(df_cov.T)
     stds = np.std(df_cov.T)
     diff = (df_cov.T - means) / stds
     scaled_df_cov = diff.T
 
-    # Check if one of the covariates is same value for all, to avoid crashes in lasso
-    
-
-    qn_lasso, lasso_coefs = correct_lasso_iterative(qn_df, scaled_df_cov)
-    tmm_lasso, lasso_coefs = correct_lasso_iterative(tmm_df, scaled_df_cov)
-    raw_lasso, lasso_coefs = correct_lasso_iterative(raw_df, scaled_df_cov)
+    # qn_lasso, lasso_coefs = correct_lasso_iterative(qn_df, scaled_df_cov)
+    # tmm_lasso, lasso_coefs = correct_lasso_iterative(tmm_df, scaled_df_cov)
+    # raw_lasso, lasso_coefs = correct_lasso_iterative(raw_df, scaled_df_cov)
 
     qn_cclm, coefs = lmcorrect(qn_df, scaled_df_cov)
     tmm_cclm, coefs = lmcorrect(tmm_df, scaled_df_cov)
     raw_cclm, coefs = lmcorrect(raw_df, scaled_df_cov)
 
     if opts.nopc:
-        qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso_nopc.txt".format(opts.tissue)), sep="\t")
-        tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso_nopc.txt".format(opts.tissue)), sep="\t")
-        raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso_nopc.txt".format(opts.tissue)), sep="\t")
+        # qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso_nopc.txt".format(opts.tissue)), sep="\t")
+        # tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso_nopc.txt".format(opts.tissue)), sep="\t")
+        # raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso_nopc.txt".format(opts.tissue)), sep="\t")
 
-        qn_cclm.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm_nopc.txt".format(opts.tissue)), sep="\t")
-        tmm_cclm.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm_nopc.txt".format(opts.tissue)), sep="\t")
-        raw_cclm.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(qn_cclm).to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(tmm_cclm).to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm_nopc.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(raw_cclm).to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm_nopc.txt".format(opts.tissue)), sep="\t")
     else:
-        qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso.txt".format(opts.tissue)), sep="\t")
-        tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso.txt".format(opts.tissue)), sep="\t")
-        raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso.txt".format(opts.tissue)), sep="\t")
+        # qn_lasso.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_lasso.txt".format(opts.tissue)), sep="\t")
+        # tmm_lasso.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_lasso.txt".format(opts.tissue)), sep="\t")
+        # raw_lasso.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_lasso.txt".format(opts.tissue)), sep="\t")
 
-        qn_cclm.to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm.txt".format(opts.tissue)), sep="\t")
-        tmm_cclm.to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm.txt".format(opts.tissue)), sep="\t")
-        raw_cclm.to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(qn_cclm).to_csv(os.path.join(opts.outdir,"qn","{:s}_qn_cclm.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(tmm_cclm).to_csv(os.path.join(opts.outdir,"tmm","{:s}_tmm_cclm.txt".format(opts.tissue)), sep="\t")
+        centerscale_expr(raw_cclm).to_csv(os.path.join(opts.outdir,"tpms","{:s}_tpms_cclm.txt".format(opts.tissue)), sep="\t")

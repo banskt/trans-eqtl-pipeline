@@ -36,26 +36,36 @@ if __name__ == '__main__':
     chrms = [ "chr"+str(x) for x in np.arange(1,23)]
     with open(opts.outdir+"/trans_eqtls_{:s}.txt".format(str(opts.cutoff)), 'w') as outstream:
         with open(opts.outdir+"/target_genes_{:s}.txt".format(str(opts.cutoff)), 'w') as outstream2:
-            with open(opts.outdir+"/snps_list.txt", 'w') as outstream3:
-                for chrm in chrms:
-                    rr_infile = os.path.join(opts.indir, chrm, "rr.txt")
-                    gene_infile = os.path.join(opts.indir, chrm, "gene_snp_list.txt")
-                    if os.path.exists(rr_infile) and os.path.exists(gene_infile):
-                        df = pd.read_csv(rr_infile, header=0, sep="\t")
-                        df2 = pd.read_csv(gene_infile, header=0, sep="\t")
-                        snps = df[ ["ID", "MAF"] ]
-                        outdf = df[ df["P"] <= opts.cutoff ]                  
-                        outdf = outdf[["ID", "CHR", "Pos", "MAF", "Q", "Mu", "Sigma", "P"]]
-                        out_targets = df2[df2['snpid'].isin(outdf["ID"])]
+            with open(opts.outdir+"/target_genes_knn_{:s}.txt".format(str(opts.cutoff)), 'w') as outstream_knn:
+                with open(opts.outdir+"/snps_list.txt", 'w') as outstream3:
+                    for chrm in chrms:
+                        rr_infile = os.path.join(opts.indir, chrm, "rr.txt")
+                        gene_infile = os.path.join(opts.indir, chrm, "gene_snp_list.txt")
+                        knn_gene_infile = os.path.join(opts.indir, chrm, "gene_snp_list_knn.txt")
+                        if os.path.exists(rr_infile) and os.path.exists(gene_infile):
+                            df = pd.read_csv(rr_infile, header=0, sep="\t")
+                            df2 = pd.read_csv(gene_infile, header=0, sep="\t")
+                            snps = df[ ["ID", "MAF"] ]
+                            outdf = df[ df["P"] <= opts.cutoff ]                  
+                            outdf = outdf[["ID", "CHR", "Pos", "MAF", "Q", "Mu", "Sigma", "P"]]
+                            out_targets = df2[df2['snpid'].isin(outdf["ID"])]
 
-                        if chrm == "chr1":
-                            outdf.to_csv(outstream, sep="\t", header=True, index=False, float_format='%g')
-                            out_targets.to_csv(outstream2, sep="\t", header=True, index=False, float_format='%g')
-                            snps.to_csv(outstream3, sep="\t", header=True, index=False, float_format='%g')
+                            if os.path.exists(knn_gene_infile):
+                                df3 = pd.read_csv(knn_gene_infile, header=0, sep="\t")
+                                knn_out_targets = df3[df3['snpid'].isin(outdf["ID"])]
+
+                            if chrm == "chr1":
+                                outdf.to_csv(outstream, sep="\t", header=True, index=False, float_format='%g')
+                                out_targets.to_csv(outstream2, sep="\t", header=True, index=False, float_format='%g')
+                                if os.path.exists(knn_gene_infile):
+                                    knn_out_targets.to_csv(outstream_knn, sep="\t", header=True, index=False, float_format='%g')
+                                snps.to_csv(outstream3, sep="\t", header=True, index=False, float_format='%g')
+                            else:
+                                outdf.to_csv(outstream, sep="\t", header=False, index=False, float_format='%g')
+                                out_targets.to_csv(outstream2, sep="\t", header=False, index=False, float_format='%g')
+                                if os.path.exists(knn_gene_infile):
+                                    knn_out_targets.to_csv(outstream_knn, sep="\t", header=False, index=False, float_format='%g')
+                                snps.to_csv(outstream3, sep="\t", header=False, index=False, float_format='%g')
                         else:
-                            outdf.to_csv(outstream, sep="\t", header=False, index=False, float_format='%g')
-                            out_targets.to_csv(outstream2, sep="\t", header=False, index=False, float_format='%g')
-                            snps.to_csv(outstream3, sep="\t", header=False, index=False, float_format='%g')
-                    else:
-                        print("rr.txt or gene_snp_list.txt does not exist ->", rr_infile)
-                        raise
+                            print("rr.txt or gene_snp_list.txt does not exist ->", rr_infile)
+                            raise

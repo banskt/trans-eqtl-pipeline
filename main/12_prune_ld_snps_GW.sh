@@ -54,6 +54,7 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
                     if [ "${CISMASK}" != "true" ]; then _VARIANT="${_VARIANT}_nocismask"; fi
                     if [ "${CROSSMAP}" == "true" ]; then _VARIANT="${_VARIANT}_crossmap"; fi
                     if [ "${MAGIC_SQRT}" == "true" ]; then _VARIANT="${_VARIANT}_sqrt"; fi
+                    if [ "${NOGTKNN}" == "true" ]; then _VARIANT="${_VARIANT}_nogtknn"; fi
 
                     if [ "${DYNAMIC_SB}" == "true" ]; then
                         for KEFF in ${KEFFS}; do
@@ -83,7 +84,7 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
             done
         done
         # LDFILE="${GENO_DIR}/ldmap/chr${CHRM}_${CURRENT_DTYPE}.geno.ld"
-        LDFILE="${GENO_DIR}/ldmap_${LDWINDOW}_${LDMIN_R2}/chr{:d}_${CURRENT_DTYPE}.geno.ld"
+        LDFILE="${GENO_DIR}/SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}/chr{:d}_${CURRENT_DTYPE}.geno.ld"
         unset_vars ${DATALOAD}
     done
     PYPRUNELD="${SCRIPTDIR}/prune_ld_snps_gw.py"

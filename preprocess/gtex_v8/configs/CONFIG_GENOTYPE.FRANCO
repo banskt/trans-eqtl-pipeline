@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+INVCFDIR="/cbscratch/franco/datasets/gtex_v8/genotypes/vcfs_SHAPEIT2"
+
+MAF_THRESHOLDS="0.01"
+
+VCFIBASE="GTEX_v8_2019-08-27_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_chr[CHRM]"
+VCFOBASE="GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF[MAFTHRES]_chr[CHRM]"
+
+# Define all preprocessing scripts
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
+PYFILTER="${PWD}/scripts/filter_vcf.py"
+PYCONVERT="${PWD}/scripts/vcf2dosage.py"

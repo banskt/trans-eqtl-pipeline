@@ -6,6 +6,7 @@
 #SBATCH -J _JOB_NAME_%a
 #SBATCH -o _JOB_NAME_%a.out
 #SBATCH -e _JOB_NAME_%a.err
+#SBATCH -x hh036,hh037,hh038,hh039,hh040
 
 module load intel/compiler/64/2017/17.0.2
 module load intel/mkl/64/2017/2.174

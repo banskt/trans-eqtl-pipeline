@@ -1,0 +1,38 @@
+#!/bin/sh
+#SBATCH -p hh
+#SBATCH -t 2-00:00:00
+#SBATCH -n 4
+#SBATCH -N 1
+#SBATCH -J _JOB_NAME
+#SBATCH -o _JOB_NAME.out
+#SBATCH -e _JOB_NAME.err
+
+module load gcc
+
+
+TMPDIR="/local/tmp/_JOB_NAME"
+mkdirs -p $TMPDIR && export $TMPDIR
+
+rm -rf /tmp/*
+
+VCFTOOLS=_VCFTOOL_
+GTFILE=_GT_FILE_
+OUTFILE=_OUTF_
+WINDOW=_WINDOW_ # 100000;
+MIN_R2=_MIN_R2_ #0.5;
+LDKEEPFILE="_KEEP_"
+
+KEEPFLAG=""
+if [ "$LDKEEPFILE" != "" ]; then
+    KEEPFLAG="--keep ${LDKEEPFILE}"
+fi
+
+${VCFTOOLS} --gzvcf ${GTFILE} --temp /usr/users/fsimone \
+            --geno-r2 \
+            --ld-window-bp ${WINDOW} \
+            --min-r2 ${MIN_R2} \
+            --out ${OUTFILE} ${KEEPFLAG}
+
+rm -rf /tmp/*
+
+# ${VCFTOOLS} --gzvcf ${GTFILE} --geno-r2 --ld-window-bp ${WINDOW} --out ${OUTFILE} --positions chr22.list 

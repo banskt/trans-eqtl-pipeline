@@ -88,4 +88,4 @@ if __name__ == '__main__':
                     
         print("{:d} indels deleted".format(indels_filter))
         print("{:d} complement snps deleted".format(complement_filter))
-        print("{:d} SNPs with MAF < {:d}".format(maf_filter, maf_cutoff))
+        print("{:d} SNPs with MAF < {:f}".format(maf_filter, maf_cutoff))

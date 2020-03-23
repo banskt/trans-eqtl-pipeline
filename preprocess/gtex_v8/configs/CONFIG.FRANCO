@@ -18,7 +18,7 @@ USE_BSUB=true  # now uses slurm
 #---- actually, RNASeQC processed counts (phASER is now publicly available)
 bUsePub=false
 
-bProcessPhaser=false
+bProcessPhaser=true
 if [ "${bProcessPhaser}" = "true" ]; then
     if [ "${bUsePub}" = "true" ]; then
         echo "Are you sure you want to process Phaser counts and TPMs but use Public data?"
@@ -26,13 +26,13 @@ if [ "${bProcessPhaser}" = "true" ]; then
         exit 0;
     fi
 fi
-bCalculateTPMs=false
+bCalculateTPMs=true
 
 ### CAUTION! jobs below depend on jobs above. TODO: add dependency
 
-bSelectNormalize=false           # bProcessRPKMs_and_normalize=true    # start from the very beginning
-bFormatCovariates=false          # format the covariates file
-bLMcorrect=false                 # use covariate file to correct gx with Linear Model
+bSelectNormalize=true           # bProcessRPKMs_and_normalize=true    # start from the very beginning
+bFormatCovariates=true          # format the covariates file
+bLMcorrect=true                 # use covariate file to correct gx with Linear Model
 bPeerCorrect=true              # apply PEER correction to GTEx gx
 bGencodeFilter=true
 

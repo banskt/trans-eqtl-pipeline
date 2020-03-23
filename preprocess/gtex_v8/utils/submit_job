@@ -1,6 +1,20 @@
 #!/bin/bash
 
-function submit_job_echo() {
+# function submit_job_echo() {
+#     local DIR=$1
+#     local JOBNAME=$2
+#     local DEPS=$3
+#     local CWD=`pwd`
+    
+#     cd ${DIR}
+    
+#     echo ${JOBNAME}.bsub
+    
+#     cd ${CWD}
+# }
+
+function submit_job() {
+
     local DIR=$1
     local JOBNAME=$2
     local DEPS=$3
@@ -8,57 +22,26 @@ function submit_job_echo() {
     
     cd ${DIR}
     
-    echo ${JOBNAME}.bsub
+    SUCCESS=false
+
+    while [ "${SUCCESS}" = "false" ]; do
+        if [ ! "${DEPS}" = "None" ]; then
+            echo "Submitting job with dependency ${DEPS}"
+            STDOUTPUT=$( sbatch --dependency=${DEPS} ${JOBNAME}.slurm )
+        else
+            echo "Submitting job $JOBNAME"
+            STDOUTPUT=$( sbatch ${JOBNAME}.slurm )
+        fi
+
+        if [ "${STDOUTPUT%% *}" = "Submitted" ]; then 
+            SUCCESS=true
+            # sleep 1 # pause to be kind to the scheduler
+        # else
+        #     sleep 10 # pause more to get the system back to working
+        fi
+    done
+
+    JOBID="${STDOUTPUT##* }"
     
     cd ${CWD}
 }
-
-# function submit_job() {
-
-#     local DIR=$1
-#     local JOBNAME=$2
-#     local DEPS=$3
-#     local CWD=`pwd`
-    
-#     cd ${DIR}
-    
-#     if [ ! "${DEPS}" = "None" ]; then
-#         echo "Submitting job with dependency ${DEPS}"
-#         bsub -w "${DEPS}" < ${JOBNAME}.bsub
-#     else
-#         bsub < ${JOBNAME}.bsub
-#     fi
-    
-#     cd ${CWD}
-# }
-
-# function submit_job_slurm() {
-
-#     local DIR=$1
-#     local JOBNAME=$2
-#     local DEPS=$3
-#     local CWD=`pwd`
-    
-#     cd ${DIR}
-    
-#     while [ "${SUCCESS}" = "false" ]; do
-#         # if [ ! "${DEPS}" = "None" ]; then
-#             #echo "Submitting job with dependency ${DEPS}"
-#             # STDOUTPUT=$( sbatch --dependency=${DEPS} ${JOBNAME}.sh )
-#         # else
-#             #echo "No dependencies"
-#             STDOUTPUT=$( sbatch ${JOBNAME}.sh )
-#         # fi
-
-#         if [ "${STDOUTPUT%% *}" = "Submitted" ]; then 
-#             SUCCESS=true
-#             sleep 1 # pause to be kind to the scheduler
-#         else
-#             sleep 10 # pause more to get the system back to working
-#         fi
-#     done
-
-#     JOBID="${STDOUTPUT##* }"
-    
-#     cd ${CWD}
-# }

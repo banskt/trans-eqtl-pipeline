@@ -68,6 +68,9 @@ for t in tissuenames:
                 if file == "target_genes_{:g}.txt".format(pcutoff): 
                     destfile = "target_genes.txt"
                     copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                if file == "target_genes_knn_{:g}.txt".format(pcutoff): 
+                    destfile = "target_genes_knn.txt"
+                    copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
                 if file == "trans_eqtls_{:g}.txt".format(pcutoff): 
                     destfile = "trans_eqtls.txt"
                     copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))

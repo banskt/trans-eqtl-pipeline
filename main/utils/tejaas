@@ -3,11 +3,10 @@
 THISMETHOD="tejaas"
 THISJOBDEPS="None"
 
-echo "Submitting TEJAAS jobs with RUNJPA=$RUNJPA and SHUFFLE=$SHUFFLE"
 # source ${UTILSDIR}/submit_tejaas
 source ${UTILSDIR}/submit_tejaas_array
 
-EXTRAFLAGS="--dosage"
+EXTRAFLAGS="--dosage --gxcorr ${EXPRCORRFILE}"
 _VARIANT=""
 
 if [ "${KNN}" -gt "0" ]; then
@@ -36,6 +35,11 @@ if [ "${SHUFFLE_SPECIAL}" == "true" ]; then
     _VARIANT="${_VARIANT}_shuf"
 fi
 
+if [ "${NOGTKNN}" == "true" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --nogtknn"
+    _VARIANT="${_VARIANT}_nogtknn"
+fi
+
 if [ "${DATATYPE}" == "cardiogenics" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --trim"
 fi
@@ -58,6 +62,9 @@ for CHRM in ${CHRNUMS}; do
     # fi
     MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
 
+    CHRM_NTOT_FILE="$( dirname ${GENOTYPEFILE} )/ntot_per_chromosome.txt"
+    NTOT_CHRM=$( sed "${CHRM}q;d" ${CHRM_NTOT_FILE} | awk '{print $2}' )
+
     if [ "${RUNJPA}" = "true" ]; then
         METHOD_VARIANT="jpa"
         if [ "${_VARIANT}" != "" ]; then
@@ -77,7 +84,7 @@ for CHRM in ${CHRNUMS}; do
                               ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
                               ${MAX_NSNP_PERJOB} \
                               ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                              JOBDEPS "${JOBDEPS}"
+                              JOBDEPS "${JOBDEPS}" ${NTOT_CHRM}
 
     else
         for NULL in ${TEJAAS_NULL}; do
@@ -105,7 +112,7 @@ for CHRM in ${CHRNUMS}; do
                                 ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
                                 ${MAX_NSNP_PERJOB} \
                                 ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                                JOBDEPS "${JOBDEPS}"
+                                JOBDEPS "${JOBDEPS}" ${NTOT_CHRM}
                 done
             elif [ ${MML_OPT} == "true" ]; then
                 METHOD_VARIANT="${NULL}null_sbMMLopt"
@@ -128,7 +135,7 @@ for CHRM in ${CHRNUMS}; do
                             ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
                             ${MAX_NSNP_PERJOB} \
                             ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                            JOBDEPS "${JOBDEPS}"
+                            JOBDEPS "${JOBDEPS}" ${NTOT_CHRM}
             else
                 for SBETA in ${TEJAAS_SIGMA_BETA}; do
                     METHOD_VARIANT="${NULL}null_sb${SBETA}"
@@ -149,7 +156,7 @@ for CHRM in ${CHRNUMS}; do
                                   ${SPECIFIC_JOBSUBDIR} ${SPECIFIC_OUTDIR} ${JOBPREFIX} \
                                   ${MAX_NSNP_PERJOB} \
                                   ${THISJOBDEPS} ${MASTER_BSUBDIR} \
-                                  JOBDEPS "${JOBDEPS}"
+                                  JOBDEPS "${JOBDEPS}" ${NTOT_CHRM}
                 done
             fi
         done

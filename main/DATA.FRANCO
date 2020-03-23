@@ -1,16 +1,19 @@
 #!/bin/bash
-
+    
 # data directory
 DATADIR="/cbscratch/franco/datasets"
-EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc" #new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_feb2020_freeze" #noage23" #dec2019_nopc" #new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
 GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
 GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
-# output directory
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_realease_test" #gtex_v8_lncRNA_freeze" #jan2020_tryouts"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2" #"framinghmam_16032020"
 
+# output directory
+if [ "${EUR}" = "true" ]; then 
+    OUTDIR="${OUTDIR}_EUR"
+fi
 
 ########################### ATTENTION!!!!
 ###### This is used in 04_do_RR_lasso.sh but IS WRONG, the summary folder changes now for Keffs and sbetas
@@ -66,6 +69,9 @@ case "${EXPR_CORR}" in
     "raw_oneref")
         OUTDIR="${OUTDIR}/raw_oneref"
         ;;
+    "raw_wasp")
+        OUTDIR="${OUTDIR}/raw_wasp"
+        ;;
     *)
         OUTDIR="${OUTDIR}/unknown"
         ;;
@@ -90,13 +96,19 @@ GTEX_GENO_VCF_FMT="${GTEXDIR}/genotypes/vcfs_allsamples/GTEx_Analysis_20150112_O
 
 # GTEx v8
 GTEXDIR_V8="${DATADIR}/gtex_v8"
+EXPRGTEXDIR_V8_WASP="/cbscratch/franco/trans-eqtl/new_preprocess_mar2020_WASP/gtex_v8"
 EXPRGTEXDIR_V8_PUB="${EXPRDATADIR}/gtex_v8_pub"
 EXPRGTEXDIR_V8="${EXPRDATADIR}/gtex_v8"
 GTEX_V8_GENO_DIR="${GTEXDIR_V8}/genotypes"
-GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
-GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8.sample"
-GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
-# GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_chr[CHRM].vcf.gz"
+#GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
+GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_SHAPEIT2/0.01/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
+if [ "${EUR}" = "true" ]; then 
+    GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8_eur.sample"
+else
+    GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8.sample"
+fi
+#GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
+GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_SHAPEIT2/0.01/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
 
 # 1KG Genomes
 ONEKGDIR="${DATADIR}/1KG_genomes"
@@ -106,7 +118,6 @@ ONEKG_GENO_VCF_FMT="${ONEKG_GENO_DIR}/ALL.chr[CHRM].phase3_shapeit2_mvncall_inte
 # Framingham
 FHSDIR="${DATADIR}/FHS"
 FHS_GENO_DIR="${FHSDIR}/genotypes"
-# FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
 FHS_GENO_FMT="${FHS_GENO_DIR}/merged_dosages/chr[CHRM].fhs.dosages.txt.gz"
 FHS_GENO_VCF_FMT="${FHS_GENO_DIR}/vcfs/chr[CHRM].fhs.vcf.gz"
 FHS_BGEN_FMT="None"
@@ -133,7 +144,8 @@ case "${EXPR_CORR}" in
         ;;
     "raw_oneref")
         # GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered"
-        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        # FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
         ;;
     "lasso")
         # GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/lasso/[TISSUE]_lasso.txt.protein_coding_filtered"
@@ -170,6 +182,9 @@ case "${EXPR_CORR}" in
     "raw_pub")
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
         ;; 
+    "raw_wasp")
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_WASP}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;;
     "raw_fixed")
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.collinear_filtered.txt.${BIOTYPES}_filtered"
         ;;       
@@ -192,6 +207,32 @@ case "${EXPR_CORR}" in
         GTEX_EXPR_FMT=""
         ;;
 esac
+
+
+case "${TGENE_EXPR}" in
+    "raw_cclm")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_peer")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm_peer[NPEER]_PEER_residuals.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_pub_cclm")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_pub_peer")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_cclm_peer[NPEER]_PEER_residuals.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_oneref")
+        FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
+        ;;
+    "raw_wasp_cclm")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8_WASP}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
+        ;;
+    *)
+        GTEX_V8_TGENE_EXPR_FMT=
+        ;;
+esac
+
 
 
 case "${ANNOT_TYPE}" in
@@ -236,6 +277,12 @@ case "${DATATYPE}" in
         DATATYPE="gtex_v8"
         GENO_DIR=${GTEX_V8_GENO_DIR}
         EXPRESSIONFILE=${GTEX_V8_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        if [[ $TGENE_EXPR == *"peer"* ]]; then
+            EXPRCORRFILE_FMT=${GTEX_V8_TGENE_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+            EXPRCORRFILE=${EXPRCORRFILE_FMT/\[NPEER\]/${TISSUEPEER[$TISSUEID]}}
+        else
+            EXPRCORRFILE=${GTEX_V8_TGENE_EXPR_FMT/\[TISSUE\]/${TISSUEID}}
+        fi
         GENO_FMT=${GTEX_V8_GENO_FMT}
         GENO_VCF_FMT=${GTEX_V8_GENO_VCF_FMT}
         SAMPLEFILE=${GTEX_V8_SAMPLE}
@@ -249,6 +296,7 @@ case "${DATATYPE}" in
         DATATYPE="fhs"
         GENO_DIR=${FHS_GENO_DIR}
         EXPRESSIONFILE=${FHS_EXPR_FMT}
+        EXPRCORRFILE=${FHS_TGENE_EXPR_FMT}
         GENO_FMT=${FHS_GENO_FMT}
         GENO_VCF_FMT=${FHS_GENO_VCF_FMT}
         SAMPLEFILE=${FHS_SAMPLE}

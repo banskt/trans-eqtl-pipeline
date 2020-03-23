@@ -1,10 +1,11 @@
-    #!/bin/bash
+#!/bin/bash
 
 function tejaas_chunk_reduce() {
     local DIR=$1
     local CWD=`pwd`
     cd $DIR
-    for EXT in rr.txt gene_snp_list.txt; do
+    REF=$(echo -e "ID\tCHR\tPos\tMAF\tQ\tMu\tSigma\tP\n")
+    for EXT in rr.txt gene_snp_list.txt gene_snp_list_knn.txt; do
         if [ -f chunk000_${EXT} ]; then
             NCHUNK=`wc -l chunk*_${EXT} | wc -l | awk '{print $1-1}'`
             if [ $NCHUNK -eq 0 ]; then NCHUNK=1; fi
@@ -16,7 +17,7 @@ function tejaas_chunk_reduce() {
                 NLINES=0
                 ERROR=false
                 if [ $EXT == "rr.txt" ]; then
-                    echo -e "ID\tPos\tQ\tMu\tSigma\tP\tCHR\tMAF" > ${EXT}
+                    echo -e "ID\tCHR\tPos\tMAF\tQ\tMu\tSigma\tP" > ${EXT}
                 else
                     head -n 1 chunk000_${EXT} > ${EXT}
                 fi                
@@ -25,10 +26,18 @@ function tejaas_chunk_reduce() {
                     NUM=`echo $i | awk '{printf "%03d\n", $1}'`
                     FILENAME="chunk${NUM}_${EXT}"
                     if [ -f ${FILENAME} ]; then
+                        if [ "$EXT" = "rr.txt" ]; then
+                            HED=$(head -n 1 ${FILENAME})
+                            # echo "$HED  vs $REF"
+                            if [ "$REF" != "$HED" ]; then
+                                echo "Old header line in file ${FILENAME}"
+                                exit
+                            fi
+                        fi
                         tail -n +2 ${FILENAME} >> ${EXT}
                         # sed 1,1d ${FILENAME} >> ${EXT}
                         Nacum=`wc -l ${EXT} | awk '{print $1}'`
-                        N=`wc -l ${FILENAME} | awk '{print $1}'`
+                        N=`wc -l ${FILENAME} | awk '{print $1}'`                           
                     else
                         echo "Error in ${DIR}: ${FILENAME} does not exist."
                         ERROR=true
@@ -49,25 +58,25 @@ function tejaas_chunk_reduce() {
                 fi
             done
 
-            if [ "${ERROR}" = "false" ]; then
-                if [ -f ${EXT} ]; then
-                    N=`wc -l ${EXT} | awk '{print $1}'`
-                    if [ "$N" -eq "$NLINES" ]; then
-                        echo "Succesfully reduced chunks for $EXT in $DIR"
-                        echo "Done."
-                    else
-                        echo "Error in copying chunks for $EXT in $DIR"
-                        echo "$N vs $NLINES"
-                        exit
-                    fi
-                else
-                    echo "Could not create $EXT in $DIR"
-                    exit
-                fi
-            else
-                echo "Job error for $EXT in $DIR"
-                exit
-            fi
+            # if [ "${ERROR}" = "false" ]; then
+            #     if [ -f ${EXT} ]; then
+            #         N=`wc -l ${EXT} | awk '{print $1}'`
+            #         if [ "$N" -eq "$NLINES" ]; then
+            #             echo "2 - Succesfully reduced chunks for $EXT in $DIR"
+            #             echo "Done."
+            #         else
+            #             echo "Error in copying chunks for $EXT in $DIR"
+            #             echo "$N vs $NLINES"
+            #             exit
+            #         fi
+            #     else
+            #         echo "Could not create $EXT in $DIR"
+            #         exit
+            #     fi
+            # else
+            #     echo "Job error for $EXT in $DIR"
+            #     exit
+            # fi
         else
             echo "chunk000_${EXT} does not exist in $DIR"
         fi

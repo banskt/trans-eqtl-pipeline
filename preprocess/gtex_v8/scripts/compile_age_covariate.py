@@ -46,13 +46,18 @@ if len(ids_w_age) != len(ids):
     raise Exception("No AGE found for some SUBJECTS")
 
 covariate_age_table = pd.concat([covars, age.loc[ids].T]) #.drop("PMI")
+
+'''
+We don't want this for now
 AGE2 = covariate_age_table.loc["AGE"]**2
 AGE3 = covariate_age_table.loc["AGE"]**3
 
 ages23 = pd.concat([AGE2, AGE3], axis=1)
 ages23.columns = ["AGE2", "AGE3"]
 
-covariates_ages123_table = pd.concat([covariate_age_table, ages23.T])
+# covariates_ages123_table = pd.concat([covariate_age_table, ages23.T])
+'''
+covariates_ages123_table = covariate_age_table
 covariates_ages123_table.index.name = "ID"
 # covariates_ages123_table = covariates_ages123_table.rename_axis("ID", axis=1)
 covariates_ages123_table.to_csv(opts.outfile, sep="\t", header=True, index=True)

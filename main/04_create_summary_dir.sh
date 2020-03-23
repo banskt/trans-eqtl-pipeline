@@ -17,8 +17,8 @@ source ${UTILSDIR}/tejaas_top_snps
 #dummy variable
 MDATA="gtex_v8-no_file"
 
-PREPROCS=" "
 for EXPR_CORR in ${EXPRESSIONS}; do
+    PREPROCS=" "
     source ${DATALOAD}
     OUTDIR_DATA="${OUTDIR}"
 
@@ -37,6 +37,10 @@ for EXPR_CORR in ${EXPRESSIONS}; do
 
         if [ "${CROSSMAP}" == "true" ]; then
             _VARIANT="${_VARIANT}_crossmap"
+        fi
+
+        if [ "${NOGTKNN}" == "true" ]; then
+            _VARIANT="${_VARIANT}_nogtknn"
         fi
 
         for NULL in ${TEJAAS_NULL}; do

@@ -52,6 +52,10 @@ for EXPR_CORR in ${EXPRESSIONS}; do
                     _VARIANT="${_VARIANT}_shuf"
                 fi
 
+                if [ "${NOGTKNN}" == "true" ]; then
+                    _VARIANT="${_VARIANT}_nogtknn"
+                fi
+
                 for CHRM in ${CHRNUMS}; do
                     if [ "${bTejaasJPA}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas/jpa/chr${CHRM}"; fi
                     if [ "${bJPARandom}" = "true" ]; then tejaas_chunk_reduce "${OUTDIR_DATA}/tejaas_rand/jpa/chr${CHRM}"; fi
