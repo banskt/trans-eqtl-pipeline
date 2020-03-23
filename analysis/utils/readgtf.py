@@ -10,13 +10,14 @@ class GeneInfo(collections.namedtuple('_GeneInfo', GENEINFO_FIELDS)):
     __slots__ = ()
 
 
-def gencode_v12(filepath, feature = 'gene', trim=False, biotype=['protein_coding', "lncRNA"], include_chrom = 0, include_chroms=['{:d}'.format(x + 1) for x in range(22)]):    
+def gencode_v12(filepath, feature = 'gene', trim=False, biotype=['protein_coding', "lncRNA", "miRNA"], include_chrom = 0, include_chroms=['{:d}'.format(x + 1) for x in range(22)]):    
     annotfile = os.path.realpath(filepath)
     geneinfo = list()
     lncRNA_list = ["macro_lncRNA","non_coding","bidirectional_promoter_lncRNA","3prime_overlapping_ncRNA","sense_overlapping","processed_transcript","sense_intronic","TEC","antisense","lincRNA"]
     mode = "v19"
     if re.search("v26", filepath):
         mode = "v26"
+        print("Mode v26")
         
     if "lncRNA" in biotype:
         mybiotype = biotype + lncRNA_list
@@ -114,7 +115,8 @@ def affy_exon_chip(filepath, include_chrom = 0, include_chroms=['{:d}'.format(x 
                                      ensembl_id = transcript_cluster_id,
                                      chrom      = int(chrom),
                                      start      = start,
-                                     end        = end)
+                                     end        = end,
+                                     typ        = None)
 
                 geneinfo.append(this_gene)
     except IOError as err:

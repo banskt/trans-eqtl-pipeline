@@ -1,3 +1,12 @@
+#Cells - Transformed fibroblasts	fib
+#### GTEx v8!!
+Adipose - Subcutaneous	as
+Adipose - Visceral (Omentum)	av
+Adrenal Gland	ag
+Artery - Aorta	aa
+Artery - Coronary	ac
+Artery - Tibial	at
+Brain - Amygdala	bam
 Brain - Anterior cingulate cortex (BA24)	ban
 Brain - Caudate (basal ganglia)	bca
 Brain - Cerebellar Hemisphere	bceh
@@ -8,47 +17,54 @@ Brain - Hippocampus	bhi
 Brain - Hypothalamus	bhy
 Brain - Nucleus accumbens (basal ganglia)	bnu
 Brain - Putamen (basal ganglia)	bpu
-Pituitary	pit
-Prostate	pro
-Small Intestine - Terminal Ileum	si
-Spleen	spl
-Uterus	ut
-Vagina	va
-Adrenal Gland	ag
-##Cells - EBV-transformed lymphocytes	ebv
-Liver	liv
-Testis	tes
-Ovary	ov
-Cells - Transformed fibroblasts	fib
-Muscle - Skeletal	ms
-Heart - Atrial Appendage	haa
-Heart - Left Ventricle	hlv
-Pancreas	pan
-Whole Blood	wb
-Skin - Not Sun Exposed (Suprapubic)	snse
-Skin - Sun Exposed (Lower leg)	sse
-Colon - Transverse	colt
+Brain - Spinal cord (cervical c-1)	bsp
+Brain - Substantia nigra	bsu
+Breast - Mammary Tissue	br
+Cells - EBV-transformed lymphocytes	ebv
+Cells - Cultured fibroblasts	fib
 Colon - Sigmoid	cols
+Colon - Transverse	colt
 Esophagus - Gastroesophageal Junction	esog
 Esophagus - Mucosa	esom
 Esophagus - Muscularis	esomu
-Thyroid	thy
-Artery - Coronary	ac
-Artery - Aorta	aa
-Artery - Tibial	at
-Stomach	sto
+Heart - Atrial Appendage	haa
+Heart - Left Ventricle	hlv
+Kidney - Cortex	kc
+Liver	liv
 Lung	lu
-Adipose - Visceral (Omentum)	av
-Adipose - Subcutaneous	as
-Breast - Mammary Tissue	br
-#####Bladder    bl
-#####Nerve - Tibial     nt
-#####Minor Salivary Gland   msg
-#####Kidney - Cortex    kc
-#####Cervix - Ectocervix    ect
-#####Cervix - Endocervix end
-####Cells - Leukemia cell line (CML)    leu
-#####Brain - Spinal cord (cervical c-1) bsp
-#####Brain - Substantia nigra   bsu
-#####Brain - Amygdala   bam
-#####Fallopian Tube ft
+Minor Salivary Gland	msg
+Muscle - Skeletal	ms
+Nerve - Tibial	nt
+Pancreas	pan
+Pituitary	pit
+Skin - Not Sun Exposed (Suprapubic)	snse
+Skin - Sun Exposed (Lower leg)	sse
+Small Intestine - Terminal Ileum	si
+Spleen	spl
+Stomach	sto
+Thyroid	thy
+Whole Blood	wb
+Ovary	ov	##no covariates available
+Prostate	pro	##no covariates available
+Testis	tes	##no covariates available
+Uterus	ut	##no covariates available
+Vagina	va	##no covariates available
+# Bladder	bl	##no covariates available
+# # Cells - Leukemia cell line (CML)	leu
+# #Cervix - Ectocervix	ect
+# #Cervix - Endocervix	end
+# #Fallopian Tube	ft
+####################
+#Artery - Aorta	aa
+#Brain - Cerebellum	bce
+#Brain - Cortex	bco
+#Cells - Cultured fibroblasts	fib
+#Colon - Transverse	colt
+#Heart - Left Ventricle	hlv
+#Nerve - Tibial	nt
+#Skin - Sun Exposed (Lower leg)	sse
+#Thyroid	thy
+######################
+#Adipose - Subcutaneous	as
+#Muscle - Skeletal	ms
+#Whole Blood	wb

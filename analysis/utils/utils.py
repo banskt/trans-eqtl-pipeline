@@ -21,7 +21,33 @@ def myreplace(s):
         s = s.replace(ch, "", 1)
     return s.replace("  ", " ")
 
-def read_tissues(infile):
+
+def allreplace(s):
+    todelete = ["(", ")"]
+    for ch in todelete:
+        s = s.replace(ch, "")
+    s = s.replace(" - ", " ")
+    s = s.replace("  ", " ")
+    s = s.replace(" ", "_")
+    return s
+
+def read_tissues_str(infile):
+    tissues = []
+    descriptions = []
+    tstrings = []
+    with open(infile) as instream:
+        for l in instream:
+            lsp = l.split("\t")
+            if re.search("^#", l):
+                continue
+            tissues.append(lsp[1].rstrip())
+            descriptions.append(lsp[0].rstrip())
+            tstrings.append(lsp[2].rstrip())
+    #tstrings = [partreplace(d) for d in descriptions]
+    descriptions = [allreplace(d) for d in descriptions]
+    return tissues, descriptions, tstrings
+
+def read_tissues(infile, plain=False):
     tissues = []
     descriptions = []
     with open(infile) as instream:
@@ -30,7 +56,8 @@ def read_tissues(infile):
                 continue
             tissues.append(l.split("\t")[1].rstrip())
             descriptions.append(l.split("\t")[0].rstrip())
-    descriptions = [myreplace(d) for d in descriptions]
+    if not plain:
+        descriptions = [myreplace(d) for d in descriptions]
     return tissues, descriptions
 
 def read_rocfile(infile):
