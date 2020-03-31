@@ -182,11 +182,11 @@ opts = parse_args()
 if opts.overwrite:
     print("Overwrite is ON")
 
-tissue_file = "../../plots/tissues.txt"
-tissue_file = "/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
+tissue_file = "../../plots/tissue_table.txt"
+#tissue_file = "/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
 
 
-expressions = ["raw_pub"]
+expressions = ["raw"]
 # sbtypes = ["sbDynamic", "sb"]
 # keffs   = ["0.4", "0.6", "0.95"]
 # sbs     = ["0.03", "0.05"]
@@ -196,7 +196,7 @@ sbtypes = ["sb"]
 # keffs   = ["0.4"]
 sbs     = ["0.1"] #["0.005", "0.007"]
 Ks       = ["30"]
-extras  = ["_crossmap"] #[""] # , "_crossmap"]
+extras  = ["_nocismask"] #[""] # , "_crossmap"]
 sumdir = "summary_5e-08"
 preprocs = list()
 use_LD = True
@@ -220,7 +220,7 @@ min_trans_eqtl = 0
 chrmlist = np.arange(1,23)
 
 json_file = "../../gtex_v8_metadata.json"
-tshorts, tfulls = utils.read_tissues(tissue_file)
+tshorts, tfulls, tstrings = utils.read_tissues_str(tissue_file)
 with open(json_file) as instream:
     gtex_meta = json.load(instream)
 tissue_colors  = dict()
@@ -260,6 +260,7 @@ for preproc in preprocs:
             trans_eqtls_file = trans_eqtls_file+".ld_prune"
 
         outdir = os.path.join(resdir, "dhs_enrichments", preproc)
+        print(f"Processing {outdir}")
         if not os.path.exists(outdir):
             os.makedirs(outdir)
 
@@ -275,6 +276,7 @@ for preproc in preprocs:
             raise
 
         for pcutoff in pcutoffs:
+            print(f"cutoff: {pcutoff}")
             logcutoff = -np.log10(pcutoff)
             transeqtls = dict()
             dhs_annotated = dict()

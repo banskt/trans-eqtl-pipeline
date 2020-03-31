@@ -29,7 +29,11 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
             # source ${DATALOAD}
 
             DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
-            TISSUEID=`echo ${MDATA} | cut -d'-' -f2`
+            if [ "$DATATYPE"=="fhs" ]; then
+                TISSUEID="fhs"
+            else
+                TISSUEID=`echo ${MDATA} | cut -d'-' -f2`
+            fi
 
             # This looks stupid, but is to be able to run LD across chromosomes always on the same dataset
             # If multiple datasets are to be run, then this will raise an error
@@ -84,7 +88,8 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
             done
         done
         # LDFILE="${GENO_DIR}/ldmap/chr${CHRM}_${CURRENT_DTYPE}.geno.ld"
-        LDFILE="${GENO_DIR}/SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}/chr{:d}_${CURRENT_DTYPE}.geno.ld"
+        # LDFILE="${GENO_DIR}/SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}/chr{:d}_${CURRENT_DTYPE}.geno.ld"
+        LDFILE="${GENO_DIR}/${LDFILE_DIR}/chr{:d}_${CURRENT_DTYPE}.geno.ld"
         unset_vars ${DATALOAD}
     done
     PYPRUNELD="${SCRIPTDIR}/prune_ld_snps_gw.py"

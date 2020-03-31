@@ -17,6 +17,7 @@ function tejaas_summary() {
     local CWD=`pwd`
     local PREPROCS=$2
     local TISSUEFILE=$3
+    local DATATYPE=$4
 
-    $PYENV $SCRIPTDIR/reorganize_tejaas_results.py --indir $DIR --tissue-file $TISSUEFILE --preprocs $PREPROCS
+    $PYENV $SCRIPTDIR/reorganize_tejaas_results.py --indir $DIR --tissue-file $TISSUEFILE  --datatype $DATATYPE --preprocs $PREPROCS
 }

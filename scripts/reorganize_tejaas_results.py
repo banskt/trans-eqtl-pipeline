@@ -40,6 +40,11 @@ def parse_args():
                         dest='tissue_file',
                         help='Tissue file')
 
+    parser.add_argument('--datatype',
+                        type=str,
+                        dest='datatype',
+                        help='gtex or fhs')
+
     parser.add_argument('--preprocs',
                         nargs='+',
                         dest='preprocs',
@@ -50,16 +55,14 @@ def parse_args():
 
 
 opts = parse_args()
-tissuenames, descriptions = read_tissues(opts.tissue_file)
 sourcedir = opts.indir #"/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_a2s_lncRNA/"
 pcutoff = 5e-08
-
-for t in tissuenames:
+if opts.datatype == "fhs":
     for preproc in opts.preprocs:
-        print(sourcedir, t, preproc)
+        print(sourcedir, preproc)
         #preproc = "permnull_sb{:s}_knn{:s}".format(sb2, K)
-        basedir = sourcedir+"/gtex_v8-{:s}/tejaas/{:s}".format(t, preproc)
-        destdir = sourcedir+"/summary_{:g}/{:s}/tejaas/{:s}".format(pcutoff, t, preproc)
+        basedir = sourcedir+"/{:s}/tejaas/{:s}".format(opts.datatype, preproc)
+        destdir = sourcedir+"/summary_{:g}/{:s}/tejaas/{:s}".format(pcutoff, opts.datatype, preproc)
         if os.path.exists(basedir):
             filelist = [x for x in os.listdir(basedir) if x.startswith("t")]
             for file in filelist:
@@ -77,3 +80,29 @@ for t in tissuenames:
             if os.path.exists(destdir):
                 file = "snps_list.txt"
                 copyfile(os.path.join(basedir, file), os.path.join(destdir, file))
+                
+if opts.datatype == "gtex":
+    tissuenames, descriptions = read_tissues(opts.tissue_file)
+    for t in tissuenames:
+        for preproc in opts.preprocs:
+            print(sourcedir, t, preproc)
+            #preproc = "permnull_sb{:s}_knn{:s}".format(sb2, K)
+            basedir = sourcedir+"/gtex_v8-{:s}/tejaas/{:s}".format(t, preproc)
+            destdir = sourcedir+"/summary_{:g}/{:s}/tejaas/{:s}".format(pcutoff, t, preproc)
+            if os.path.exists(basedir):
+                filelist = [x for x in os.listdir(basedir) if x.startswith("t")]
+                for file in filelist:
+                    if os.path.exists(os.path.join(basedir, file)):
+                        if not os.path.exists(destdir): os.makedirs(destdir)
+                    if file == "target_genes_{:g}.txt".format(pcutoff): 
+                        destfile = "target_genes.txt"
+                        copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                    if file == "target_genes_knn_{:g}.txt".format(pcutoff): 
+                        destfile = "target_genes_knn.txt"
+                        copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                    if file == "trans_eqtls_{:g}.txt".format(pcutoff): 
+                        destfile = "trans_eqtls.txt"
+                        copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                if os.path.exists(destdir):
+                    file = "snps_list.txt"
+                    copyfile(os.path.join(basedir, file), os.path.join(destdir, file))

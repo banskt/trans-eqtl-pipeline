@@ -203,10 +203,6 @@ for use_LD in LDs:
             baseoutdir = os.path.join(basepath, "GTExPortal_eqtl_analysis")
             if not os.path.exists(baseoutdir): os.makedirs(baseoutdir)
 
-            # read all variants ids
-            all_snp_ids = pd.read_csv(os.path.join("/cbscratch/franco/from_saikat/gtex_v8_202003/all_variants_pvalues_tejaas.txt"), usecols=[0], header=0, sep="\t")
-            snps_list = list(all_snp_ids.values.reshape(-1))
-
             GENEINFO_FIELDS = ['name', 'ensembl_id', 'chrom', 'start', 'end', 'typ']
             class GeneInfo(collections.namedtuple('_GeneInfo', GENEINFO_FIELDS)):
                 __slots__ = ()
@@ -264,6 +260,9 @@ for use_LD in LDs:
             cis_bg = dict()
             cis_bg_file = os.path.join(gtexportal_dir, "gtex_background_freqs_ciseqtls_SHAPEIT2.txt")
             if not os.path.exists(cis_bg_file):
+                # read all variants ids
+                all_snp_ids = pd.read_csv(os.path.join("/cbscratch/franco/from_saikat/gtex_v8_202003/all_variants_pvalues_tejaas.txt"), usecols=[0], header=0, sep="\t")
+                snps_list = list(all_snp_ids.values.reshape(-1))
                 for tissue in tissues:
                     print(tissue, end=" ")
                     signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))

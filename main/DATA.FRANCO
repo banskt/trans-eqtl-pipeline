@@ -69,6 +69,9 @@ case "${EXPR_CORR}" in
     "raw_oneref")
         OUTDIR="${OUTDIR}/raw_oneref"
         ;;
+    "raw_oneref_adj")
+        OUTDIR="${OUTDIR}/raw_oneref_adj"
+        ;;
     "raw_wasp")
         OUTDIR="${OUTDIR}/raw_wasp"
         ;;
@@ -144,7 +147,9 @@ case "${EXPR_CORR}" in
         ;;
     "raw_oneref")
         # GTEX_EXPR_FMT="${EXPRGTEXDIR}/expression/normalized/[TISSUE]_normalized.txt.protein_coding_filtered"
-        # FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "raw_oneref_adj")
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
         ;;
     "lasso")
@@ -223,6 +228,9 @@ case "${TGENE_EXPR}" in
         GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_cclm_peer[NPEER]_PEER_residuals.txt.${BIOTYPES}_filtered"
         ;;
     "raw_oneref")
+        FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "raw_oneref_adj")
         FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
         ;;
     "raw_wasp_cclm")

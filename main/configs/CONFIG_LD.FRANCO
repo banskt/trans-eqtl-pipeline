@@ -24,7 +24,7 @@ done < ${TISSUEFILE}
 
 
 ## LD parameters
-LD_DATASETS="gtex_v8"  #"fhs" # 1kg
+LD_DATASETS="gtex_v8"  # this is for generating the map
 LDKEEPFILE=""
 if [ "${LD_DATASETS}" = "fhs" ]; then
     LDKEEPFILE="/cbscratch/franco/datasets/FHS/genotypes/representative_samples.txt"
@@ -32,12 +32,13 @@ fi
 LDWINDOW="200000"
 #LD_REGIONS_FILE="/cbscratch/franco/datasets/1KG_genomes/LD_regions2calculate.txt"
 LDMIN_R2="0.5"
+LDFILE_SUFFIX="SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}"
 
 echo "LD_DATASETS: $LD_DATASETS"
 
-EXPRESSIONS="raw_pub"
+EXPRESSIONS="raw"
 TEJAAS_CUTOFF="5e-08"
-CISMASK=true
+CISMASK=false
 NOGTKNN=false
 EUR=false
 CROSSMAP=false

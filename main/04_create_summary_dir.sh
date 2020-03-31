@@ -15,7 +15,11 @@ source ${UTILSDIR}/unset_vars
 source ${UTILSDIR}/tejaas_top_snps
 
 #dummy variable
-MDATA="gtex_v8-no_file"
+if [ "$TISSUEFILE" == "fhs" ]; then
+    MDATA="fhs"
+else
+    MDATA="gtex_v8-no_file"
+fi
 
 for EXPR_CORR in ${EXPRESSIONS}; do
     PREPROCS=" "
@@ -69,7 +73,7 @@ for EXPR_CORR in ${EXPRESSIONS}; do
     echo $TISSUEFILE
     echo $EXPR_CORR
     echo $OUTDIR_DATA
-    tejaas_summary $OUTDIR_DATA "${PREPROCS}" $TISSUEFILE 
+    tejaas_summary $OUTDIR_DATA "${PREPROCS}" $TISSUEFILE $DATATYPE 
 
     unset_vars ${DATALOAD}
 done

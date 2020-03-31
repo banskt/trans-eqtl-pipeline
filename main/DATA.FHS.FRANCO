@@ -1,0 +1,94 @@
+#!/bin/bash
+    
+# data directory
+DATADIR="/cbscratch/franco/datasets"
+EXPRDATADIR="/cbscratch/franco/trans-eqtl/new_preprocess_feb2020_freeze" #noage23" #dec2019_nopc" #new_preprocess_aug2019" #/cbscratch/franco/trans-eqtl/preprocessing_aug2019"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v19.txt"
+GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
+PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
+CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
+
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/framinghmam_16032020"
+
+########################### ATTENTION!!!!
+###### This is used in 04_do_RR_lasso.sh but IS WRONG, the summary folder changes now for Keffs and sbetas
+OUTDIR_SUMMARY="${OUTDIR}/summary_${TEJAAS_CUTOFF}"
+
+
+case "${EXPR_CORR}" in
+    "raw")
+        OUTDIR="${OUTDIR}/raw"
+        ;;
+    "raw_oneref")
+        OUTDIR="${OUTDIR}/raw_oneref"
+        ;;
+    "raw_oneref_adj")
+        OUTDIR="${OUTDIR}/raw_oneref_adj"
+        ;;
+    *)
+        OUTDIR="${OUTDIR}/unknown"
+        ;;
+esac
+
+# Framingham
+FHSDIR="${DATADIR}/FHS"
+FHS_GENO_DIR="${FHSDIR}/genotypes"
+FHS_GENO_FMT="${FHS_GENO_DIR}/merged_dosages/chr[CHRM].fhs.dosages.txt.gz"
+FHS_GENO_VCF_FMT="${FHS_GENO_DIR}/vcfs/chr[CHRM].fhs.vcf.gz"
+FHS_BGEN_FMT="None"
+FHS_SAMPLE="${FHS_GENO_DIR}/merged_dosages/chr1.fhs.dosages.sample"
+FHS_1KG_MAF="None"
+
+
+BIOTYPES=`echo $GXSELECTION | sed 's/ \+/_/g'`
+
+case "${EXPR_CORR}" in
+
+    "raw_oneref")
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "raw_oneref_adj")
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
+        ;;
+    "raw")
+        FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.txt"
+        ;;
+    *)
+        FHS_EXPR_FMT=""
+        ;;
+esac
+
+
+case "${TGENE_EXPR}" in
+    "raw_oneref")
+        FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
+        ;;
+    "raw_oneref_adj")
+        FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
+        ;;
+    *)
+        GTEX_V8_TGENE_EXPR_FMT=
+        ;;
+esac
+
+
+# Tissue specific and data specific formatting 
+DATATYPE='fhs'
+case "${DATATYPE}" in
+    "fhs")
+        DATATYPE="fhs"
+        GENO_DIR=${FHS_GENO_DIR}
+        EXPRESSIONFILE=${FHS_EXPR_FMT}
+        EXPRCORRFILE=${FHS_TGENE_EXPR_FMT}
+        GENO_FMT=${FHS_GENO_FMT}
+        GENO_VCF_FMT=${FHS_GENO_VCF_FMT}
+        SAMPLEFILE=${FHS_SAMPLE}
+        MAF_1KG_FMT="None"
+        ;;
+    *)
+        EXPRESSIONFILE=""
+        GENO_FMT=""
+        SAMPLEFILE=""
+        MAF_1KG_FILE=""
+        ;;
+esac

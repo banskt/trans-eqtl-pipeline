@@ -1,0 +1,64 @@
+#!/bin/bash
+
+DATALOAD="DATA.FHS.FRANCO"
+EXTERNALLOAD="EXTERNAL.FRANCO"
+
+TISSUEFILE="fhs"
+CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
+
+DATASETS="fhs"
+echo "DATASETS: $DATASETS"
+EXPRESSIONS="raw_oneref_adj" 
+TGENE_EXPR="raw_oneref_adj"
+GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
+# CHRNUMS="20 21 22"
+
+# top SNPs to select in step 03
+# TEJAAS_CUTOFF="1e-04"
+TEJAAS_CUTOFF="5e-08"
+CISMASK=true
+KNNS="30" #"20 40"
+CROSSMAP=false
+EUR=false
+NOGTKNN=false
+MAGIC_SQRT=false
+MML_OPT=false
+DYNAMIC_SB=false
+KEFFS="0.4"
+
+SHUFFLE_SPECIAL=false
+# CENTERSCALE=false/true
+
+# MatrixEQTL options
+bMatrixEqtl=false			# run the method if true
+bMEqtlRandom=false      	# run the method if true
+MEQTL_PVALTHRES_CIS=0.001
+MEQTL_PVALTHRES_TRANS=0.001
+MATRIXEQTL_MODEL="modelLINEAR"
+
+# TEJAAS options
+bTejaas=true				# run the method if true
+bTjsRandom=false
+TEJAAS_MODEL="jpa-rr" 			# only one model allowed
+TEJAAS_NULL="perm" # maf" 			# list of null models
+TEJAAS_SIGMA_BETA_PERM="0.006 0.0231 0.1"      # list of sigma beta for perm null
+TEJAAS_SIGMA_BETA_MAF="0.001" 		# list of sigma beta for MAF null
+MAX_NSNP_PERJOB=40000 			# number of SNPs for analysis by TEJAAS per job
+TEJAAS_SNPS_THRES=0.00001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold
+TEJAAS_GENE_THRES=0.01 		# even for the above, not all target genes are printed; only those with p-values below this threshold
+
+
+
+# Alternatives for Tejaas
+bTjsRandomN=false
+NRANDOMS=50             # number of times to randomize
+
+bTejaasPartition=false
+REPLICAS=1
+
+# CPMA options
+bTejaasJPA=false
+bJPARandom=false
+
+# Which methods to run?
+bValidationPlot=false
