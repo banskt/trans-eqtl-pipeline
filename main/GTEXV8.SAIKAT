@@ -7,21 +7,28 @@ GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
 # output directory
 OUTDIR="/scratch/sbanerj/trans-eqtl/dev-pipeline"
 
-if [ ${DATASET} = "GTEx" ]; then
-    DATATYPE="gtex"
-    GTEXDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
+DATATYPE="gtex"
+GTEXDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
 
-    SELECTION_STRING=$( echo ${GXSELECTION} | sed 's/ /_/g' )
-    EXPR_FMT="${GTEXDIR}/expression/gtex_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
-    GENO_FMT="${GTEXDIR}/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr[CHRM].vcf.gz"
+SELECTION_STRING=$( echo ${GXSELECTION} | sed 's/ /_/g' )
+EXPR_FMT="${GTEXDIR}/expression/gtex_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
+GENO_FMT="${GTEXDIR}/genotype/all_samples/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze_SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
 
-    SAMPLEFILE="${GTEXDIR}/gtex.sample"
+SAMPLEFILE="${GTEXDIR}/gtex.sample"
+TISSUEFILE="tissue_table_006.txt"
 
-    JOBSUBDIR="${JOBSUBDIR}/gtex_v8_sbopt"
-    OUTDIR="${OUTDIR}/gtex_v8_sbopt"
+JOBSUBDIR="${JOBSUBDIR}/gtex_v8_202003"
+OUTDIR="${OUTDIR}/gtex_v8_202003"
 
-    TISSUEFILE="tissue_table.txt"
-    TEJAAS_SIGMA_BETA_PERM_FILE="gtex_tissue_specific_priors.txt"
+MAF_1KG_FMT="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+LDFILE_FMT="${GTEXDIR}/SHAPEIT_ldmap_200000_0.5/chr{:d}_gtex_v8.geno.ld"
 
-    MAF_1KG_FMT="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+if [ "${TEJAAS_SIGMA_BETA_OPTIM}"  = "true" ]; then
+    # Optimized sigma_beta
+    TEJAAS_SIGMA_BETA_PERM_FILE="gtex_tissue_specific_priors_shift05.txt"
+    TEQTL_OUTDIR="${HOME}/trans-eQTL/gtex_v8_tejaas_trans_eQTLs_20200309/${SELECTION_STRING}_optim_gamma_knn${KNN_NBR}_cut${PP_TEJAAS_PVALCUT}"
+else
+    # Fixed sigma_beta
+    TEJAAS_SIGMA_BETA_PERM_FILE="gtex_fixed_priors.txt"
+    TEQTL_OUTDIR="${HOME}/trans-eQTL/gtex_v8_tejaas_trans_eQTLs_20200309/${SELECTION_STRING}_gamma0006_knn${KNN_NBR}_cut${PP_TEJAAS_PVALCUT}"
 fi

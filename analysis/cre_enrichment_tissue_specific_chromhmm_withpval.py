@@ -211,7 +211,7 @@ def empr_overlap(rand_dicts, dhsdir, eidlist, labeldict, outdir):
     return tannot_rand
    
 
-random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling"
+random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling_SHAPEIT2"
 
 if __name__ == '__main__':
     opts = parse_args()

@@ -36,6 +36,12 @@ def parse_args():
                         default=5000,
                         help='number of SNPs to simulate')
 
+    parser.add_argument('--knn',
+                        type=int,
+                        dest='knn',
+                        default=0,
+                        help='number of neighbors for KNN correction')
+
     opts = parser.parse_args()
     return opts
 
@@ -125,7 +131,7 @@ if __name__ == '__main__':
     gtfull, snp_info = create_snps(gx_full.shape[1], nsnp = opts.nsnp)
     gt_donors = gx_donors
     gx_norm = revreg.normalize_expr(gx_full)
-    gx_corr, gt_corr, knn_neighbors = revreg.knn_correction(gx_norm.T, gtfull)
+    gx_corr, gt_corr, knn_neighbors = revreg.knn_correction(gx_norm.T, gtfull, opts.knn)
     gx_knn = revreg.normalize_expr(gx_corr.T) #/ np.sqrt(nsample)
     gt_knn = revreg.normalize_and_center_dosage(gt_corr, snp_info)
 

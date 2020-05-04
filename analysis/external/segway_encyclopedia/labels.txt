@@ -1,0 +1,9 @@
+Quiescent 0
+ConstitutiveHet 1
+FacultativeHet 2
+Transcribed 3
+Promoter 4
+Enhancer 5
+RegPermissive 6
+Bivalent 7
+LowConfidence 8

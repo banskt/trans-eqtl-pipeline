@@ -1,0 +1,15 @@
+1	TssA		# Promoter
+2	TssAFlnk	# Promoter
+3	TxFlnk		# Transcribed // both promoter and enhancer
+4	Tx		# Actively transcribed
+5	TxWk		# Actively transcribed
+6	EnhG		# Enhancer
+7	Enh		# Enhancer
+8	ZNF/Rpts	# Zinc-finger protein
+9	Het		# Constitutive Heterochromatin
+10	TssBiv		# Bivalent
+11	BivFlnk		# Bivalent
+12	EnhBiv		# Bivalent
+13	ReprPC		# Repressed Polycomb
+14	ReprPCWk	# Repressed Polycomb
+15	Quies		# Quiescent

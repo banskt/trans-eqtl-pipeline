@@ -19,3 +19,4 @@ PREPROCDIR=$(abs_path "${CURDIRUP}/../preprocess")
 # Script files
 MATRIXEQTL=$(abs_path "${SCRIPTDIR}/matrixeqtl.R")
 SBOPT_PY=$(abs_path "${SCRIPTDIR}/sigbeta_optimizer.py")
+LDPRUNE_PY=$(abs_path "${SCRIPTDIR}/prune_ld_snps.py")

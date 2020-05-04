@@ -1,0 +1,23 @@
+#!/bin/bash
+
+combine_covariates() {
+    GTEX_COVARFILE=$1
+    ADD_COVARFILE=$2
+    SELECTED_SAMPLES=$3
+    OUTFILE=$4
+
+    OUTDIR=$( dirname ${OUTFILE} )
+
+    SELECTED_DONORS="${OUTDIR}/gtex_covariate_donors.txt"
+    head -n 1 ${GTEX_COVARFILE} > ${OUTFILE}
+    cat ${OUTFILE} | sed 's/\t/\n/g' | tail -n +2 > ${SELECTED_DONORS}
+
+    for COVARFILE in ${GTEX_COVARFILE} ${ADD_COVARFILE}; do
+        head -n 1 ${COVARFILE} | sed 's/\t/\n/g' > ${OUTDIR}/tmp_cov.header
+        grep -n -Fwf ${SELECTED_DONORS} ${OUTDIR}/tmp_cov.header | cut -d':' -f1 > ${OUTDIR}/tmp_cov.columns
+        TARGETFIELDS="$( echo "1,$( tr '\n' ',' < ${OUTDIR}/tmp_cov.columns )" | sed 's/,$//g' )"
+        tail -n +2 ${COVARFILE} | cut -f$TARGETFIELDS >> ${OUTFILE}
+        rm -f ${OUTDIR}/tmp_cov.header
+        rm -f ${OUTDIR}/tmp_cov.columns
+    done
+}

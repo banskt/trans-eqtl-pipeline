@@ -18,24 +18,23 @@ if [ "${SHUFFLE}" = "true" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --shuffle-with $SHUFFLED_ID_FILE"
 fi
 
-for CHRM in ${CHRNUMS}; do
-    GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
-    MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
-    echo "Submitting TEJAAS jobs for Chromosome ${CHRM}, SHUFFLE=$SHUFFLE"
+for NULL in ${TEJAAS_NULL}; do
+    if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
+    if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
 
-    CHRM_NTOT_FILE="$( dirname ${GENOTYPEFILE} )/ntot_per_chromosome.txt"
-    NTOT_CHRM=$( sed "${CHRM}q;d" ${CHRM_NTOT_FILE} | awk '{print $2}' )
+    for SBETA in ${TEJAAS_SIGMA_BETA}; do
+        METHOD_VARIANT="${NULL}null_sb${SBETA}"
+        __EFLAGS="${EXTRAFLAGS}" ## because we don't want inplace modification of $EXTRAFLAGS within the loop
+        if [ "${TEJAAS_KNN}" = "true" ]; then
+            __EFLAGS="${__EFLAGS} --knn ${KNN_NBR}"
+            METHOD_VARIANT="${METHOD_VARIANT}_knn${KNN_NBR}"
+        fi
 
-    for NULL in ${TEJAAS_NULL}; do
-        if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
-        if [ ${NULL} == "maf" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_MAF}; fi
-        for SBETA in ${TEJAAS_SIGMA_BETA}; do
-            METHOD_VARIANT="${NULL}null_sb${SBETA}"
-            __EFLAGS="${EXTRAFLAGS}" ## because we don't want inplace modification of $EXTRAFLAGS within the loop
-            if [ "${TEJAAS_KNN}" = "true" ]; then
-                __EFLAGS="${__EFLAGS} --knn 30"
-                METHOD_VARIANT="${METHOD_VARIANT}_knn"
-            fi
+        for CHRM in ${CHRNUMS}; do
+            GENOTYPEFILE=${GENO_FMT/\[CHRM\]/${CHRM}}
+            MAF_1KG_FILE=${MAF_1KG_FMT/\[CHRM\]/${CHRM}}
+            CHRM_NTOT_FILE="$( dirname ${GENOTYPEFILE} )/ntot_per_chromosome.txt"
+            NTOT_CHRM=$( sed "${CHRM}q;d" ${CHRM_NTOT_FILE} | awk '{print $2}' )
 
             SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}"
             SPECIFIC_OUTDIR="${OUTDIR_DATA}/${THISMETHOD}/${TEJAAS_PREPROC_STR}/${METHOD_VARIANT}/chr${CHRM}"
@@ -51,11 +50,10 @@ for CHRM in ${CHRNUMS}; do
                           ${THISJOBDEPS} ${MASTER_BSUBDIR} \
                           TEJAAS_JOBDEPS "${TEJAAS_JOBDEPS}" ${NTOT_CHRM}
 
-            SUBMITTED_JOBIDS=${TEJAAS_JOBDEPS#*${SUBMITTED_JOBIDS}*:}
-            __MSTRING="${METHOD_VARIANT}"
-            if [ "${SHUFFLE}" = "true" ]; then __MSTRING="${__MSTRING} + shuffled genotype"; fi
-            echo "    ${SUBMITTED_JOBIDS} > ${__MSTRING}: ${THISJOBDEPS}"
-
         done
+        SUBMITTED_JOBIDS=${TEJAAS_JOBDEPS#*${SUBMITTED_JOBIDS}*:}
+        __MSTRING="${METHOD_VARIANT}"
+        if [ "${SHUFFLE}" = "true" ]; then __MSTRING="${__MSTRING} + shuffled genotype"; fi
+        echo "    ${SUBMITTED_JOBIDS} > ${__MSTRING}: Dependency ${THISJOBDEPS}"
     done
 done

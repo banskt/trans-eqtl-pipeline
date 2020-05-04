@@ -6,8 +6,8 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH -C scratch
 #SBATCH -J _JOB_NAME
-#SBATCH -o _JOB_NAME.out
-#SBATCH -e _JOB_NAME.err
+#SBATCH -o _JOB_NAME_%a.out
+#SBATCH -e _JOB_NAME_%a.err
 #SBATCH -A all
 
 module load intel/compiler/64/2017/17.0.2
@@ -25,8 +25,8 @@ GENEINFO=_GEN_POSF
 
 TJMETHOD=_TJ_METHD
 NULLMODL=_NULL_MDL
-OUTPRFIX=_OUT_PRFX
-INCSTRNG=_STRT_END
+INDEX=$( echo ${SLURM_ARRAY_TASK_ID} | awk '{printf "%03d", $1}' )
+OUTPRFIX=_OUT_PRFX${INDEX}
 SNPTHRES=_SNP_CUT_
 GENTHRES=_GEN_CUT_
 SBETA=_SIG_BETA
@@ -37,6 +37,21 @@ EXTRAFLAGS=_EXT_FLAG
 if [ "${NULLMODL}" = "maf" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --maf-file ${MAFFILE}"
 fi
+
+
+NMAX=_NUM_MAX_
+NTOT=_NUM_TOT_
+STARTSNP=$(( NMAX * SLURM_ARRAY_TASK_ID + 1 ))
+ENDSNP=$(( NMAX * (SLURM_ARRAY_TASK_ID + 1) ))
+if [ $ENDSNP -gt $NTOT ]; then
+    ENDSNP=${NTOT}
+fi
+INCSTRNG="${STARTSNP}:${ENDSNP}"
+
+if [ "${NULLMODL}" = "maf" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --maf-file ${MAFFILE}"
+fi
+
 
 
 mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \

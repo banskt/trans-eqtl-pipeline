@@ -19,7 +19,7 @@ Brain - Spinal cord (cervical c-1)	bsp
 Brain - Substantia nigra	bsu
 Breast - Mammary Tissue	br
 Cells - EBV-transformed lymphocytes	ebv
-# Cells - Cultured fibroblasts	fib
+Cells - Cultured fibroblasts	fib
 Colon - Sigmoid	cols
 Colon - Transverse	colt
 Esophagus - Gastroesophageal Junction	esog
@@ -27,7 +27,7 @@ Esophagus - Mucosa	esom
 Esophagus - Muscularis	esomu
 Heart - Atrial Appendage	haa
 Heart - Left Ventricle	hlv
-# Kidney - Cortex	kc
+Kidney - Cortex	kc
 Liver	liv
 Lung	lu
 Minor Salivary Gland	msg

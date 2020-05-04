@@ -4,7 +4,6 @@ Adrenal Gland	ag
 Artery - Aorta	aa
 Artery - Coronary	ac
 Artery - Tibial	at
-Bladder	bl
 Brain - Amygdala	bam
 Brain - Anterior cingulate cortex (BA24)	ban
 Brain - Caudate (basal ganglia)	bca
@@ -20,16 +19,12 @@ Brain - Spinal cord (cervical c-1)	bsp
 Brain - Substantia nigra	bsu
 Breast - Mammary Tissue	br
 Cells - EBV-transformed lymphocytes	ebv
-####### Cells - Leukemia cell line (CML)	leu
-Cells - Transformed fibroblasts	fib
-####### Cervix - Ectocervix	ect
-####### Cervix - Endocervix	end
+Cells - Cultured fibroblasts	fib
 Colon - Sigmoid	cols
 Colon - Transverse	colt
 Esophagus - Gastroesophageal Junction	esog
 Esophagus - Mucosa	esom
 Esophagus - Muscularis	esomu
-####### Fallopian Tube	ft
 Heart - Atrial Appendage	haa
 Heart - Left Ventricle	hlv
 Kidney - Cortex	kc

@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -p medium
+#SBATCH -t 2-0:00:00
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=8
+#SBATCH -C scratch
+#SBATCH -J _JOB_NAME
+#SBATCH -o _JOB_NAME.out
+#SBATCH -e _JOB_NAME.err
+#SBATCH -A all
+
+export OMP_NUM_THREADS=8
+MPYTHON=_PYT_ENV_
+
+LDFILE_FMT=_LDX_FMT_
+LDPRUNE_PY=_LDPR_PY_
+INPUTFILES=_IN_FILS_
+LDOUTFILES=_OUT_FLS_
+
+${MPYTHON} ${LDPRUNE_PY} --infiles ${INPUTFILES} --ldfile ${LDFILE_FMT} --outfiles ${LDOUTFILES}

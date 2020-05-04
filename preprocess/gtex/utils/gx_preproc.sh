@@ -54,7 +54,7 @@ if [ "${bNormalizeQC}" = "true" ]; then
                          --counts ${TISSUEOUTDIR}/all_genes_counts.gct \
                          --vcf_sample_list ${PREGXOUTDIR}/vcf_samples.list \
                          --out ${TISSUEOUTDIR}/gtex_${TSHORT}.txt \
-                         --cov ${TISSUEOUTDIR}/gtex_covariates.txt \
+                         --cov ${TISSUEOUTDIR}/tejaas_covariates.txt \
                          --tpm_threshold ${TPM_THRESHOLD} \
                          --count_threshold ${COUNTS_THRESHOLD} \
                          --sample_frac_threshold ${SAMPLE_FRAC_THRESHOLD} \

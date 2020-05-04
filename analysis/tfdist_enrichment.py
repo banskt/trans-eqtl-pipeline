@@ -8,18 +8,19 @@ import sys
 sys.path.append('./')
 from utils import utils
 from utils import read_tejaas_results
+from utils import read_eqtlgen_results
 from utils import mpl_stylesheet
 
 
 def parse_args():
 
-    parser = argparse.ArgumentParser(description='Calculate tissue-specific transcription factor enrichment')
+    parser = argparse.ArgumentParser(description='Calculate enrichment of transcription factors in the cis-window of trans-eQTLs')
 
     parser.add_argument('--tf',
                         type=str,
                         dest='tffile',
                         metavar='FILE',
-                        help='list of transcription factors for the given tissue')
+                        help='list of transcription factors')
 
     parser.add_argument('--out',
                         type=str,
@@ -51,6 +52,17 @@ def parse_args():
                         dest='cis_window',
                         default=0.1,
                         help='cis window in megabases')
+
+    parser.add_argument('--randomdir',
+                        type=str,
+                        dest='randomdir',
+                        metavar='DIR',
+                        help='name of the directory where randomly sampled genotypes are present')
+
+    parser.add_argument('--eqtlgen',
+                        dest='is_eqtlgen',
+                        action='store_true',
+                        help='Read eQTLGen')
 
     opts = parser.parse_args()
     return opts
@@ -120,14 +132,15 @@ def generate_empirical_cistf_dist(dirname, chrmlist, tflist, tf_frac_rand):
     return enrichment_rand
 
 
-random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling"
 chrmlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 opts = parse_args()
 
+random_snp_dir = opts.randomdir
 cis_window = opts.cis_window
 tissuelist = opts.tissuelist
 outfile = opts.outfile
+is_eqtlgen = opts.is_eqtlgen
 
 tflist = read_tflist(opts.tffile)
 tf_frac_rand = get_random_cistf(random_snp_dir, chrmlist, tflist)
@@ -140,7 +153,10 @@ fout.write(f'TISSUE\tN_TRANSEQTLS\tCISTF_FRAC\tENRICHMENT\tP_VALUE\n')
 for tissue in tissuelist:
 
     resfilename = os.path.join(opts.resdir, tissue, opts.resfile)
-    transeqtls = read_tejaas_results.transeqtls(resfilename)
+    if is_eqtlgen:
+        transeqtls = read_eqtlgen_results.transeqtls(resfilename)
+    else:
+        transeqtls = read_tejaas_results.transeqtls(resfilename)
     print(f'{tissue}: {len(transeqtls)} trans-eQTLs')
     nteqtl = len(transeqtls)
 

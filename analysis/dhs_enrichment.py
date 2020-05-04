@@ -7,6 +7,7 @@ import sys
 sys.path.append('./')
 from utils import utils
 from utils import read_tejaas_results
+from utils import read_eqtlgen_results
 
 
 def parse_args():
@@ -37,6 +38,17 @@ def parse_args():
                         dest='tissuelist',
                         metavar='TISSUE',
                         help='short name of all tissues to be analysed')
+
+    parser.add_argument('--teqtl',
+                        type=str,
+                        dest='teqtlfile',
+                        metavar='FILENAME',
+                        help='name of the trans-eQTL file to be analysed')
+
+    parser.add_argument('--eqtlgen',
+                        dest='is_eqtlgen',
+                        action='store_true',
+                        help='Read eQTLGen')
 
     opts = parser.parse_args()
     return opts
@@ -117,7 +129,7 @@ def generate_empirical_dhs_enrichment(dirname, dhs_file, dhs_frac_rand):
     return np.array(enrichment)
 
 
-random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling"
+random_snp_dir = "/usr/users/sbanerj/gtex_v8/genotype/all_samples/random_sampling_SHAPEIT2"
 chrmlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 
 opts = parse_args()
@@ -125,29 +137,32 @@ tissuelist = opts.tissuelist
 outfile = opts.outfile
 dhsfile = opts.dhsfile
 resdir = opts.resdir
+teqtlfile = opts.teqtlfile
+is_eqtlgen = opts.is_eqtlgen
 
-dhs_frac_rand = get_random_dhs_overlap(random_snp_dir, dhsfile)
-print(f'Fraction of DHS overlap for randomly selected SNPs: {dhs_frac_rand :7.4f}')
-enrichment_rand = generate_empirical_dhs_enrichment(random_snp_dir, dhsfile, dhs_frac_rand)
-
-#import pickle
-##filehandler = open('dhs_frac_rand.pkl', 'wb')
-##pickle.dump(dhs_frac_rand, filehandler)
-##print(dhs_frac_rand)
-##filehandler = open('enrichment_rand.pkl', 'wb')
-##pickle.dump(enrichment_rand, filehandler)
-#dhs_frac_rand = pickle.load( open( "dhs_frac_rand.pkl", "rb" ) )
-#enrichment_rand = pickle.load( open( "enrichment_rand.pkl", "rb" ) )
+#dhs_frac_rand = get_random_dhs_overlap(random_snp_dir, dhsfile)
 #print(f'Fraction of DHS overlap for randomly selected SNPs: {dhs_frac_rand :7.4f}')
+#enrichment_rand = generate_empirical_dhs_enrichment(random_snp_dir, dhsfile, dhs_frac_rand)
+
+import pickle
+#filehandler = open('dhs_frac_rand_shapeit.pkl', 'wb')
+#pickle.dump(dhs_frac_rand, filehandler)
+#filehandler = open('enrichment_rand_shapeit.pkl', 'wb')
+#pickle.dump(enrichment_rand, filehandler)
+dhs_frac_rand = pickle.load( open( "dhs_frac_rand_shapeit.pkl", "rb" ) )
+enrichment_rand = pickle.load( open( "enrichment_rand_shapeit.pkl", "rb" ) )
+print(f'Fraction of DHS overlap for randomly selected SNPs: {dhs_frac_rand :7.4f}')
 
 fout = open(outfile, 'w')
 fout.write(f'TISSUE\tN_TRANSEQTLS\tDHS_FRAC\tENRICHMENT\tP_VALUE\n')
 
 for tissue in tissuelist:
 
-    resfilename = os.path.join(resdir, tissue, 'trans_eqtls.txt')
-    #resfilename = os.path.join(resdir, tissue, 'trans_eqtls_mod_ld1.txt')
-    transeqtls = read_tejaas_results.transeqtls(resfilename)
+    resfilename = os.path.join(resdir, tissue, teqtlfile)
+    if is_eqtlgen:
+        transeqtls = read_eqtlgen_results.transeqtls(resfilename)
+    else:
+        transeqtls = read_tejaas_results.transeqtls(resfilename)
     print(f'{tissue}: {len(transeqtls)} trans-eQTLs')
     nteqtl = len(transeqtls)
 

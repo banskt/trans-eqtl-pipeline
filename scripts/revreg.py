@@ -90,7 +90,7 @@ def select_donors(vcf_donors, expr_donors):
     exprmask = np.array([expr_donors.index(x) for x in common_donors])
     return vcfmask, exprmask
 
-def knn_correction(expr, dosage):
+def knn_correction(expr, dosage, kneighbor):
     pca = PCA(n_components=min(expr.shape[0], expr.shape[1]))
     print("Original dimension: {:d} x {:d}".format(expr.shape[0], expr.shape[1]))
     pca.fit(expr) # requires N x G
@@ -108,7 +108,6 @@ def knn_correction(expr, dosage):
             distance_matrix[i, j] = dist
             distance_matrix[j, i] = dist
 
-    kneighbor = 30
     gx_knn = np.zeros_like(expr)
     gt_knn = np.zeros_like(dosage)
     neighbor_list = list()

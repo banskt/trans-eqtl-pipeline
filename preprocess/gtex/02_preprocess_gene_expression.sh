@@ -12,13 +12,14 @@ source ${DATALOAD}
 source ${EXTERNALLOAD}
 source ../../main/PATHS
 
-#---- Include functions from main directory
-source ${UTILSDIR}/submit_job
-source ${UTILSDIR}/add_deps
-
 PREPROC_SCRIPTDIR="${PWD}/scripts"
 PREPROC_UTILSDIR="${PWD}/utils"
 NORMQCPY="${PREPROC_SCRIPTDIR}/preprocess_expression.py"
+
+#---- Include functions from main directory
+source ${UTILSDIR}/submit_job
+source ${UTILSDIR}/add_deps
+source ${PREPROC_UTILSDIR}/combine_covariates
 
 # Define a random string for marking jobs of this batch
 RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
@@ -28,7 +29,9 @@ zcat ${SRCTPM} | head -n 3 | tail -n 1 | sed 's/\t/\n/g' > ${PREGXOUTDIR}/rnaseq
 cut -d" " -f1 ${DONORFILE} | tail -n +3 > ${PREGXOUTDIR}/vcf_samples.list
 
 #Collect covariates
-#source ${PREPROC_UTILSDIR}/collect_age_gender_trischd.sh
+if [ "${bCollectCovs}" = "true" ]; then
+    source ${PREPROC_UTILSDIR}/collect_age_gender_trischd.sh
+fi
 
 ## control job dependencies
 GX_TISSUE_JOBDEPS="None"
@@ -48,6 +51,7 @@ while IFS='' read -r LINE || [ -n "$LINE" ]; do
         if [ "${bCollectCovs}" = "true" ]; then 
             cp ${GTEX_COVFILE} ${TISSUEOUTDIR}/gtex_covariates_with_peer.txt
             grep -v "InferredCov" ${TISSUEOUTDIR}/gtex_covariates_with_peer.txt > ${TISSUEOUTDIR}/gtex_covariates.txt
+            combine_covariates ${TISSUEOUTDIR}/gtex_covariates.txt ${COVARDIR}/cov_gender_age_trischd.txt ${TISSUEOUTDIR}/selected_samples.txt ${TISSUEOUTDIR}/tejaas_covariates.txt
         fi
 
         echo $TFULL

@@ -1,0 +1,10 @@
+Adrenal Gland	ag
+Heart - Atrial Appendage	haa
+Liver	liv
+Minor Salivary Gland	msg
+Pancreas	pan
+Pituitary	pit
+Small Intestine - Terminal Ileum	si
+Spleen	spl
+Vagina	va
+Whole Blood	wb

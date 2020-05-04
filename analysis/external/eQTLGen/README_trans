@@ -1,0 +1,50 @@
+This README accompanies the file with trans-eQTL results from eQTLGen 
+
+File with full trans-eQTL results: 2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.txt.gz
+File with significant (FDR<0.05) trans-eQTL results: 2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz
+
+Column Names
+------------
+Pvalue - P-value
+SNP - SNP rs ID
+SNPChr - SNP chromosome
+SNPPos - SNP position
+AssessedAllele - Assessed allele, the Z-score refers to this allele
+OtherAllele - Not assessed allele
+Zscore - Z-score
+Gene - ENSG name (Ensembl v71) of the eQTL gene
+GeneSymbol - HGNC name of the gene
+GeneChr - Gene chromosome
+GenePos - Centre of gene position
+NrCohorts - Total number of cohorts where this SNP-gene combination was tested
+NrSamples - Total number of samples where this SNP-gene combination was tested
+FDR - False discovery rate estimated based on permutations
+BonferroniP - P-value after Bonferroni correction
+
+Additional information
+----------------------
+These files contain all trans-eQTL results from eQTLGen, accompanying the article.
+19,960 genes that showed expression in blood were tested.
+10,317 trait-associated SNPs (based on GWAS Catalog, Immunobase and Astle et al. study, see Online Methods) were tested.
+Every SNP-gene combination with a distance >5Mb and tested in at least 2 cohorts was included.
+
+FDR calculation
+---------------
+To determine nominal P-value threshold corresponding to FDR=0.05, we used a pruned set of SNPs for trans-eQTL mapping and permutation-based FDR calculation (See Methods).
+
+Crossmapping filter
+-------------------
+Some trans-eQTL are artefacts resulting from genes that map (partially) to a location nearby the eQTL SNP, effectively represting a cis-eQTL effect.
+These potential artefacts were identified by mapping trans-eQTL gene sequences to the immediate surroundings of the SNP (Supplementary Note).
+If there was strong evidence that the trans-eQTL was a cross-mapping artefact, it was removed from the list of significant trans-eQTLs.
+After filtering, the FDR was re-calculated on the remaining effects.
+
+PLEASE NOTE: the full results file have not been filtered for cross-mapping effects.
+The file may include artefacts resulting from genes that map (partially) to a location nearby the eQTL SNP, effectively representing a cis-eQTL effect.
+
+
+Updates
+-------
+2019-12-12
+We have updated the trans-eQTL files:
+The current version includes Bonferroni-adjusted p-values
