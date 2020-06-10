@@ -1,0 +1,602 @@
+                                                               JobName      State    Elapsed               Start      NCPUS   NTasks     AveCPU     AveRSS     MaxRSS 
+                 ----------------------------------------------------- ---------- ---------- ------------------- ---------- -------- ---------- ---------- ---------- 
+                                  compreq_chr1_snp100_gene5000_samp200  COMPLETED   00:00:32 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:00:32 2020-05-20T13:44:21          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:32 2020-05-20T13:44:21          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:00:28 2020-05-20T13:44:24          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp1000_gene5000_samp200  COMPLETED   00:00:32 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:00:32 2020-05-20T13:44:21          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:32 2020-05-20T13:44:21          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:00:29 2020-05-20T13:44:24          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp5000_gene5000_samp200  COMPLETED   00:00:51 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:00:51 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:51 2020-05-20T13:44:21          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:46 2020-05-20T13:44:24          1        1   00:02:43    880508K    880508K 
+                                compreq_chr1_snp10000_gene5000_samp200  COMPLETED   00:01:03 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:01:03 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:03 2020-05-20T13:44:21          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:01:00 2020-05-20T13:44:24          1        1   00:06:44   2649636K   2649636K 
+                                compreq_chr1_snp20000_gene5000_samp200  COMPLETED   00:01:26 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:01:26 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:27 2020-05-20T13:44:21          8        1   00:00:00        76K        76K 
+                                                             pmi_proxy  COMPLETED   00:01:23 2020-05-20T13:44:24          1        1   00:07:33   1174776K   1174776K 
+                                compreq_chr1_snp40000_gene5000_samp200  COMPLETED   00:02:15 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:02:15 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:16 2020-05-20T13:44:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:02:12 2020-05-20T13:44:24          1        1   00:15:36   4970676K   4970676K 
+                                compreq_chr1_snp60000_gene5000_samp200  COMPLETED   00:03:13 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:03:13 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:13 2020-05-20T13:44:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:10 2020-05-20T13:44:24          1        1   00:23:53   6257928K   6257928K 
+                                compreq_chr1_snp80000_gene5000_samp200  COMPLETED   00:04:27 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:04:27 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:27 2020-05-20T13:44:21          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:04:24 2020-05-20T13:44:24          1        1   00:30:25   7659172K   7659172K 
+                               compreq_chr1_snp100000_gene5000_samp200  COMPLETED   00:05:41 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:05:41 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:41 2020-05-20T13:44:21          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:05:38 2020-05-20T13:44:24          1        1   00:42:41   9440460K   9440460K 
+                               compreq_chr1_snp120000_gene5000_samp200  COMPLETED   00:07:09 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:07:09 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:09 2020-05-20T13:44:21          8        1   00:00:00        28K        28K 
+                                                             pmi_proxy  COMPLETED   00:07:06 2020-05-20T13:44:24          1        1   00:54:15  10776480K  10776480K 
+                                 compreq_chr1_snp100_gene10000_samp200  COMPLETED   00:00:46 2020-05-20T13:44:21          8                                           
+                                                                 batch  COMPLETED   00:00:46 2020-05-20T13:44:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:46 2020-05-20T13:44:21          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:42 2020-05-20T13:44:24          1        1   00:02:45    778428K    778428K 
+                                compreq_chr1_snp1000_gene10000_samp200  COMPLETED   00:00:50 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:00:50 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:51 2020-05-20T13:44:28          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:00:41 2020-05-20T13:44:37          1        1   00:03:25    789728K    789728K 
+                                compreq_chr1_snp5000_gene10000_samp200  COMPLETED   00:01:03 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:03 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:03 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:53 2020-05-20T13:44:37          1        1   00:03:26    876780K    876780K 
+                               compreq_chr1_snp10000_gene10000_samp200  COMPLETED   00:01:23 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:23 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:24 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:14 2020-05-20T13:44:37          1        1   00:07:10   3093660K   3093660K 
+                               compreq_chr1_snp20000_gene10000_samp200  COMPLETED   00:01:49 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:49 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:51 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:39 2020-05-20T13:44:37          1        1   00:11:14   4918368K   4918368K 
+                               compreq_chr1_snp40000_gene10000_samp200  COMPLETED   00:02:47 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:02:47 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:47 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:02:37 2020-05-20T13:44:37          1        1   00:19:13   6048184K   6048184K 
+                               compreq_chr1_snp60000_gene10000_samp200  COMPLETED   00:03:43 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:03:43 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:44 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:03:34 2020-05-20T13:44:37          1        1   00:27:20   7773932K   7773932K 
+                               compreq_chr1_snp80000_gene10000_samp200  COMPLETED   00:04:56 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:04:56 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:56 2020-05-20T13:44:28          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:04:46 2020-05-20T13:44:37          1        1   00:34:52   9212908K   9212908K 
+                              compreq_chr1_snp100000_gene10000_samp200  COMPLETED   00:06:15 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:06:15 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:16 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:06:06 2020-05-20T13:44:37          1        1   00:47:12  11153760K  11153760K 
+                              compreq_chr1_snp120000_gene10000_samp200  COMPLETED   00:08:01 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:08:01 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:08:01 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:07:51 2020-05-20T13:44:37          1        1   00:58:53  12455664K  12455664K 
+                                 compreq_chr1_snp100_gene15673_samp200  COMPLETED   00:01:03 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:03 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:03 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:00:54 2020-05-20T13:44:37          1        1   00:03:27    884192K    884192K 
+                                compreq_chr1_snp1000_gene15673_samp200  COMPLETED   00:01:07 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:07 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:07 2020-05-20T13:44:28          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:00:56 2020-05-20T13:44:38          1        1   00:03:27    896500K    896500K 
+                                compreq_chr1_snp5000_gene15673_samp200  COMPLETED   00:01:19 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:19 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:20 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:09 2020-05-20T13:44:38          1        1   00:07:28   2986376K   2986376K 
+                               compreq_chr1_snp10000_gene15673_samp200  COMPLETED   00:01:44 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:44 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:44 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:34 2020-05-20T13:44:38          1        1   00:11:08   5296624K   5296624K 
+                               compreq_chr1_snp20000_gene15673_samp200  COMPLETED   00:02:08 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:02:08 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:09 2020-05-20T13:44:28          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:01:58 2020-05-20T13:44:38          1        1   00:11:15   4352084K   4352084K 
+                               compreq_chr1_snp40000_gene15673_samp200  COMPLETED   00:03:12 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:03:12 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:12 2020-05-20T13:44:28          8        1   00:00:00        12K        12K 
+                                                             pmi_proxy  COMPLETED   00:03:03 2020-05-20T13:44:37          1        1   00:23:34   7815020K   7815020K 
+                               compreq_chr1_snp60000_gene15673_samp200  COMPLETED   00:04:09 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:04:09 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:09 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:04:00 2020-05-20T13:44:37          1        1   00:27:45   9600204K   9600204K 
+                               compreq_chr1_snp80000_gene15673_samp200  COMPLETED   00:05:33 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:05:33 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:34 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:05:24 2020-05-20T13:44:37          1        1   00:39:02  11016048K  11016048K 
+                              compreq_chr1_snp100000_gene15673_samp200  COMPLETED   00:06:59 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:06:59 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:59 2020-05-20T13:44:28          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:06:50 2020-05-20T13:44:37          1        1   00:51:21  13209432K  13209432K 
+                              compreq_chr1_snp120000_gene15673_samp200  COMPLETED   00:08:38 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:08:38 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:08:38 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:08:29 2020-05-20T13:44:37          1        1   01:02:33  14513840K  14513840K 
+                                  compreq_chr1_snp100_gene5000_samp300  COMPLETED   00:00:39 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:00:39 2020-05-20T13:44:28          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:39 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:00:30 2020-05-20T13:44:37          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp1000_gene5000_samp300  COMPLETED   00:00:43 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:00:43 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:44 2020-05-20T13:44:28          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:00:33 2020-05-20T13:44:37          1        1   00:03:45   1650656K   1650656K 
+                                 compreq_chr1_snp5000_gene5000_samp300  COMPLETED   00:01:05 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:05 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:05 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:56 2020-05-20T13:44:37          1        1   00:03:48    952908K    952908K 
+                                compreq_chr1_snp10000_gene5000_samp300  COMPLETED   00:01:38 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:38 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:39 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:01:29 2020-05-20T13:44:37          1        1   00:07:10   3377768K   3377768K 
+                                compreq_chr1_snp20000_gene5000_samp300  COMPLETED   00:02:26 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:02:26 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:28 2020-05-20T13:44:28          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:02:16 2020-05-20T13:44:37          1        1   00:15:14   4509712K   4509712K 
+                                compreq_chr1_snp40000_gene5000_samp300  COMPLETED   00:03:43 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:03:43 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:43 2020-05-20T13:44:28          8        1   00:00:00        12K        12K 
+                                                             pmi_proxy  COMPLETED   00:03:34 2020-05-20T13:44:37          1        1   00:27:36   6621648K   6621648K 
+                                compreq_chr1_snp60000_gene5000_samp300  COMPLETED   00:05:00 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:05:00 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:00 2020-05-20T13:44:28          8        1   00:00:00        12K        12K 
+                                                             pmi_proxy  COMPLETED   00:04:50 2020-05-20T13:44:37          1        1   00:35:48   8741640K   8741640K 
+                                compreq_chr1_snp80000_gene5000_samp300  COMPLETED   00:06:44 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:06:44 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:44 2020-05-20T13:44:28          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:06:35 2020-05-20T13:44:37          1        1   00:50:58  10865752K  10865752K 
+                               compreq_chr1_snp100000_gene5000_samp300  COMPLETED   00:08:55 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:08:55 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:08:55 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:08:45 2020-05-20T13:44:37          1        1   01:07:18  12834836K  12834836K 
+                               compreq_chr1_snp120000_gene5000_samp300  COMPLETED   00:10:48 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:10:48 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:48 2020-05-20T13:44:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:10:37 2020-05-20T13:44:38          1        1   01:22:39  14853468K  14853468K 
+                                 compreq_chr1_snp100_gene10000_samp300  COMPLETED   00:00:50 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:00:49 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:50 2020-05-20T13:44:28          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:00:39 2020-05-20T13:44:38          1        1   00:03:28    779028K    779028K 
+                                compreq_chr1_snp1000_gene10000_samp300  COMPLETED   00:00:58 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:00:58 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:58 2020-05-20T13:44:28          8        1   00:00:00          0          0 
+                                                             pmi_proxy  COMPLETED   00:00:48 2020-05-20T13:44:38          1        1   00:03:14    790472K    790472K 
+                                compreq_chr1_snp5000_gene10000_samp300  COMPLETED   00:01:22 2020-05-20T13:44:28          8                                           
+                                                                 batch  COMPLETED   00:01:22 2020-05-20T13:44:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:23 2020-05-20T13:44:28          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:01:11 2020-05-20T13:44:38          1        1   00:07:15   3789940K   3789940K 
+                               compreq_chr1_snp10000_gene10000_samp300  COMPLETED   00:01:44 2020-05-20T13:44:57          8                                           
+                                                                 batch  COMPLETED   00:01:44 2020-05-20T13:44:57          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:44 2020-05-20T13:44:57          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:43 2020-05-20T13:44:58          1        1   00:11:46   5369884K   5369884K 
+                               compreq_chr1_snp20000_gene10000_samp300  COMPLETED   00:02:34 2020-05-20T13:44:57          8                                           
+                                                                 batch  COMPLETED   00:02:34 2020-05-20T13:44:57          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:34 2020-05-20T13:44:57          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:02:32 2020-05-20T13:44:58          1        1   00:19:51   6606304K   6606304K 
+                               compreq_chr1_snp40000_gene10000_samp300  COMPLETED   00:03:55 2020-05-20T13:45:07          8                                           
+                                                                 batch  COMPLETED   00:03:55 2020-05-20T13:45:07          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:55 2020-05-20T13:45:07          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:54 2020-05-20T13:45:08          1        1   00:27:49   8627688K   8627688K 
+                               compreq_chr1_snp60000_gene10000_samp300  COMPLETED   00:05:18 2020-05-20T13:45:08          8                                           
+                                                                 batch  COMPLETED   00:05:18 2020-05-20T13:45:08          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:18 2020-05-20T13:45:08          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:05:14 2020-05-20T13:45:11          1        1   00:39:46  11323124K  11323124K 
+                               compreq_chr1_snp80000_gene10000_samp300  COMPLETED   00:07:13 2020-05-20T13:45:13          8                                           
+                                                                 batch  COMPLETED   00:07:13 2020-05-20T13:45:13          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:13 2020-05-20T13:45:13          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:07:13 2020-05-20T13:45:13          1        1   00:55:20  13058664K  13058664K 
+                              compreq_chr1_snp100000_gene10000_samp300  COMPLETED   00:09:34 2020-05-20T13:45:18          8                                           
+                                                                 batch  COMPLETED   00:09:34 2020-05-20T13:45:18          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:09:34 2020-05-20T13:45:18          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:09:33 2020-05-20T13:45:19          1        1   01:15:13  15643168K  15643168K 
+                              compreq_chr1_snp120000_gene10000_samp300  COMPLETED   00:11:32 2020-05-20T13:45:20          8                                           
+                                                                 batch  COMPLETED   00:11:32 2020-05-20T13:45:20          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:11:32 2020-05-20T13:45:20          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:11:30 2020-05-20T13:45:20          1        1   01:27:02  17474320K  17474320K 
+                                 compreq_chr1_snp100_gene15673_samp300  COMPLETED   00:00:53 2020-05-20T13:45:20          8                                           
+                                                                 batch  COMPLETED   00:00:53 2020-05-20T13:45:20          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:53 2020-05-20T13:45:20          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:00:53 2020-05-20T13:45:20          1        1   00:03:54    886800K    886800K 
+                                compreq_chr1_snp1000_gene15673_samp300  COMPLETED   00:01:00 2020-05-20T13:45:32          8                                           
+                                                                 batch  COMPLETED   00:01:00 2020-05-20T13:45:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:00 2020-05-20T13:45:32          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:00:59 2020-05-20T13:45:33          1        1   00:03:54    897704K    897704K 
+                                compreq_chr1_snp5000_gene15673_samp300  COMPLETED   00:01:27 2020-05-20T13:45:32          8                                           
+                                                                 batch  COMPLETED   00:01:27 2020-05-20T13:45:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:27 2020-05-20T13:45:32          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:01:26 2020-05-20T13:45:33          1        1   00:07:53   3975232K   3975232K 
+                               compreq_chr1_snp10000_gene15673_samp300  COMPLETED   00:02:03 2020-05-20T13:45:32          8                                           
+                                                                 batch  COMPLETED   00:02:03 2020-05-20T13:45:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:03 2020-05-20T13:45:32          8        1   00:00:00        36K        36K 
+                                                             pmi_proxy  COMPLETED   00:02:01 2020-05-20T13:45:33          1        1   00:15:51   6099.50M   6099.50M 
+                               compreq_chr1_snp20000_gene15673_samp300  COMPLETED   00:02:57 2020-05-20T13:45:32          8                                           
+                                                                 batch  COMPLETED   00:02:57 2020-05-20T13:45:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:57 2020-05-20T13:45:32          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:02:55 2020-05-20T13:45:33          1        1   00:19:44   6376472K   6376472K 
+                               compreq_chr1_snp40000_gene15673_samp300  COMPLETED   00:04:38 2020-05-20T13:45:35          8                                           
+                                                                 batch  COMPLETED   00:04:38 2020-05-20T13:45:35          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:38 2020-05-20T13:45:35          8        1   00:00:00        32K        32K 
+                                                             pmi_proxy  COMPLETED   00:04:37 2020-05-20T13:45:36          1        1   00:35:50   9057780K   9057780K 
+                               compreq_chr1_snp60000_gene15673_samp300  COMPLETED   00:06:04 2020-05-20T13:45:35          8                                           
+                                                                 batch  COMPLETED   00:06:04 2020-05-20T13:45:35          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:05 2020-05-20T13:45:35          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:06:03 2020-05-20T13:45:36          1        1   00:47:26  11676552K  11676552K 
+                               compreq_chr1_snp80000_gene15673_samp300  COMPLETED   00:07:55 2020-05-20T13:45:48          8                                           
+                                                                 batch  COMPLETED   00:07:55 2020-05-20T13:45:48          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:56 2020-05-20T13:45:48          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:07:54 2020-05-20T13:45:49          1        1   00:59:19  13783004K  13783004K 
+                              compreq_chr1_snp100000_gene15673_samp300  COMPLETED   00:10:17 2020-05-20T13:45:48          8                                           
+                                                                 batch  COMPLETED   00:10:17 2020-05-20T13:45:48          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:18 2020-05-20T13:45:48          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:10:15 2020-05-20T13:45:50          1        1   01:19:44  17205700K  17205700K 
+                              compreq_chr1_snp120000_gene15673_samp300  COMPLETED   00:12:47 2020-05-20T13:45:52          8                                           
+                                                                 batch  COMPLETED   00:12:47 2020-05-20T13:45:52          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:12:48 2020-05-20T13:45:52          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:12:46 2020-05-20T13:45:53          1        1   01:38:54  17505848K  17505848K 
+                                  compreq_chr1_snp100_gene5000_samp400  COMPLETED   00:00:27 2020-05-20T13:45:52          8                                           
+                                                                 batch  COMPLETED   00:00:27 2020-05-20T13:45:52          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:27 2020-05-20T13:45:52          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:26 2020-05-20T13:45:53          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp1000_gene5000_samp400  COMPLETED   00:00:40 2020-05-20T13:46:14          8                                           
+                                                                 batch  COMPLETED   00:00:40 2020-05-20T13:46:14          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:42 2020-05-20T13:46:14          8        1   00:00:00        24K        24K 
+                                                             pmi_proxy  COMPLETED   00:00:38 2020-05-20T13:46:15          1        1   00:03:52   1978796K   1978796K 
+                                 compreq_chr1_snp5000_gene5000_samp400  COMPLETED   00:01:22 2020-05-20T13:46:14          8                                           
+                                                                 batch  COMPLETED   00:01:22 2020-05-20T13:46:14          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:22 2020-05-20T13:46:14          8        1   00:00:00        40K        40K 
+                                                             pmi_proxy  COMPLETED   00:01:21 2020-05-20T13:46:15          1        1   00:07:54   3018304K   3018304K 
+                                compreq_chr1_snp10000_gene5000_samp400  COMPLETED   00:02:12 2020-05-20T13:46:14          8                                           
+                                                                 batch  COMPLETED   00:02:12 2020-05-20T13:46:14          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:13 2020-05-20T13:46:14          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:02:11 2020-05-20T13:46:15          1        1   00:15:45   4521188K   4521188K 
+                                compreq_chr1_snp20000_gene5000_samp400  COMPLETED   00:03:41 2020-05-20T13:46:21          8                                           
+                                                                 batch  COMPLETED   00:03:41 2020-05-20T13:46:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:41 2020-05-20T13:46:21          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:03:39 2020-05-20T13:46:22          1        1   00:27:52   5738612K   5738612K 
+                                compreq_chr1_snp40000_gene5000_samp400  COMPLETED   00:05:44 2020-05-20T13:46:21          8                                           
+                                                                 batch  COMPLETED   00:05:44 2020-05-20T13:46:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:44 2020-05-20T13:46:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:05:42 2020-05-20T13:46:22          1        1   00:43:51   8428904K   8428904K 
+                                compreq_chr1_snp60000_gene5000_samp400  COMPLETED   00:07:54 2020-05-20T13:46:37          8                                           
+                                                                 batch  COMPLETED   00:07:54 2020-05-20T13:46:37          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:54 2020-05-20T13:46:37          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:07:54 2020-05-20T13:46:37          1        1   00:59:44  11187884K  11187884K 
+                                compreq_chr1_snp80000_gene5000_samp400  COMPLETED   00:10:03 2020-05-20T13:46:37          8                                           
+                                                                 batch  COMPLETED   00:10:03 2020-05-20T13:46:37          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:03 2020-05-20T13:46:37          8        1   00:00:00        32K        32K 
+                                                             pmi_proxy  COMPLETED   00:10:02 2020-05-20T13:46:37          1        1   01:19:46  13953372K  13953372K 
+                               compreq_chr1_snp100000_gene5000_samp400  COMPLETED   00:14:15 2020-05-20T13:46:42          8                                           
+                                                                 batch  COMPLETED   00:14:15 2020-05-20T13:46:42          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:14:16 2020-05-20T13:46:42          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:14:14 2020-05-20T13:46:43          1        1   01:50:53  16483996K  16483996K 
+                               compreq_chr1_snp120000_gene5000_samp400  COMPLETED   00:15:55 2020-05-20T13:46:42          8                                           
+                                                                 batch  COMPLETED   00:15:55 2020-05-20T13:46:42          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:15:55 2020-05-20T13:46:42          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:15:52 2020-05-20T13:46:43          1        1   02:03:41  19251932K  19251932K 
+                                 compreq_chr1_snp100_gene10000_samp400  COMPLETED   00:00:38 2020-05-20T13:47:01          8                                           
+                                                                 batch  COMPLETED   00:00:38 2020-05-20T13:47:01          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:38 2020-05-20T13:47:01          8        1   00:00:00        28K        28K 
+                                                             pmi_proxy  COMPLETED   00:00:38 2020-05-20T13:47:01          1        1   00:03:54    779276K    779276K 
+                                compreq_chr1_snp1000_gene10000_samp400  COMPLETED   00:00:52 2020-05-20T13:47:01          8                                           
+                                                                 batch  COMPLETED   00:00:52 2020-05-20T13:47:01          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:52 2020-05-20T13:47:01          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:00:52 2020-05-20T13:47:01          1        1   00:03:49    791168K    791168K 
+                                compreq_chr1_snp5000_gene10000_samp400  COMPLETED   00:01:36 2020-05-20T13:47:01          8                                           
+                                                                 batch  COMPLETED   00:01:36 2020-05-20T13:47:01          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:36 2020-05-20T13:47:01          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:01:35 2020-05-20T13:47:02          1        1   00:11:52   4937168K   4937168K 
+                               compreq_chr1_snp10000_gene10000_samp400  COMPLETED   00:02:35 2020-05-20T13:47:16          8                                           
+                                                                 batch  COMPLETED   00:02:35 2020-05-20T13:47:16          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:36 2020-05-20T13:47:16          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:02:35 2020-05-20T13:47:16          1        1   00:19:42   7332616K   7332616K 
+                               compreq_chr1_snp20000_gene10000_samp400  COMPLETED   00:04:00 2020-05-20T13:47:38          8                                           
+                                                                 batch  COMPLETED   00:04:00 2020-05-20T13:47:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:00 2020-05-20T13:47:38          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:59 2020-05-20T13:47:39          1        1   00:27:50   9091464K   9091464K 
+                               compreq_chr1_snp40000_gene10000_samp400  COMPLETED   00:06:32 2020-05-20T13:47:38          8                                           
+                                                                 batch  COMPLETED   00:06:32 2020-05-20T13:47:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:33 2020-05-20T13:47:38          8        1   00:00:00        28K        28K 
+                                                             pmi_proxy  COMPLETED   00:06:31 2020-05-20T13:47:39          1        1   00:51:54  11257804K  11257804K 
+                               compreq_chr1_snp60000_gene10000_samp400  COMPLETED   00:08:28 2020-05-20T13:47:38          8                                           
+                                                                 batch  COMPLETED   00:08:28 2020-05-20T13:47:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:08:28 2020-05-20T13:47:38          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:08:27 2020-05-20T13:47:39          1        1   01:03:45  14605776K  14605776K 
+                               compreq_chr1_snp80000_gene10000_samp400  COMPLETED   00:10:39 2020-05-20T13:47:38          8                                           
+                                                                 batch  COMPLETED   00:10:39 2020-05-20T13:47:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:40 2020-05-20T13:47:38          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:10:38 2020-05-20T13:47:39          1        1   01:23:42  17178196K  17178196K 
+                              compreq_chr1_snp100000_gene10000_samp400  COMPLETED   00:14:46 2020-05-20T13:47:44          8                                           
+                                                                 batch  COMPLETED   00:14:46 2020-05-20T13:47:44          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:14:46 2020-05-20T13:47:44          8        1   00:00:00        24K        24K 
+                                                             pmi_proxy  COMPLETED   00:14:46 2020-05-20T13:47:44          1        1   01:55:43  20150120K  20150120K 
+                              compreq_chr1_snp120000_gene10000_samp400  COMPLETED   00:17:53 2020-05-20T13:47:44          8                                           
+                                                                 batch  COMPLETED   00:17:53 2020-05-20T13:47:44          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:17:53 2020-05-20T13:47:44          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:17:52 2020-05-20T13:47:44          1        1   02:18:27  22667868K  22667868K 
+                                 compreq_chr1_snp100_gene15673_samp400  COMPLETED   00:01:00 2020-05-20T13:48:02          8                                           
+                                                                 batch  COMPLETED   00:01:00 2020-05-20T13:48:02          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:00 2020-05-20T13:48:02          8        1   00:00:00        24K        24K 
+                                                             pmi_proxy  COMPLETED   00:00:55 2020-05-20T13:48:06          1        1   00:03:54    887156K    887156K 
+                                compreq_chr1_snp1000_gene15673_samp400  COMPLETED   00:01:12 2020-05-20T13:48:12          8                                           
+                                                                 batch  COMPLETED   00:01:12 2020-05-20T13:48:12          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:13 2020-05-20T13:48:12          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:11 2020-05-20T13:48:13          1        1   00:07:53   4661136K   4661136K 
+                                compreq_chr1_snp5000_gene15673_samp400  COMPLETED   00:01:59 2020-05-20T13:48:12          8                                           
+                                                                 batch  COMPLETED   00:01:59 2020-05-20T13:48:12          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:59 2020-05-20T13:48:12          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:58 2020-05-20T13:48:13          1        1   00:11:48   4705400K   4705400K 
+                               compreq_chr1_snp10000_gene15673_samp400  COMPLETED   00:03:01 2020-05-20T13:48:38          8                                           
+                                                                 batch  COMPLETED   00:03:01 2020-05-20T13:48:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:01 2020-05-20T13:48:38          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:02:58 2020-05-20T13:48:41          1        1   00:19:42   8244008K   8244008K 
+                               compreq_chr1_snp20000_gene15673_samp400  COMPLETED   00:04:31 2020-05-20T13:48:38          8                                           
+                                                                 batch  COMPLETED   00:04:31 2020-05-20T13:48:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:31 2020-05-20T13:48:38          8        1   00:00:00        64K        64K 
+                                                             pmi_proxy  COMPLETED   00:04:28 2020-05-20T13:48:41          1        1   00:31:51   8918984K   8918984K 
+                               compreq_chr1_snp40000_gene15673_samp400  COMPLETED   00:06:46 2020-05-20T13:48:38          8                                           
+                                                                 batch  COMPLETED   00:06:46 2020-05-20T13:48:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:46 2020-05-20T13:48:38          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:06:42 2020-05-20T13:48:41          1        1   00:51:50  11475416K  11475416K 
+                               compreq_chr1_snp60000_gene15673_samp400  COMPLETED   00:09:18 2020-05-20T13:48:38          8                                           
+                                                                 batch  COMPLETED   00:09:18 2020-05-20T13:48:38          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:09:18 2020-05-20T13:48:38          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:09:14 2020-05-20T13:48:41          1        1   01:11:12  14750068K  14750068K 
+                               compreq_chr1_snp80000_gene15673_samp400  COMPLETED   00:12:15 2020-05-20T13:49:17          8                                           
+                                                                 batch  COMPLETED   00:12:15 2020-05-20T13:49:17          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:12:15 2020-05-20T13:49:17          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:12:10 2020-05-20T13:49:21          1        1   01:34:57  17644024K  17644024K 
+                              compreq_chr1_snp100000_gene15673_samp400  COMPLETED   00:16:33 2020-05-20T13:49:17          8                                           
+                                                                 batch  COMPLETED   00:16:33 2020-05-20T13:49:17          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:16:33 2020-05-20T13:49:17          8        1   00:00:00        36K        36K 
+                                                             pmi_proxy  COMPLETED   00:16:29 2020-05-20T13:49:21          1        1   02:07:39  22321012K  22321012K 
+                              compreq_chr1_snp120000_gene15673_samp400  COMPLETED   00:18:12 2020-05-20T13:49:17          8                                           
+                                                                 batch  COMPLETED   00:18:12 2020-05-20T13:49:17          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:18:12 2020-05-20T13:49:17          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:18:08 2020-05-20T13:49:21          1        1   02:22:50  23542336K  23542336K 
+                                  compreq_chr1_snp100_gene5000_samp500  COMPLETED   00:00:30 2020-05-20T13:49:37          8                                           
+                                                                 batch  COMPLETED   00:00:30 2020-05-20T13:49:37          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:30 2020-05-20T13:49:37          8        1   00:00:00        64K        64K 
+                                                             pmi_proxy  COMPLETED   00:00:29 2020-05-20T13:49:38          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp1000_gene5000_samp500  COMPLETED   00:00:50 2020-05-20T13:49:37          8                                           
+                                                                 batch  COMPLETED   00:00:50 2020-05-20T13:49:37          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:51 2020-05-20T13:49:37          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:00:49 2020-05-20T13:49:38          1        1   00:03:55   2301508K   2301508K 
+                                 compreq_chr1_snp5000_gene5000_samp500  COMPLETED   00:02:14 2020-05-20T13:49:37          8                                           
+                                                                 batch  COMPLETED   00:02:14 2020-05-20T13:49:37          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:15 2020-05-20T13:49:37          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:02:11 2020-05-20T13:49:38          1        1   00:15:52   3746860K   3746860K 
+                                compreq_chr1_snp10000_gene5000_samp500  COMPLETED   00:03:51 2020-05-20T13:49:55          8                                           
+                                                                 batch  COMPLETED   00:03:51 2020-05-20T13:49:55          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:51 2020-05-20T13:49:55          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:48 2020-05-20T13:49:58          1        1   00:27:39   5267416K   5267416K 
+                                compreq_chr1_snp20000_gene5000_samp500  COMPLETED   00:06:33 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:06:33 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:33 2020-05-20T13:50:22          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:06:31 2020-05-20T13:50:23          1        1   00:50:23   7072356K   7072356K 
+                                compreq_chr1_snp40000_gene5000_samp500  COMPLETED   00:09:53 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:09:53 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:09:53 2020-05-20T13:50:22          8        1   00:00:00        32K        32K 
+                                                             pmi_proxy  COMPLETED   00:09:52 2020-05-20T13:50:23          1        1   01:14:52   9866416K   9866416K 
+                                compreq_chr1_snp60000_gene5000_samp500  COMPLETED   00:13:20 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:13:20 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:13:21 2020-05-20T13:50:22          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:13:19 2020-05-20T13:50:23          1        1   01:43:41  13535252K  13535252K 
+                                compreq_chr1_snp80000_gene5000_samp500  COMPLETED   00:16:19 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:16:19 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:16:19 2020-05-20T13:50:22          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:16:18 2020-05-20T13:50:23          1        1   02:07:40  17118932K  17118932K 
+                               compreq_chr1_snp100000_gene5000_samp500  COMPLETED   00:22:56 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:22:56 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:22:56 2020-05-20T13:50:22          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:22:55 2020-05-20T13:50:23          1        1   02:58:53  20222252K  20222252K 
+                               compreq_chr1_snp120000_gene5000_samp500  COMPLETED   00:26:25 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:26:25 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:26:26 2020-05-20T13:50:22          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:26:23 2020-05-20T13:50:23          1        1   03:27:38  23423440K  23423440K 
+                                 compreq_chr1_snp100_gene10000_samp500  COMPLETED   00:00:44 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:00:44 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:44 2020-05-20T13:50:22          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:00:43 2020-05-20T13:50:23          1        1   00:03:52    779292K    779292K 
+                                compreq_chr1_snp1000_gene10000_samp500  COMPLETED   00:01:06 2020-05-20T13:50:22          8                                           
+                                                                 batch  COMPLETED   00:01:06 2020-05-20T13:50:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:06 2020-05-20T13:50:22          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:04 2020-05-20T13:50:24          1        1   00:07:49   3359352K   3359352K 
+                                compreq_chr1_snp5000_gene10000_samp500  COMPLETED   00:02:37 2020-05-20T13:50:32          8                                           
+                                                                 batch  COMPLETED   00:02:37 2020-05-20T13:50:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:02:37 2020-05-20T13:50:32          8        1   00:00:00        24K        24K 
+                                                             pmi_proxy  COMPLETED   00:02:33 2020-05-20T13:50:36          1        1   00:19:53   5123424K   5123424K 
+                               compreq_chr1_snp10000_gene10000_samp500  COMPLETED   00:04:15 2020-05-20T13:50:32          8                                           
+                                                                 batch  COMPLETED   00:04:15 2020-05-20T13:50:32          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:15 2020-05-20T13:50:32          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:04:10 2020-05-20T13:50:36          1        1   00:31:48   7330700K   7330700K 
+                               compreq_chr1_snp20000_gene10000_samp500  COMPLETED   00:06:49 2020-05-20T13:50:48          8                                           
+                                                                 batch  COMPLETED   00:06:49 2020-05-20T13:50:48          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:50 2020-05-20T13:50:48          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:06:49 2020-05-20T13:50:48          1        1   00:51:46   7878856K   7878856K 
+                               compreq_chr1_snp40000_gene10000_samp500  COMPLETED   00:10:24 2020-05-20T13:51:08          8                                           
+                                                                 batch  COMPLETED   00:10:24 2020-05-20T13:51:08          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:24 2020-05-20T13:51:08          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:10:20 2020-05-20T13:51:12          1        1   01:19:12  11404008K  11404008K 
+                               compreq_chr1_snp60000_gene10000_samp500  COMPLETED   00:13:40 2020-05-20T13:51:23          8                                           
+                                                                 batch  COMPLETED   00:13:40 2020-05-20T13:51:23          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:13:40 2020-05-20T13:51:23          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:13:40 2020-05-20T13:51:23          1        1   01:47:10  15132704K  15132704K 
+                               compreq_chr1_snp80000_gene10000_samp500  COMPLETED   00:16:37 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:16:37 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:16:37 2020-05-20T13:51:45          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:16:33 2020-05-20T13:51:49          1        1   02:11:43  18752224K  18752224K 
+                              compreq_chr1_snp100000_gene10000_samp500  COMPLETED   00:25:19 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:25:19 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:25:19 2020-05-20T13:51:45          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:25:11 2020-05-20T13:51:52          1        1   03:17:43  23264344K  23264344K 
+                              compreq_chr1_snp120000_gene10000_samp500  COMPLETED   00:26:46 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:26:46 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:26:47 2020-05-20T13:51:45          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:26:39 2020-05-20T13:51:52          1        1   03:31:00  25344032K  25344032K 
+                                 compreq_chr1_snp100_gene15673_samp500  COMPLETED   00:01:07 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:01:07 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:08 2020-05-20T13:51:45          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:01:00 2020-05-20T13:51:52          1        1   00:07:48   4245432K   4245432K 
+                                compreq_chr1_snp1000_gene15673_samp500  COMPLETED   00:01:29 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:01:29 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:29 2020-05-20T13:51:45          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:21 2020-05-20T13:51:52          1        1   00:07:53   5143904K   5143904K 
+                                compreq_chr1_snp5000_gene15673_samp500  COMPLETED   00:03:00 2020-05-20T13:51:45          8                                           
+                                                                 batch  COMPLETED   00:03:00 2020-05-20T13:51:45          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:01 2020-05-20T13:51:45          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:02:53 2020-05-20T13:51:52          1        1   00:19:41   7112564K   7112564K 
+                               compreq_chr1_snp10000_gene15673_samp500  COMPLETED   00:04:37 2020-05-20T13:51:59          8                                           
+                                                                 batch  COMPLETED   00:04:37 2020-05-20T13:51:59          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:37 2020-05-20T13:51:59          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:04:37 2020-05-20T13:51:59          1        1   00:35:49  10124300K  10124300K 
+                               compreq_chr1_snp20000_gene15673_samp500  COMPLETED   00:07:31 2020-05-20T13:52:22          8                                           
+                                                                 batch  COMPLETED   00:07:31 2020-05-20T13:52:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:31 2020-05-20T13:52:22          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:07:27 2020-05-20T13:52:26          1        1   00:55:47  11116696K  11116696K 
+                               compreq_chr1_snp40000_gene15673_samp500  COMPLETED   00:11:21 2020-05-20T13:52:50          8                                           
+                                                                 batch  COMPLETED   00:11:21 2020-05-20T13:52:50          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:11:21 2020-05-20T13:52:50          8        1   00:00:00        40K        40K 
+                                                             pmi_proxy  COMPLETED   00:11:21 2020-05-20T13:52:50          1        1   01:27:00  14635836K  14635836K 
+                               compreq_chr1_snp60000_gene15673_samp500  COMPLETED   00:15:49 2020-05-20T13:52:50          8                                           
+                                                                 batch  COMPLETED   00:15:49 2020-05-20T13:52:50          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:15:49 2020-05-20T13:52:50          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:15:49 2020-05-20T13:52:50          1        1   02:02:32  18348640K  18348640K 
+                               compreq_chr1_snp80000_gene15673_samp500  COMPLETED   00:18:43 2020-05-20T13:53:00          8                                           
+                                                                 batch  COMPLETED   00:18:43 2020-05-20T13:53:00          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:18:44 2020-05-20T13:53:00          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:18:39 2020-05-20T13:53:04          1        1   02:26:47  22775956K  22775956K 
+                              compreq_chr1_snp100000_gene15673_samp500  COMPLETED   00:25:08 2020-05-20T13:53:10          8                                           
+                                                                 batch  COMPLETED   00:25:08 2020-05-20T13:53:10          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:25:08 2020-05-20T13:53:10          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:25:07 2020-05-20T13:53:11          1        1   03:19:44  27319268K  27319268K 
+                              compreq_chr1_snp120000_gene15673_samp500  COMPLETED   00:29:02 2020-05-20T13:53:10          8                                           
+                                                                 batch  COMPLETED   00:29:02 2020-05-20T13:53:10          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:29:02 2020-05-20T13:53:10          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:29:01 2020-05-20T13:53:11          1        1   03:51:42  28507452K  28507452K 
+                                  compreq_chr1_snp100_gene5000_samp581  COMPLETED   00:00:31 2020-05-20T13:53:10          8                                           
+                                                                 batch  COMPLETED   00:00:31 2020-05-20T13:53:10          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:31 2020-05-20T13:53:10          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:00:29 2020-05-20T13:53:11          1        1   00:00:00          0          0 
+                                 compreq_chr1_snp1000_gene5000_samp581  COMPLETED   00:01:08 2020-05-20T13:53:16          8                                           
+                                                                 batch  COMPLETED   00:01:08 2020-05-20T13:53:16          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:08 2020-05-20T13:53:16          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:08 2020-05-20T13:53:16          1        1   00:07:54   2834652K   2834652K 
+                                 compreq_chr1_snp5000_gene5000_samp581  COMPLETED   00:03:25 2020-05-20T13:53:28          8                                           
+                                                                 batch  COMPLETED   00:03:25 2020-05-20T13:53:28          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:26 2020-05-20T13:53:28          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:23 2020-05-20T13:53:29          1        1   00:23:51   4194200K   4194200K 
+                                compreq_chr1_snp10000_gene5000_samp581  COMPLETED   00:05:43 2020-05-20T13:53:49          8                                           
+                                                                 batch  COMPLETED   00:05:43 2020-05-20T13:53:49          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:43 2020-05-20T13:53:49          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:05:42 2020-05-20T13:53:50          1        1   00:43:29   5976936K   5976936K 
+                                compreq_chr1_snp20000_gene5000_samp581  COMPLETED   00:10:14 2020-05-20T13:53:49          8                                           
+                                                                 batch  COMPLETED   00:10:14 2020-05-20T13:53:49          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:14 2020-05-20T13:53:49          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:10:13 2020-05-20T13:53:50          1        1   01:19:03   7993676K   7993676K 
+                                compreq_chr1_snp40000_gene5000_samp581  COMPLETED   00:15:18 2020-05-20T13:53:49          8                                           
+                                                                 batch  COMPLETED   00:15:18 2020-05-20T13:53:49          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:15:18 2020-05-20T13:53:49          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:15:16 2020-05-20T13:53:50          1        1   01:58:38  11899960K  11899960K 
+                                compreq_chr1_snp60000_gene5000_samp581  COMPLETED   00:19:24 2020-05-20T13:54:12          8                                           
+                                                                 batch  COMPLETED   00:19:24 2020-05-20T13:54:12          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:19:25 2020-05-20T13:54:12          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:19:24 2020-05-20T13:54:12          1        1   02:31:55  15685856K  15685856K 
+                                compreq_chr1_snp80000_gene5000_samp581  COMPLETED   00:23:04 2020-05-20T13:54:27          8                                           
+                                                                 batch  COMPLETED   00:23:04 2020-05-20T13:54:27          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:23:04 2020-05-20T13:54:27          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:23:03 2020-05-20T13:54:28          1        1   03:03:47  19698584K  19698584K 
+                               compreq_chr1_snp100000_gene5000_samp581  COMPLETED   00:38:32 2020-05-20T13:54:39          8                                           
+                                                                 batch  COMPLETED   00:38:32 2020-05-20T13:54:39          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:38:32 2020-05-20T13:54:39          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:38:30 2020-05-20T13:54:40          1        1   05:07:30  23545164K  23545164K 
+                               compreq_chr1_snp120000_gene5000_samp581  COMPLETED   00:38:01 2020-05-20T13:54:48          8                                           
+                                                                 batch  COMPLETED   00:38:01 2020-05-20T13:54:48          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:38:01 2020-05-20T13:54:48          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:38:00 2020-05-20T13:54:49          1        1   04:59:39  26980092K  26980092K 
+                                 compreq_chr1_snp100_gene10000_samp581  COMPLETED   00:00:47 2020-05-20T13:54:48          8                                           
+                                                                 batch  COMPLETED   00:00:47 2020-05-20T13:54:48          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:48 2020-05-20T13:54:48          8        1   00:00:00        28K        28K 
+                                                             pmi_proxy  COMPLETED   00:00:46 2020-05-20T13:54:49          1        1   00:03:52    779436K    779436K 
+                                compreq_chr1_snp1000_gene10000_samp581  COMPLETED   00:01:23 2020-05-20T13:55:11          8                                           
+                                                                 batch  COMPLETED   00:01:23 2020-05-20T13:55:11          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:23 2020-05-20T13:55:11          8        1   00:00:00        36K        36K 
+                                                             pmi_proxy  COMPLETED   00:01:22 2020-05-20T13:55:12          1        1   00:07:50   3894296K   3894296K 
+                                compreq_chr1_snp5000_gene10000_samp581  COMPLETED   00:03:40 2020-05-20T13:55:22          8                                           
+                                                                 batch  COMPLETED   00:03:40 2020-05-20T13:55:22          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:40 2020-05-20T13:55:22          8        1   00:00:00        36K        36K 
+                                                             pmi_proxy  COMPLETED   00:03:39 2020-05-20T13:55:23          1        1   00:27:39   5908100K   5908100K 
+                               compreq_chr1_snp10000_gene10000_samp581  COMPLETED   00:06:31 2020-05-20T13:55:27          8                                           
+                                                                 batch  COMPLETED   00:06:31 2020-05-20T13:55:27          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:31 2020-05-20T13:55:27          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:06:30 2020-05-20T13:55:28          1        1   00:47:47   8260736K   8260736K 
+                               compreq_chr1_snp20000_gene10000_samp581  COMPLETED   00:10:24 2020-05-20T13:55:37          8                                           
+                                                                 batch  COMPLETED   00:10:24 2020-05-20T13:55:37          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:24 2020-05-20T13:55:37          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:10:22 2020-05-20T13:55:38          1        1   01:19:08   9635816K   9635816K 
+                               compreq_chr1_snp40000_gene10000_samp581  COMPLETED   00:15:26 2020-05-20T13:56:07          8                                           
+                                                                 batch  COMPLETED   00:15:26 2020-05-20T13:56:07          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:15:28 2020-05-20T13:56:07          8        1   00:00:00        68K        68K 
+                                                             pmi_proxy  COMPLETED   00:15:21 2020-05-20T13:56:12          1        1   01:59:46  13163368K  13163368K 
+                               compreq_chr1_snp60000_gene10000_samp581  COMPLETED   00:21:51 2020-05-20T13:56:07          8                                           
+                                                                 batch  COMPLETED   00:21:51 2020-05-20T13:56:07          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:21:52 2020-05-20T13:56:07          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:21:46 2020-05-20T13:56:12          1        1   02:51:35  17053868K  17053868K 
+                               compreq_chr1_snp80000_gene10000_samp581  COMPLETED   00:31:18 2020-05-20T13:56:44          8                                           
+                                                                 batch  COMPLETED   00:31:18 2020-05-20T13:56:44          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:31:18 2020-05-20T13:56:44          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:31:14 2020-05-20T13:56:47          1        1   04:05:03  21608212K  21608212K 
+                              compreq_chr1_snp100000_gene10000_samp581  COMPLETED   00:34:08 2020-05-20T13:56:44          8                                           
+                                                                 batch  COMPLETED   00:34:08 2020-05-20T13:56:44          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:34:09 2020-05-20T13:56:44          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:34:05 2020-05-20T13:56:47          1        1   04:31:50  25738044K  25738044K 
+                              compreq_chr1_snp120000_gene10000_samp581  COMPLETED   00:38:56 2020-05-20T13:56:44          8                                           
+                                                                 batch  COMPLETED   00:38:56 2020-05-20T13:56:44          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:38:56 2020-05-20T13:56:44          8        1   00:00:00        68K        68K 
+                                                             pmi_proxy  COMPLETED   00:38:53 2020-05-20T13:56:47          1        1   05:07:43  29802936K  29802936K 
+                                 compreq_chr1_snp100_gene15673_samp581  COMPLETED   00:01:09 2020-05-20T13:57:24          8                                           
+                                                                 batch  COMPLETED   00:01:09 2020-05-20T13:57:24          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:09 2020-05-20T13:57:24          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:04 2020-05-20T13:57:28          1        1   00:07:49   4986252K   4986252K 
+                                compreq_chr1_snp1000_gene15673_samp581  COMPLETED   00:01:48 2020-05-20T13:57:24          8                                           
+                                                                 batch  COMPLETED   00:01:48 2020-05-20T13:57:24          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:48 2020-05-20T13:57:24          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:44 2020-05-20T13:57:28          1        1   00:11:47   5640720K   5640720K 
+                                compreq_chr1_snp5000_gene15673_samp581  COMPLETED   00:04:14 2020-05-20T13:57:24          8                                           
+                                                                 batch  COMPLETED   00:04:14 2020-05-20T13:57:24          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:14 2020-05-20T13:57:24          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:04:09 2020-05-20T13:57:28          1        1   00:31:48   8155372K   8155372K 
+                               compreq_chr1_snp10000_gene15673_samp581  COMPLETED   00:07:13 2020-05-20T13:57:39          8                                           
+                                                                 batch  COMPLETED   00:07:13 2020-05-20T13:57:39          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:13 2020-05-20T13:57:39          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:07:13 2020-05-20T13:57:39          1        1   00:55:45  11724152K  11724152K 
+                               compreq_chr1_snp20000_gene15673_samp581  COMPLETED   00:10:11 2020-05-20T13:58:03          8                                           
+                                                                 batch  COMPLETED   00:10:11 2020-05-20T13:58:03          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:11 2020-05-20T13:58:03          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:10:07 2020-05-20T13:58:07          1        1   01:19:45  12397436K  12397436K 
+                               compreq_chr1_snp40000_gene15673_samp581  COMPLETED   00:15:31 2020-05-20T13:58:41          8                                           
+                                                                 batch  COMPLETED   00:15:31 2020-05-20T13:58:41          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:15:31 2020-05-20T13:58:41          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:15:27 2020-05-20T13:58:45          1        1   01:59:45  16486608K  16486608K 
+                               compreq_chr1_snp60000_gene15673_samp581  COMPLETED   00:24:10 2020-05-20T13:58:41          8                                           
+                                                                 batch  COMPLETED   00:24:10 2020-05-20T13:58:41          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:24:10 2020-05-20T13:58:41          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:24:05 2020-05-20T13:58:45          1        1   03:11:29  20690628K  20690628K 
+                               compreq_chr1_snp80000_gene15673_samp581  COMPLETED   00:25:22 2020-05-20T13:58:41          8                                           
+                                                                 batch  COMPLETED   00:25:22 2020-05-20T13:58:41          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:25:22 2020-05-20T13:58:41          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:25:17 2020-05-20T13:58:45          1        1   03:19:27  25552968K  25552968K 
+                              compreq_chr1_snp100000_gene15673_samp581  COMPLETED   00:35:53 2020-05-20T13:59:20          8                                           
+                                                                 batch  COMPLETED   00:35:53 2020-05-20T13:59:20          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:35:53 2020-05-20T13:59:20          8        1   00:00:00        72K        72K 
+                                                             pmi_proxy  COMPLETED   00:35:48 2020-05-20T13:59:24          1        1   04:43:38  30263284K  30263284K 
+                              compreq_chr1_snp120000_gene15673_samp581  COMPLETED   00:44:28 2020-05-20T13:59:20          8                                           
+                                                                 batch  COMPLETED   00:44:28 2020-05-20T13:59:20          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:44:28 2020-05-20T13:59:20          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:44:24 2020-05-20T13:59:24          1        1   05:49:51  33744152K  33744152K 

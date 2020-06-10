@@ -175,10 +175,11 @@ pcutoff = 5e-8
 sbtypes = ["sb"]
 sbs     = ["0.1"] #["0.005", "0.007"]
 Ks      = ["30"]
-extras  = ["_nocismask"] #["", "_crossmap"]
+extras  = ["_crossmap", "_nocismask"] 
 sumdir = "summary_5e-08"
 preprocs = list()
 LDs = [True, False]
+smartLD = False
 basepath = "/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2/"
 
 for sbtype in sbtypes:
@@ -318,7 +319,7 @@ for use_LD in LDs:
                     # raise
                     continue
                 transeqtls = tejaas(tejaas_file)
-                if use_LD:
+                if use_LD and smartLD:
                     transeqtls = smart_LD_filter(transeqtls, os.path.join(basepath, summary_dir, tissue, "tejaas", preproc, regions_file))
                 
                 if len(transeqtls) < MIN_TRANS:

@@ -32,7 +32,7 @@ fi
 LDWINDOW="200000"
 #LD_REGIONS_FILE="/cbscratch/franco/datasets/1KG_genomes/LD_regions2calculate.txt"
 LDMIN_R2="0.5"
-LDFILE_SUFFIX="SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}"
+LDFILE_DIR="SHAPEIT2_ldmap_${LDWINDOW}_${LDMIN_R2}"
 
 echo "LD_DATASETS: $LD_DATASETS"
 
@@ -47,5 +47,5 @@ KNNS="30"
 bTejaas=true                   
 bTjsRandom=false
 TEJAAS_NULL="perm" # maf"      
-TEJAAS_SIGMA_BETA_PERM="0.1"
+TEJAAS_SIGMA_BETA_PERM="0.006"
 

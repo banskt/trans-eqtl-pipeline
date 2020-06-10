@@ -166,9 +166,9 @@ if __name__ == '__main__':
             pruned_snps, ld_regions = prune_region_GW(snplist, LD_gw_dict)
 
              # write pruned snps
-            pruned_outfile = infile+".ld_prune"
+            pruned_outfile = "trans_eqtls_ldpruned.txt""
             tejaas_write(pruned_snps, pruned_outfile)
-            regions_outfile = infile+".ld_regions"
+            regions_outfile = "ld_regions.txt"
             write_ld_region(pruned_snps, ld_regions, regions_outfile)
         else:
             print(infile, "does not exist")

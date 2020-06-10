@@ -29,7 +29,7 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
             # source ${DATALOAD}
 
             DATATYPE=`echo ${MDATA} | cut -d'-' -f1`
-            if [ "$DATATYPE"=="fhs" ]; then
+            if [ "$DATATYPE" == "fhs" ]; then
                 TISSUEID="fhs"
             else
                 TISSUEID=`echo ${MDATA} | cut -d'-' -f2`

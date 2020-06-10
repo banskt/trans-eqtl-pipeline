@@ -5,11 +5,13 @@ EXTERNALLOAD="EXTERNAL.FRANCO"
 
 TISSUEFILE="fhs"
 CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
+CHRNUMS="10 11 12"
+
 
 DATASETS="fhs"
 echo "DATASETS: $DATASETS"
-EXPRESSIONS="raw_oneref_adj" 
-TGENE_EXPR="raw_oneref_adj"
+EXPRESSIONS="raw_oneref" #"raw_linear_oneref" 
+TGENE_EXPR="raw_oneref" #"raw_linear_oneref" 
 GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
 # CHRNUMS="20 21 22"
 
@@ -24,7 +26,7 @@ NOGTKNN=false
 MAGIC_SQRT=false
 MML_OPT=false
 DYNAMIC_SB=false
-KEFFS="0.4"
+# KEFFS="0.4"
 
 SHUFFLE_SPECIAL=false
 # CENTERSCALE=false/true
@@ -41,7 +43,7 @@ bTejaas=true				# run the method if true
 bTjsRandom=false
 TEJAAS_MODEL="jpa-rr" 			# only one model allowed
 TEJAAS_NULL="perm" # maf" 			# list of null models
-TEJAAS_SIGMA_BETA_PERM="0.006 0.0231 0.1"      # list of sigma beta for perm null
+TEJAAS_SIGMA_BETA_PERM="0.0005 0.0007 0.001 0.002 0.01 0.1" #"0.1 0.006" # 0.001 0.002 0.0005"      # list of sigma beta for perm null
 TEJAAS_SIGMA_BETA_MAF="0.001" 		# list of sigma beta for MAF null
 MAX_NSNP_PERJOB=40000 			# number of SNPs for analysis by TEJAAS per job
 TEJAAS_SNPS_THRES=0.00001 		# all trans-eQTLs are printed, but target genes are printed for those trans-eQTLs below this threshold

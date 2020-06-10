@@ -169,23 +169,20 @@ tejaas_expr = "raw"
 K = 30 #not used at the moment
 # pcutoff = 5e-8
 # use_LD    = True
-preproc = "permnull_sb0.1_knn30"
+preproc = "permnull_sb0.0006_knn30"
 MIN_TRANS = 1
 MIN_CIS   = 1
 gtexportal_dir = "/cbscratch/franco/datasets/gtex_v8/expression/gtex_portal/eQTLs/GTEx_Analysis_v8_eQTL/"
 
 LDs = [True, False]
-sb_optims = [True, False]
-pcutoffs = ["5e-8", "1e-10"]
+smartLD = False
+gamma_suffixes = ['optim_gamma', 'gamma01', 'gamma0006']
+gamma_suffixes = ['gamma01'] #, 'gamma01']
+pcutoffs = ["5e-8"]
 
 for use_LD in LDs:
-    for sb_optim in sb_optims:
+    for gamma_suffix in gamma_suffixes:
         for pcutoff in pcutoffs:
-
-            if sb_optim:
-                gamma_suffix = "optim_gamma"
-            else:
-                gamma_suffix = "gamma01"
 
             if use_LD:
                 trans_file = "trans_eqtls_ldpruned.txt"
@@ -309,7 +306,7 @@ for use_LD in LDs:
                     raise
                     #continue
                 transeqtls = tejaas(tejaas_file)
-                if use_LD:
+                if use_LD and smartLD:
                     transeqtls = smart_LD_filter(transeqtls, os.path.join(basepath, tissue, regions_file))
                 
                 if len(transeqtls) < MIN_TRANS:

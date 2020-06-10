@@ -4,7 +4,7 @@ CONFIGFILE=$1
 
 if [ -z ${CONFIGFILE} ] || [ ! -f ${CONFIGFILE} ]; then
     echo "Fatal! No configuration file found.";
-    echo "Use this script as: ./03_select_top_snps.sh CONFIGFILE"
+    echo "Use this script as: ./05_do_RR_lasso.sh CONFIGFILE"
     exit 1
 fi
 
@@ -13,6 +13,8 @@ source ${EXTERNALLOAD}
 source PATHS
 source ${UTILSDIR}/unset_vars
 source ${UTILSDIR}/submit_job
+
+INPUTDIR_SUMMARY="/cbscratch/franco/trans-eqtl/protein_coding_lncRNA_gamma01_knn30_cut5e-8"
 
 # for t in `grep -v "#" ../../main/tissues.txt | cut -f 2`; 
 # do sbatch -p hh --exclusive -N 1 -t 6-00:00:00 -o lasso_${t}.out -e lasso_${t}.err ç
@@ -32,9 +34,9 @@ for EXPR_CORR in ${EXPRESSIONS}; do
         for KNN in ${KNNS}; do
             source ${DATALOAD}
             JOBSUBDIR_DATA="${JOBSUBDIR}/lasso_targets"
-            OUTDIR_DATA="${OUTDIR_SUMMARY}/lasso_targets"
+            OUTDIR_DATA="${INPUTDIR_SUMMARY}/lasso_targets"
 
-            if [ ! -d ${OUTDIRDATA} ]; then mkdir -p ${OUTDIRDATA}; fi;
+            if [ ! -d ${OUTDIR_DATA} ]; then mkdir -p ${OUTDIR_DATA}; fi;
             if [ ! -d ${JOBSUBDIR_DATA} ]; then mkdir -p ${JOBSUBDIR_DATA}; fi
 
             if [ ! -z "$EXPRESSIONFILE" ]; then
@@ -60,10 +62,11 @@ for EXPR_CORR in ${EXPRESSIONS}; do
                          s|_RLASSO_|${PYRRLASSO}|g;
                          s|_SAMFIL_|${SAMPLEFILE}|g;
                          s|_GXFILE_|${EXPRESSIONFILE}|g;
+                         s|_GXCORR_|${EXPRCORRFILE}|g;
                          s|_GENINF_|${GENEINFOFILE}|g;
                          s|_VCFFIL_|${GENOTYPEFILE}|g;
                          s|_OUTDIR_|${SPECIFIC_OUTDIR}|g;
-                         s|_BASEDR_|${OUTDIR_SUMMARY}|g;
+                         s|_BASEDR_|${INPUTDIR_SUMMARY}|g;
                          s|_CHRM_N_|${CHRM}|g;
                          s|_TISSUE_|${TSHORT}|g;
                          s|_KNN_K_|${KNN}|g;

@@ -8,7 +8,8 @@ GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/framinghmam_16032020"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/framinghmam_joehannes"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/framinghmam_reproc"
 
 ########################### ATTENTION!!!!
 ###### This is used in 04_do_RR_lasso.sh but IS WRONG, the summary folder changes now for Keffs and sbetas
@@ -25,6 +26,9 @@ case "${EXPR_CORR}" in
     "raw_oneref_adj")
         OUTDIR="${OUTDIR}/raw_oneref_adj"
         ;;
+    "raw_linear_oneref")
+        OUTDIR="${OUTDIR}/raw_linear_oneref"
+        ;;
     *)
         OUTDIR="${OUTDIR}/unknown"
         ;;
@@ -35,6 +39,8 @@ FHSDIR="${DATADIR}/FHS"
 FHS_GENO_DIR="${FHSDIR}/genotypes"
 FHS_GENO_FMT="${FHS_GENO_DIR}/merged_dosages/chr[CHRM].fhs.dosages.txt.gz"
 FHS_GENO_VCF_FMT="${FHS_GENO_DIR}/vcfs/chr[CHRM].fhs.vcf.gz"
+# FHS_GENO_VCF_FMT="${FHS_GENO_DIR}/vcfs/chr[CHRM].fhs.joehannes.vcf.gz"
+
 FHS_BGEN_FMT="None"
 FHS_SAMPLE="${FHS_GENO_DIR}/merged_dosages/chr1.fhs.dosages.sample"
 FHS_1KG_MAF="None"
@@ -43,7 +49,9 @@ FHS_1KG_MAF="None"
 BIOTYPES=`echo $GXSELECTION | sed 's/ \+/_/g'`
 
 case "${EXPR_CORR}" in
-
+    "raw_linear_oneref")
+        FHS_EXPR_FMT="${FHSDIR}/expression/linear_reprocessed/fhs.linear.OFF.one_pedno_rep.txt"
+        ;;
     "raw_oneref")
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.txt"
         ;;
@@ -66,6 +74,9 @@ case "${TGENE_EXPR}" in
     "raw_oneref_adj")
         FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.one_pedno_rep.OFF.adjusted.txt"
         ;;
+    "raw_linear_oneref")
+        FHS_TGENE_EXPR_FMT="${FHSDIR}/expression/linear_reprocessed/fhs.linear.OFF.one_pedno_rep.txt"
+        ;;
     *)
         GTEX_V8_TGENE_EXPR_FMT=
         ;;
@@ -74,6 +85,7 @@ esac
 
 # Tissue specific and data specific formatting 
 DATATYPE='fhs'
+TISSUEID='fhs'
 case "${DATATYPE}" in
     "fhs")
         DATATYPE="fhs"

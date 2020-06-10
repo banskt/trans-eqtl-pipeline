@@ -81,7 +81,7 @@ if opts.datatype == "fhs":
                 file = "snps_list.txt"
                 copyfile(os.path.join(basedir, file), os.path.join(destdir, file))
                 
-if opts.datatype == "gtex":
+if opts.datatype == "gtex_v8":
     tissuenames, descriptions = read_tissues(opts.tissue_file)
     for t in tissuenames:
         for preproc in opts.preprocs:

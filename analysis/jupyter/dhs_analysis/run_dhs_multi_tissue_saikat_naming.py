@@ -229,17 +229,14 @@ for tshort, tfull in zip(tshorts, tfulls):
 #sorted_tissues = [x[0] for x in sorted(tissue_samples.items(), key=itemgetter(1))]
 
 LDs = [False, True]
-sb_optims = [False, True]
-pcutoffs = ["5e-8", "1e-10"]
+smartLD = False
+gamma_suffixes = ['optim_gamma', 'gamma01', 'gamma0006']
+gamma_suffixes = ['gamma01'] #, 'gamma01']
+pcutoffs = ["5e-8"] #, "1e-10"]
 
 for use_LD in LDs:
-    for sb_optim in sb_optims:
+    for gamma_suffix in gamma_suffixes:
         for pcutoff in pcutoffs:
-
-            if sb_optim:
-                gamma_suffix = "optim_gamma"
-            else:
-                gamma_suffix = "gamma01"
 
             if use_LD:
                 trans_eqtls_file = "trans_eqtls_ldpruned.txt"
@@ -296,7 +293,7 @@ for use_LD in LDs:
                     print("File does not exist", filefmt)
                     raise
                 trans_eqtls = tejaas(filefmt)
-                if use_LD:
+                if use_LD and smartLD:
                     # delete the lonely signif SNPs
                     filefmt_regions = f'{resdir}/{tissue}/{trans_eqtls_ld_regions_file}'
                     trans_eqtls = smart_LD_filter(trans_eqtls, filefmt_regions)

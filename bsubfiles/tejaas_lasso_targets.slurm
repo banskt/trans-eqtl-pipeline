@@ -24,6 +24,7 @@ BASEDIR=_BASEDR_
 CHRM=_CHRM_N_
 TSHORT=_TISSUE_
 K=_KNN_K_
+EXPRCORRFILE=_GXCORR_
 
 ${PYENV} ${PYRRLASSO}   --tissue   ${TSHORT} \
                         --outdir   ${SPECIFIC_OUTDIR} \
@@ -32,6 +33,7 @@ ${PYENV} ${PYRRLASSO}   --tissue   ${TSHORT} \
                         --vcf      ${GTFILE} \
                         --fam      ${SAMPLEFILE} \
                         --gxfile   ${GXFILE} \
+                        --gxcorr   ${EXPRCORRFILE} \
                         --knn      ${K} \
                         --chrm     ${CHRM}
                         

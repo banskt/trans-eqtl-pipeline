@@ -194,12 +194,13 @@ expressions = ["raw"]
 
 sbtypes = ["sb"]
 # keffs   = ["0.4"]
-sbs     = ["0.1"] #["0.005", "0.007"]
+sbs     = ["0.1"]
 Ks       = ["30"]
-extras  = ["_nocismask"] #[""] # , "_crossmap"]
+extras  = ["_nocismask", "_crossmap"]
 sumdir = "summary_5e-08"
 preprocs = list()
 use_LD = True
+smartLD = False
 if use_LD:
     print("Use LD results is ON")
 
@@ -252,7 +253,7 @@ for sbtype in sbtypes:
 for preproc in preprocs:
     for expr in expressions:
         resdir = basedir+"/{:s}/{:s}".format(expr, sumdir)
-        pcutoffs = [5e-08, 1e-10]
+        pcutoffs = [5e-08]
         # trans_eqtls_file = "trans_eqtls_{:s}.txt".format(file_pcutoff)
         trans_eqtls_file = "trans_eqtls.txt"
         if use_LD:
@@ -289,7 +290,7 @@ for preproc in preprocs:
                     print("File does not exist", filefmt)
                     continue
                 trans_eqtls = tejaas(filefmt)
-                if use_LD:
+                if use_LD and smartLD:
                     # delete the lonely signif SNPs
                     filefmt_regions = f'{resdir}/{tissue}/tejaas/{preproc}/{trans_eqtls_ld_regions_file}'
                     trans_eqtls = smart_LD_filter(trans_eqtls, filefmt_regions)

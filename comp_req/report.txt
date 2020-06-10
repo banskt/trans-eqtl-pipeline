@@ -1,0 +1,86 @@
+                                                               JobName      State    Elapsed               Start      NCPUS   NTasks     AveCPU     AveRSS     MaxRSS 
+                 ----------------------------------------------------- ---------- ---------- ------------------- ---------- -------- ---------- ---------- ---------- 
+                                          compreq_chr1_snp100_gene5000  COMPLETED   00:00:33 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:00:33 2020-05-18T17:15:21          8        1   00:00:00          0          0 
+                                                                extern  COMPLETED   00:00:33 2020-05-18T17:15:21          8        1   00:00:00        40K        40K 
+                                                             pmi_proxy  COMPLETED   00:00:29 2020-05-18T17:15:24          1        1   00:00:00          0          0 
+                                         compreq_chr1_snp1000_gene5000  COMPLETED   00:01:13 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:01:13 2020-05-18T17:15:21          8        1   00:00:00      4404K      4404K 
+                                                                extern  COMPLETED   00:01:13 2020-05-18T17:15:21          8        1   00:00:00         8K         8K 
+                                                             pmi_proxy  COMPLETED   00:01:09 2020-05-18T17:15:24          1        1   00:07:37   2776392K   2776392K 
+                                         compreq_chr1_snp5000_gene5000  COMPLETED   00:03:11 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:03:11 2020-05-18T17:15:21          8        1   00:00:00      4404K      4404K 
+                                                                extern  COMPLETED   00:03:11 2020-05-18T17:15:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:03:07 2020-05-18T17:15:24          1        1   00:23:41   4234932K   4234932K 
+                                        compreq_chr1_snp10000_gene5000  COMPLETED   00:05:56 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:05:56 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:05:56 2020-05-18T17:15:21          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:05:52 2020-05-18T17:15:24          1        1   00:43:14   6009616K   6009616K 
+                                        compreq_chr1_snp20000_gene5000  COMPLETED   00:09:42 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:09:42 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:09:42 2020-05-18T17:15:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:09:39 2020-05-18T17:15:24          1        1   01:15:34   7994108K   7994108K 
+                                        compreq_chr1_snp50000_gene5000  COMPLETED   00:20:00 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:20:00 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:20:00 2020-05-18T17:15:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:19:57 2020-05-18T17:15:24          1        1   02:33:58  13748008K  13748008K 
+                                       compreq_chr1_snp100000_gene5000  COMPLETED   00:35:59 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:35:59 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:35:59 2020-05-18T17:15:21          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:35:56 2020-05-18T17:15:24          1        1   04:43:20  23211272K  23211272K 
+                                         compreq_chr1_snp100_gene10000  COMPLETED   00:00:53 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:00:53 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:00:53 2020-05-18T17:15:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:00:50 2020-05-18T17:15:24          1        1   00:03:40    779568K    779568K 
+                                        compreq_chr1_snp1000_gene10000  COMPLETED   00:01:26 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:01:26 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:26 2020-05-18T17:15:21          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:01:23 2020-05-18T17:15:24          1        1   00:07:41   3913768K   3913768K 
+                                        compreq_chr1_snp5000_gene10000  COMPLETED   00:03:59 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:03:59 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:04:00 2020-05-18T17:15:21          8        1   00:00:00        20K        20K 
+                                                             pmi_proxy  COMPLETED   00:03:56 2020-05-18T17:15:24          1        1   00:25:30   6010028K   6010028K 
+                                       compreq_chr1_snp10000_gene10000  COMPLETED   00:06:18 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:06:18 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:06:18 2020-05-18T17:15:21          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:06:15 2020-05-18T17:15:24          1        1   00:45:43   8324004K   8324004K 
+                                       compreq_chr1_snp20000_gene10000  COMPLETED   00:11:17 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:11:17 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:11:17 2020-05-18T17:15:21          8        1   00:00:00        44K        44K 
+                                                             pmi_proxy  COMPLETED   00:11:14 2020-05-18T17:15:24          1        1   01:24:50   9505780K   9505780K 
+                                       compreq_chr1_snp50000_gene10000  COMPLETED   00:18:14 2020-05-18T17:15:21          8                                           
+                                                                 batch  COMPLETED   00:18:14 2020-05-18T17:15:21          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:18:16 2020-05-18T17:15:21          8        1   00:00:00        76K        76K 
+                                                             pmi_proxy  COMPLETED   00:18:11 2020-05-18T17:15:24          1        1   02:21:38  15532892K  15532892K 
+                                      compreq_chr1_snp100000_gene10000  COMPLETED   00:34:02 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:34:02 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:34:02 2020-05-18T17:15:43          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:33:58 2020-05-18T17:15:46          1        1   04:27:20  25830888K  25830888K 
+                                         compreq_chr1_snp100_gene15673  COMPLETED   00:01:09 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:01:09 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:09 2020-05-18T17:15:43          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:06 2020-05-18T17:15:46          1        1   00:07:24   5193660K   5193660K 
+                                        compreq_chr1_snp1000_gene15673  COMPLETED   00:01:51 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:01:51 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:01:51 2020-05-18T17:15:43          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:01:49 2020-05-18T17:15:45          1        1   00:11:23   5621480K   5621480K 
+                                        compreq_chr1_snp5000_gene15673  COMPLETED   00:03:56 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:03:56 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:03:56 2020-05-18T17:15:43          8        1   00:00:00        56K        56K 
+                                                             pmi_proxy  COMPLETED   00:03:54 2020-05-18T17:15:45          1        1   00:27:30   8314388K   8314388K 
+                                       compreq_chr1_snp10000_gene15673  COMPLETED   00:07:04 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:07:04 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:07:04 2020-05-18T17:15:43          8        1   00:00:00        80K        80K 
+                                                             pmi_proxy  COMPLETED   00:07:01 2020-05-18T17:15:46          1        1   00:54:49  11674444K  11674444K 
+                                       compreq_chr1_snp20000_gene15673  COMPLETED   00:10:51 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:10:51 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:10:52 2020-05-18T17:15:43          8        1   00:00:00        60K        60K 
+                                                             pmi_proxy  COMPLETED   00:10:48 2020-05-18T17:15:46          1        1   01:23:19  12512984K  12512984K 
+                                       compreq_chr1_snp50000_gene15673  COMPLETED   00:21:20 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:21:20 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:21:20 2020-05-18T17:15:43          8        1   00:00:00        48K        48K 
+                                                             pmi_proxy  COMPLETED   00:21:17 2020-05-18T17:15:46          1        1   02:45:35  19317400K  19317400K 
+                                      compreq_chr1_snp100000_gene15673  COMPLETED   00:39:31 2020-05-18T17:15:43          8                                           
+                                                                 batch  COMPLETED   00:39:31 2020-05-18T17:15:43          8        1   00:00:00      4408K      4408K 
+                                                                extern  COMPLETED   00:39:31 2020-05-18T17:15:43          8        1   00:00:00        52K        52K 
+                                                             pmi_proxy  COMPLETED   00:39:27 2020-05-18T17:15:46          1        1   05:11:04  30229676K  30229676K 
