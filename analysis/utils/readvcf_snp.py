@@ -147,10 +147,10 @@ class ReadVCF:
                     snpinfo.append(this_snp)
                     found += 1
                     if found == len(self._snplist):
-                        print("all found!")
+                        print(f"all {found} found!")
                         break
 
-        if os.path.exists(self._samplefile):
+        if self._samplefile is not None and os.path.exists(self._samplefile):
             common_ids = [x for x in self._samplenames if x in donor_ids]
             print("GT Sample selection {:d} samples were retained from a total of {:d} samples".format(len(common_ids), len(donor_ids)))
             ix = [donor_ids.index(x) for x in common_ids]

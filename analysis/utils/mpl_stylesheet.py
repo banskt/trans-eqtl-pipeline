@@ -13,6 +13,8 @@ def banskt_presentation(black = '#333333', linewidth = 2, ticksize = 8, fontsize
         mcolors = banskt_colors()
     elif colors == 'kelly':
         mcolors = kelly_colors()
+    elif colors == 'wanwan':
+        mcolors = wanwan_colors()
 
     if fontfamily == 'latex':
         matplotlib.rcParams['text.latex.preamble'] = [r'\usepackage[sfdefault,scaled=.85, lining]{FiraSans}', 
@@ -152,3 +154,16 @@ def kelly_colors():
         '#232C16', # Dark Olive Green
         ]
     return kelly_colors_hex
+
+def wanwan_colors():
+    wanwan_colors_hex = [
+        "#616B77", # Shuttle Gray
+        "#AEB89F", # Schist Gray
+        "#93BFEB", # Perano Blue
+        "#367DC4", # Boston Blue
+        "#19A979", # Mountain Meadow
+        "#F5AA85", # Tacao 
+        "#E8743B", # Burnt Sienna
+        "#CC4300", # Grenadier Red
+        ]
+    return wanwan_colors_hex

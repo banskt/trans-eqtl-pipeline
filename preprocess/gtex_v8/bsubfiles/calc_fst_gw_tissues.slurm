@@ -21,10 +21,17 @@ POP1=_POP1_
 POP2=_POP2_
 POP3=_POP3_
 
-${VCFTOOLS} --gzvcf ${GTFILE} \
-            --weir-fst-pop ${POP1} \
-            --weir-fst-pop ${POP2} \
-            --weir-fst-pop ${POP3} \
-            --out ${OUTFILE}
+EXTRAPOP="--weir-fst-pop ${POP3}"
+if [ "${POP3}" = "" ]; then
+    EXTRAPOP=""
+fi
 
+${VCFTOOLS} --gzvcf ${GTFILE} \
+            --out ${OUTFILE} \
+            --weir-fst-pop ${POP1} \
+            --weir-fst-pop ${POP2} ${EXTRAPOP}
+
+cat ${OUTFILE}.weir.fst | sed 's/chr//g' > ${OUTFILE}.fix.weir.fst
+rm -f ${OUTFILE}.weir.fst
+mv ${OUTFILE}.fix.weir.fst ${OUTFILE}.weir.fst
 rm -rf /tmp/*

@@ -2,6 +2,8 @@
 
 CHRMNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
 TISSUEFILE="/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
+# CHRMNUMS="9"
+
 
 TSHORTS=""
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
@@ -24,7 +26,6 @@ POP1="${GTEXDIR_V8}/genotypes/sample_files/gtex_v8_[TISSUE]_eur.list"
 POP2="${GTEXDIR_V8}/genotypes/sample_files/gtex_v8_[TISSUE]_afr.list"
 POP3="${GTEXDIR_V8}/genotypes/sample_files/gtex_v8_[TISSUE]_oth.list"
 INFILE_FMT="${GTEXDIR_V8}/genotypes/vcfs_SHAPEIT2/0.01/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
-OUTFILE_FMT="GTEx_v8_SHAPEIT2_EUR-AFR-chr[CHRM]"
 
 THISJOBDEPS="None" # no job dependencies
 SPECIFIC_JOBSUBDIR="${PWD}/jobsubs/fst"
@@ -32,15 +33,11 @@ if [ -d ${SPECIFIC_JOBSUBDIR} ]; then rm -rf ${SPECIFIC_JOBSUBDIR}; fi; mkdir -p
 
 # Define a random string for marking jobs of this batch
 RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
-JOBNAME="gtex_v8_fst_[CHRM]_[TISSUE]_${RANDSTRING}"
+JOBNAME="gtex_v8_fst_[TISSUE]_[CHRM]_${RANDSTRING}"
 
 for CHRM in $CHRMNUMS; do 
     for TISSUE in $TSHORTS; do
         CHRM_IN=${INFILE_FMT/\[CHRM\]/${CHRM}}
-        CHRM_OUT=${OUTFILE_FMT/\[CHRM\]/${CHRM}}
-        CHRM_JOBNAME=${JOBNAME/\[CHRM\]/${CHRM}}
-
-        CHRM_JOBNAME=${CHRM_JOBNAME/\[TISSUE\]/${TISSUE}}
 
         POP1_T=${POP1/\[TISSUE\]/${TISSUE}}
         POP2_T=${POP2/\[TISSUE\]/${TISSUE}}
@@ -51,7 +48,14 @@ for CHRM in $CHRMNUMS; do
             mkdir -p $OUTDIR
         fi
 
+        #### Submit for 3 populations ####
+        OUTFILE_FMT="GTEx_v8_SHAPEIT2_EUR-AFR-OTH-chr[CHRM]"
+        CHRM_OUT=${OUTFILE_FMT/\[CHRM\]/${CHRM}}
         OUTFILE="${OUTDIR}/${CHRM_OUT}"
+        
+        JOBNAME="gtex_v8_fst_3pop_[CHRM]_[TISSUE]_${RANDSTRING}"
+        CHRM_JOBNAME=${JOBNAME/\[CHRM\]/${CHRM}}
+        CHRM_JOBNAME=${CHRM_JOBNAME/\[TISSUE\]/${TISSUE}}
 
         sed -e "s|_VCFTOOL_|${VCFTOOLS}|g;
                 s|_GTFILE_|${CHRM_IN}|g;
@@ -60,11 +64,35 @@ for CHRM in $CHRMNUMS; do
                 s|_POP1_|${POP1_T}|g;
                 s|_POP2_|${POP2_T}|g;
                 s|_POP3_|${POP3_T}|g
-                " ${PWD}/bsubfiles/calc_fst.slurm > ${SPECIFIC_JOBSUBDIR}/${CHRM_JOBNAME}.slurm
+                " ${PWD}/bsubfiles/calc_fst_gw_tissues.slurm > ${SPECIFIC_JOBSUBDIR}/${CHRM_JOBNAME}.slurm
 
         submit_job ${SPECIFIC_JOBSUBDIR} ${CHRM_JOBNAME} ${THISJOBDEPS}
-done;
 
+        #### Submit for 2 populations ####
+        OUTFILE_FMT="GTEx_v8_SHAPEIT2_EUR-AFR-chr[CHRM]"
+        CHRM_OUT=${OUTFILE_FMT/\[CHRM\]/${CHRM}}
+        OUTFILE="${OUTDIR}/${CHRM_OUT}"
+
+        JOBNAME="gtex_v8_fst_2pop_[CHRM]_[TISSUE]_${RANDSTRING}"
+        CHRM_JOBNAME=${JOBNAME/\[CHRM\]/${CHRM}}
+        CHRM_JOBNAME=${CHRM_JOBNAME/\[TISSUE\]/${TISSUE}}
+
+        POP3_T=""
+        sed -e "s|_VCFTOOL_|${VCFTOOLS}|g;
+                s|_GTFILE_|${CHRM_IN}|g;
+                s|_JOB_NAME|${CHRM_JOBNAME}|g;
+                s|_OUTFILE_|${OUTFILE}|g;
+                s|_POP1_|${POP1_T}|g;
+                s|_POP2_|${POP2_T}|g;
+                s|_POP3_|${POP3_T}|g
+                " ${PWD}/bsubfiles/calc_fst_gw_tissues.slurm > ${SPECIFIC_JOBSUBDIR}/${CHRM_JOBNAME}.slurm
+
+        submit_job ${SPECIFIC_JOBSUBDIR} ${CHRM_JOBNAME} ${THISJOBDEPS}
+
+    done;
+    echo "Sleeping..."
+    sleep 5
+done;
 
 # for chrm in {1..22}; do tail -n +2 GTEx_v8_SHAPEIT2_EUR-AFR-chr${chrm}.weir.fst >> GTEx_EUR_AFR.weir.fst; done
 # cat GTEx_EUR_AFR.weir.fst | sed 's/chr//g' > GTEx_EUR_AFR_fix.weir.fst 
