@@ -1,0 +1,49 @@
+#!/bin/bash
+
+DATALOAD="configs/DATA.FRANCO"
+EXTERNALLOAD="configs/EXTERNAL.FRANCO"
+
+#---- Different types of gene expression preprocessing
+GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
+
+
+##### UNFINISHED ######
+
+# GXSELECTION=(protein_coding)
+# GXNPEER=(0)
+# GXNORMALIZE=(true false)
+# GXLMCORR=(true false)
+
+
+# #---- Gene Expression processing
+# USE_BSUB=true  # now uses slurm
+
+# #---- Use Public read counts available at GTEx Portal
+# #---- actually, RNASeQC processed counts (phASER is now publicly available)
+# bUsePub=false
+
+# bProcessPhaser=true
+# if [ "${bProcessPhaser}" = "true" ]; then
+#     if [ "${bUsePub}" = "true" ]; then
+#         echo "Are you sure you want to process Phaser counts and TPMs but use Public data?"
+#         echo "I don't think so. Bye"
+#         exit 0;
+#     fi
+# fi
+# bCalculateTPMs=true
+
+# ### CAUTION! jobs below depend on jobs above. TODO: add dependency
+
+# bSelectNormalize=true           # bProcessRPKMs_and_normalize=true    # start from the very beginning
+# bFormatCovariates=true          # format the covariates file
+# bLMcorrect=true                 # use covariate file to correct gx with Linear Model
+# bPeerCorrect=true              # apply PEER correction to GTEx gx
+# bGencodeFilter=true
+
+
+### from within R (for lm correction script)
+# install.packages("argparser")
+#### PEER Instalation
+# wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz
+# R CMD INSTALL R_peer_source_1.3.tgz
+

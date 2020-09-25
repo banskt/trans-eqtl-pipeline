@@ -228,10 +228,10 @@ for tshort, tfull in zip(tshorts, tfulls):
     tissue_samples[tshort] = gtex_meta[tfull.replace(" ", "_")]["rnaSeqAndGenotypeSampleCount"]
 #sorted_tissues = [x[0] for x in sorted(tissue_samples.items(), key=itemgetter(1))]
 
-LDs = [False]
+LDs = [True]
 smartLD = False
 gamma_suffixes = ['optim_gamma', 'gamma01', 'gamma0006']
-gamma_suffixes = ['gamma0006'] #, 'gamma01']
+gamma_suffixes = ['gamma0006', 'gamma01']
 pcutoffs = ["5e-8"]
 
 for use_LD in LDs:

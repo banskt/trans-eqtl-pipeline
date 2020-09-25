@@ -8,11 +8,12 @@ GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2_062020"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2_072020"
 
 # output directory
-if [ "${EUR}" = "true" ]; then 
-    OUTDIR="${OUTDIR}_EUR"
+# if [ "${SAMPLETYPE}" = "EUR" ] || [ "${SAMPLETYPE}" = "NOADM" ]; then 
+if [ "${SAMPLETYPE}" != "" ] ; then 
+    OUTDIR="${OUTDIR}_${SAMPLETYPE}"
 fi
 
 ########################### ATTENTION!!!!
@@ -47,6 +48,9 @@ case "${EXPR_CORR}" in
         ;;
     "raw")
         OUTDIR="${OUTDIR}/raw"
+        ;;
+    "raw_popcorr")
+        OUTDIR="${OUTDIR}/raw_popcorr"
         ;;
     "raw_fixed")
         OUTDIR="${OUTDIR}/raw_fixed"
@@ -105,13 +109,25 @@ EXPRGTEXDIR_V8="${EXPRDATADIR}/gtex_v8"
 GTEX_V8_GENO_DIR="${GTEXDIR_V8}/genotypes"
 #GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
 GTEX_V8_GENO_FMT="${GTEXDIR_V8}/genotypes/vcfs_SHAPEIT2/0.01/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].dosage.gz"
-if [ "${EUR}" = "true" ]; then 
+if [ "${SAMPLETYPE}" = "EUR" ]; then 
     GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8_eur.sample"
+elif [ "${SAMPLETYPE}" = "NOADM" ]; then
+    GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8_eur_noADM.sample"
+elif [ "${SAMPLETYPE}" = "EUR_AFR" ]; then
+    GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8_eur_afr_only.sample"
 else
     GTEX_V8_SAMPLE="${GTEXDIR_V8}/genotypes/gtex_v8.sample"
 fi
 #GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_0.01/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
 GTEX_V8_GENO_VCF_FMT="${GTEXDIR_V8}/genotypes/vcfs_SHAPEIT2/0.01/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
+
+# GEUVADIS
+GEUDIR="${DATADIR}/geuvadis"
+EXPRGEUDIR="${GEUDIR}/expression"
+GEU_GENO_DIR="${GEUDIR}/genotypes"
+GEU_GENO_FMT="${GEU_GENO_DIR}/0.01/GEUVADIS.chr[CHRM].MAF_0.01_indels_filtered.vcf.gz"
+GEU_GENO_VCF_FMT="${GEU_GENO_DIR}/0.01/GEUVADIS.chr[CHRM].MAF_0.01_indels_filtered.vcf.gz"
+
 
 # 1KG Genomes
 ONEKGDIR="${DATADIR}/1KG_genomes"
@@ -183,6 +199,10 @@ case "${EXPR_CORR}" in
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.txt"
         # GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/gtexv8_[TISSUE]_raw_std_protein_coding.txt"
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        GEU_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;;
+    "raw_popcorr")
+        GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/popcorr/[TISSUE]_tpms_qcfilter_popcorr.txt.${BIOTYPES}_filtered"
         ;;
     "raw_pub")
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8_PUB}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
@@ -215,6 +235,10 @@ esac
 
 
 case "${TGENE_EXPR}" in
+    "raw")
+        GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        GEU_TGENE_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        ;;
     "raw_cclm")
         GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"
         ;;
@@ -294,11 +318,12 @@ case "${DATATYPE}" in
         GENO_FMT=${GTEX_V8_GENO_FMT}
         GENO_VCF_FMT=${GTEX_V8_GENO_VCF_FMT}
         SAMPLEFILE=${GTEX_V8_SAMPLE}
-        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        MAF_1KG_FMT="None"
         GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v26.txt"
         GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
         GTEX_POSFILE="${GTEX_V8_GENO_DIR}/vcfs_0.01/gtex_v8_snpinfo.txt"
         # GTEX_POSFILE="${GTEX_V8_GENO_DIR}/vcfs/gtex_v8_snpinfo.txt"
+        echo "Sample file: ${SAMPLEFILE}"
         ;;
     "fhs")
         DATATYPE="fhs"
@@ -308,7 +333,18 @@ case "${DATATYPE}" in
         GENO_FMT=${FHS_GENO_FMT}
         GENO_VCF_FMT=${FHS_GENO_VCF_FMT}
         SAMPLEFILE=${FHS_SAMPLE}
-        MAF_1KG_FMT=${CARDIO_1KG_MAF}
+        MAF_1KG_FMT="None"
+        ;;
+    "geu")
+        DATATYPE="geu"
+        GENO_DIR=${GEU_GENO_DIR}
+        EXPRESSIONFILE=${GEU_EXPR_FMT}
+        EXPRCORRFILE=${GEU_TGENE_EXPR_FMT}
+        GENO_FMT=${GEU_GENO_FMT}
+        GENO_VCF_FMT=${GEU_GENO_VCF_FMT}
+        GENEINFOFILE="${DATADIR}/GENCODE/gencode.v12.annotation.gtf.gz"
+        SAMPLEFILE="${GEU_GENO_DIR}/geuvadis.sample"
+        MAF_1KG_FMT="None"
         ;;
     "1kg")
         DATATYPE="1kg"

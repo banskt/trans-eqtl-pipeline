@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+INVCFDIR="/home/franco/cbscratch/datasets/geuvadis/genotypes"
+
+VCFIBASE="GEUVADIS.chr[CHRM].PH1PH2_465.IMPFRQFILT_BIALLELIC_PH.annotv2.genotypes"
+VCFOBASE="GEUVADIS.chr[CHRM].MAF_[MAFTHRES]_indels_filtered"
+# "GTEX_v8_2020-02-21_WGS_838Indiv_Freeze.SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF[MAFTHRES]_chr[CHRM]"
+
+# Define all preprocessing scripts
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
+PYENV="python"
+PYFILTER="${PWD}/scripts/filter_vcf.py"
+PYCONVERT="${PWD}/scripts/vcf2dosage.py"

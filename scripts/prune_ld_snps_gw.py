@@ -88,6 +88,15 @@ def tejaas_write(snplist, filepath):
             fmtstring = "{:s}\t{:d}\t{:d}\t{:g}\t{:g}\t{:g}\t{:g}\t{:g}\n"
             mfile.write(fmtstring.format(snp.rsid, snp.chrom, snp.pos, snp.maf, snp.q, snp.mu, snp.sigma, snp.p))
 
+def sort_by_position(snps):
+    sorted_snps = list()
+    for chrom in range(1, 23):
+        chrom_snps = [x for x in snps if x.chrom == chrom]
+        if len(chrom_snps) > 0:
+            sorted_chrom_snps = sorted(chrom_snps, key=attrgetter('pos'), reverse=False)
+            sorted_snps += sorted_chrom_snps
+    return sorted_snps
+
 def prune_region(region, myldict):
     start = time.time()
     sorted_region = sorted(region, key=attrgetter('logp'), reverse=True)
@@ -130,7 +139,9 @@ def prune_region_GW(region, myldict):
             lonely.append(snp)
     took = time.time() - start
     print("LD prunning took", took)
-    return sorted(accepted, key=attrgetter('p'), reverse=False), ld_region
+    # sort them
+    return sort_by_position(accepted), ld_region
+    # return sorted(accepted, key=attrgetter('p'), reverse=False), ld_region
 
 def write_ld_region(pruned_snps, ld_regions, outfile):
     with open(outfile, 'w') as outstream:
@@ -165,10 +176,13 @@ if __name__ == '__main__':
             snplist = tejaas_chr(infile)
             pruned_snps, ld_regions = prune_region_GW(snplist, LD_gw_dict)
 
-             # write pruned snps
-            pruned_outfile = "trans_eqtls_ldpruned.txt""
+            # write pruned snps
+            basedir = os.path.dirname(infile)
+            pruned_outfile = os.path.join(basedir, "trans_eqtls_ldpruned.txt")
+            # pruned_outfile = infile+".ld_prune"
             tejaas_write(pruned_snps, pruned_outfile)
-            regions_outfile = "ld_regions.txt"
+            regions_outfile = os.path.join(basedir, "ld_regions.txt")
+            # regions_outfile = infile+".ld_regions"
             write_ld_region(pruned_snps, ld_regions, regions_outfile)
         else:
             print(infile, "does not exist")

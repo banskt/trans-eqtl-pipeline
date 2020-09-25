@@ -1,0 +1,31 @@
+#!/bin/bash
+
+SRCDIR="/cbscratch/franco/datasets/geuvadis"
+
+# Collapsed gene model file
+GTFFILE="/cbscratch/franco/datasets/GENCODE/gencode.v12.collapsed.genes.gtf"
+GENCODEFILE="${SRCDIR}/../GENCODE/gencode.v12.annotation.gtf.gz"
+
+infile="/cbscratch/franco/datasets/GENCODE/gencode.v12.collapsed.genes.gtf"
+outfile="/cbscratch/franco/datasets/GENCODE/gencode.v12.coding_lengths"
+
+
+#=========
+
+TISSUEFILE="tissue_table.txt"
+# DONORFILE="${SRCDIR}/genotypes/gtex_v8.sample"
+# VCFDIR="$BASEDIR/genotypes/vcfs_allsamples"
+
+# OUTDIR="/cbscratch/franco/trans-eqtl/new_preprocess_dec2019_nopc/gtex_v8"
+
+GXDIR="${SRCDIR}/expression"
+GXOUTDIR="${SRCDIR}/expression"
+GTOUTDIR="${SRCDIR}/genotype"
+
+
+TPMOUTDIR="${GXOUTDIR}/tpms"                  # tissue specific rpkms output dir
+COVOUTDIR="${GXOUTDIR}/covariates"              # covariates outdir
+PEEROUTDIR="${GXOUTDIR}/peercorrected"          # PEER corrected
+# AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
+
+

@@ -1,0 +1,10 @@
+ag	3379
+haa	37
+liv	1766
+msg	337
+pan	152
+pit	367
+si	2717
+spl	1252
+va	152
+wb	5850

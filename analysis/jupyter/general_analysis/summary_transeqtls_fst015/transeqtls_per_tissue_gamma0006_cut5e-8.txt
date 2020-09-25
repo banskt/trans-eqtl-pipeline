@@ -1,0 +1,10 @@
+ag	25
+haa	17
+liv	6
+msg	13
+pan	17
+pit	3
+si	17
+spl	28
+va	16
+wb	112

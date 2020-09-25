@@ -147,7 +147,7 @@ for CHRM in ${CHRNUMS}; do
                     SPECIFIC_JOBSUBDIR="${JOBSUBDIR_DATA}/${THISMETHOD}/${METHOD_VARIANT}/chr${CHRM}"
         
                     JOBPREFIX="${THISMETHOD}_${METHOD_VARIANT}_${TISSUEID}_chr${CHRM}_${RANDSTRING}"
-        
+
                     submit_tejaas ${TEJAAS} ${CHRM} ${GENOTYPEFILE} ${EXPRESSIONFILE} ${SAMPLEFILE} \
                                   ${GENEINFOFILE} ${MAF_1KG_FILE} \
                                   ${TEJAAS_MODEL} ${NULL} \

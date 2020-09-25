@@ -2,7 +2,7 @@
 
 function unset_vars() {
     local FILE=$1
-    for variable in `grep -v -e '^\s*#\|^\s*if\|^\s*while\|^\s*fi\|^\s*TISSUEPEER' ${FILE} | grep -e "=" | sed '/^\s*$/d' | cut -d"=" -f1`; do
+    for variable in `grep -v -e '^\s*#\|^\s*if\|^\s*elif\|^\s*while\|^\s*fi\|^\s*TISSUEPEER' ${FILE} | grep -e "=" | sed '/^\s*$/d' | cut -d"=" -f1`; do
         unset $variable;
     done
 }

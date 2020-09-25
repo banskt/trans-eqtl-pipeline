@@ -29,12 +29,11 @@ ANNOTS="multi_tissue DHSindex"
 
 
 # DATASETS="gtex_v8-sse"
-# DATASETS="fhs"
 echo "DATASETS: $DATASETS"
-EXPRESSIONS="raw" #"raw" 
+EXPRESSIONS="raw"
 TGENE_EXPR="raw_cclm"
 GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
-CHRNUMS="12"
+# CHRNUMS="10 11"
 
 # top SNPs to select in step 03
 # TEJAAS_CUTOFF="1e-04"
@@ -42,12 +41,12 @@ TEJAAS_CUTOFF="5e-08"
 CISMASK=true
 KNNS="30" #"20 40"
 CROSSMAP=false
-EUR=false
+SAMPLETYPE="EUR" #"EUR_AFR" # "NOADM" # 
 NOGTKNN=false
 MAGIC_SQRT=false
 MML_OPT=false
 DYNAMIC_SB=false
-KEFFS="0.4"
+# KEFFS="0.4"
 
 SHUFFLE_SPECIAL=false
 # CENTERSCALE=false/true

@@ -228,10 +228,10 @@ for tshort, tfull in zip(tshorts, tfulls):
     tissue_samples[tshort] = gtex_meta[tfull.replace(" ", "_")]["rnaSeqAndGenotypeSampleCount"]
 #sorted_tissues = [x[0] for x in sorted(tissue_samples.items(), key=itemgetter(1))]
 
-LDs = [False, True]
+LDs = [True]
 smartLD = False
 gamma_suffixes = ['optim_gamma', 'gamma01', 'gamma0006']
-gamma_suffixes = ['gamma01'] #, 'gamma01']
+gamma_suffixes = ['gamma01', 'gamma0006']
 pcutoffs = ["5e-8"] #, "1e-10"]
 
 for use_LD in LDs:
@@ -282,6 +282,7 @@ for use_LD in LDs:
                             ofile.write(f"global\t{dhs_type}\t-\t{dhs_frac_type_rand[dhs_type]}\n")
             ############ WARNING!!! ###############################
 
+            tissues_eval = list()
             transeqtls = dict()
             dhs_annotated = dict()
             dhs_annotated_type = dict()
@@ -291,7 +292,9 @@ for use_LD in LDs:
                 filefmt = f'{resdir}/{tissue}/{trans_eqtls_file}'
                 if not os.path.exists(filefmt):
                     print("File does not exist", filefmt)
-                    raise
+                    continue
+                    #raise
+                tissues_eval.append(tissue)
                 trans_eqtls = tejaas(filefmt)
                 if use_LD and smartLD:
                     # delete the lonely signif SNPs

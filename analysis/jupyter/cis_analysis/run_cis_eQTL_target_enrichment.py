@@ -169,272 +169,275 @@ tejaas_expr = "raw"
 K = 30 #not used at the moment
 # pcutoff = 5e-8
 # use_LD    = True
-preproc = "permnull_sb0.0006_knn30"
+# preproc = "permnull_sb0.0006_knn30"
 MIN_TRANS = 1
 MIN_CIS   = 1
 gtexportal_dir = "/cbscratch/franco/datasets/gtex_v8/expression/gtex_portal/eQTLs/GTEx_Analysis_v8_eQTL/"
 
-LDs = [True, False]
+LDs = [True]
 smartLD = False
 gamma_suffixes = ['optim_gamma', 'gamma01', 'gamma0006']
-gamma_suffixes = ['gamma01'] #, 'gamma01']
+gamma_suffixes = ['gamma0006']
 pcutoffs = ["5e-8"]
+
+fst_suffixes = ["_fst015", "_fst_high"]
 
 for use_LD in LDs:
     for gamma_suffix in gamma_suffixes:
-        for pcutoff in pcutoffs:
+        for fst_suffix in fst_suffixes:
+            for pcutoff in pcutoffs:
 
-            if use_LD:
-                trans_file = "trans_eqtls_ldpruned.txt"
-                out_suffix = f"pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt"
-                regions_file = "ld_regions.txt"
-            else:
-                trans_file = "trans_eqtls.txt"
-                out_suffix = f"pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt"
+                if use_LD:
+                    trans_file = "trans_eqtls_ldpruned.txt"
+                    out_suffix = f"pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt"
+                    regions_file = "ld_regions.txt"
+                else:
+                    trans_file = "trans_eqtls.txt"
+                    out_suffix = f"pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt"
 
-            # summary_dir = "{:s}/summary_{:g}".format(tejaas_expr,pcutoff)
-            # basepath = "/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_lncRNA_freeze/"
-            # baseoutdir = os.path.join(basepath, summary_dir, "GTExPortal_eqtl_analysis", preproc)
+                # summary_dir = "{:s}/summary_{:g}".format(tejaas_expr,pcutoff)
+                # basepath = "/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_lncRNA_freeze/"
+                # baseoutdir = os.path.join(basepath, summary_dir, "GTExPortal_eqtl_analysis", preproc)
 
-            basepath = f"/cbscratch/franco/trans-eqtl/protein_coding_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}"
-            baseoutdir = os.path.join(basepath, "GTExPortal_eqtl_analysis")
-            if not os.path.exists(baseoutdir): os.makedirs(baseoutdir)
+                basepath = f"/cbscratch/franco/trans-eqtl/protein_coding_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}{fst_suffix}"
+                baseoutdir = os.path.join(basepath, "GTExPortal_eqtl_analysis")
+                if not os.path.exists(baseoutdir): os.makedirs(baseoutdir)
 
-            GENEINFO_FIELDS = ['name', 'ensembl_id', 'chrom', 'start', 'end', 'typ']
-            class GeneInfo(collections.namedtuple('_GeneInfo', GENEINFO_FIELDS)):
-                __slots__ = ()
-                
-            def read_TFannot(infile):
-                TF_list = list()
-                with open(infile) as instream:
+                GENEINFO_FIELDS = ['name', 'ensembl_id', 'chrom', 'start', 'end', 'typ']
+                class GeneInfo(collections.namedtuple('_GeneInfo', GENEINFO_FIELDS)):
+                    __slots__ = ()
+                    
+                def read_TFannot(infile):
+                    TF_list = list()
+                    with open(infile) as instream:
+                        next(instream)
+                        for line in instream:
+                            arr = line.rstrip().split()
+                            TF_list.append(GeneInfo(ensembl_id=arr[0], chrom=int(arr[1]), start=int(arr[2]), end=int(arr[3]), name=arr[4], typ="TF"))
+                    return TF_list
+
+                base_dir = "/cbscratch/franco/datasets"
+
+                #### Load all data dictionaries
+                TFs_file = "../../external/TF_annotation.txt"
+                if not os.path.exists(TFs_file):
+                    lambert_file = "../../external/TFs_Lambert_2018.csv"
+                    TFs = pd.read_csv(lambert_file, header = 0)
+                    TrueTFs = list(TFs[ TFs["isTF?"] == "Yes" ].ID)
+                    TF_annot = [x for x in gene_info if x.ensembl_id in TrueTFs]
+                    ## Generate annotation file for future analysis
+                    with open(TFs_file, 'w') as outstream:
+                        outstream.write("ensembl_id\tchrom\tstart\tend\tname\n")
+                        for e in TF_annot:
+                            outstream.write("\t".join([e.ensembl_id, str(e.chrom), str(e.start), str(e.end), e.name])+"\n")
+
+                TF_annot = read_TFannot(TFs_file)
+                TF_dict = collections.defaultdict(dict)
+                for g in TF_annot:
+                    TF_dict[g.chrom][g.ensembl_id] = "TF"
+
+                # Reformat genetype dict, we can add as many gene annotations as we want here
+                alltypes_dict = collections.defaultdict(dict)
+                genetypes = []
+                for chrm in range(1,23):
+                    gene_info_dict[chrm]
+                    for k in gene_info_dict[chrm].keys():
+                        genetype = gene_info_dict[chrm][k]
+                        if genetype not in alltypes_dict:
+                            alltypes_dict[genetype] = collections.defaultdict(lambda:False)
+                            genetypes.append(genetype)
+                        alltypes_dict[genetype][k] = True
+                    # Add TF dictionary
+                    for k in TF_dict[chrm].keys():
+                        genetype = "TF"
+                        if genetype not in alltypes_dict:
+                            alltypes_dict[genetype] = collections.defaultdict(lambda:False)
+                            genetypes.append(genetype)
+                        alltypes_dict[genetype][k] = True
+                ##### End data dict load
+
+                ### Calculate Backgrounds
+                cis_bg = dict()
+                cis_bg_file = os.path.join(gtexportal_dir, "gtex_background_freqs_ciseqtls_SHAPEIT2.txt")
+                if not os.path.exists(cis_bg_file):
+                    # read all variants ids
+                    all_snp_ids = pd.read_csv(os.path.join("/cbscratch/franco/from_saikat/gtex_v8_202003/all_variants_pvalues_tejaas.txt"), usecols=[0], header=0, sep="\t")
+                    snps_list = list(all_snp_ids.values.reshape(-1))
+                    for tissue in tissues:
+                        print(tissue, end=" ")
+                        signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))
+                        if not os.path.exists(signif_cisfile) or os.stat(signif_cisfile).st_size == 0:
+                            print("{:s} has no cis-file in GTEx!".format(tissue_names[tissue]))
+                            continue
+                        ciseqtls = read_cis(signif_cisfile)
+                        cis_bg[tissue] = sample_rand_bg(ciseqtls, snps_list, nchoose = 20000, niter = 20)
+                    with open(cis_bg_file, 'w') as outstream:
+                        outstream.write("tissue\trand_count\tfreq\n")
+                        for t in cis_bg:
+                            outstream.write(f"{t}\t{cis_bg[t]}\t{cis_bg[t]/20000} \n")
+                ### End Bg calculation
+
+                res_dict = dict()
+                res_target_dict = dict()
+
+                ### Load Backgrounds
+                cis_bg_freq = dict()
+                with open(cis_bg_file) as instream:
                     next(instream)
                     for line in instream:
-                        arr = line.rstrip().split()
-                        TF_list.append(GeneInfo(ensembl_id=arr[0], chrom=int(arr[1]), start=int(arr[2]), end=int(arr[3]), name=arr[4], typ="TF"))
-                return TF_list
+                        arr = line.strip().split("\t")
+                        cis_bg_freq[arr[0]] = float(arr[2])
 
-            base_dir = "/cbscratch/franco/datasets"
+                # for tissue in tissues:
+                #     res_dict = dict()
+                # res_target_dict = dict()
+                
+                cis_bg_freq = dict()
+                with open(cis_bg_file) as instream:
+                    next(instream)
+                    for line in instream:
+                        arr = line.strip().split("\t")
+                        cis_bg_freq[arr[0]] = float(arr[2])
 
-            #### Load all data dictionaries
-            TFs_file = "../../external/TF_annotation.txt"
-            if not os.path.exists(TFs_file):
-                lambert_file = "../../external/TFs_Lambert_2018.csv"
-                TFs = pd.read_csv(lambert_file, header = 0)
-                TrueTFs = list(TFs[ TFs["isTF?"] == "Yes" ].ID)
-                TF_annot = [x for x in gene_info if x.ensembl_id in TrueTFs]
-                ## Generate annotation file for future analysis
-                with open(TFs_file, 'w') as outstream:
-                    outstream.write("ensembl_id\tchrom\tstart\tend\tname\n")
-                    for e in TF_annot:
-                        outstream.write("\t".join([e.ensembl_id, str(e.chrom), str(e.start), str(e.end), e.name])+"\n")
-
-            TF_annot = read_TFannot(TFs_file)
-            TF_dict = collections.defaultdict(dict)
-            for g in TF_annot:
-                TF_dict[g.chrom][g.ensembl_id] = "TF"
-
-            # Reformat genetype dict, we can add as many gene annotations as we want here
-            alltypes_dict = collections.defaultdict(dict)
-            genetypes = []
-            for chrm in range(1,23):
-                gene_info_dict[chrm]
-                for k in gene_info_dict[chrm].keys():
-                    genetype = gene_info_dict[chrm][k]
-                    if genetype not in alltypes_dict:
-                        alltypes_dict[genetype] = collections.defaultdict(lambda:False)
-                        genetypes.append(genetype)
-                    alltypes_dict[genetype][k] = True
-                # Add TF dictionary
-                for k in TF_dict[chrm].keys():
-                    genetype = "TF"
-                    if genetype not in alltypes_dict:
-                        alltypes_dict[genetype] = collections.defaultdict(lambda:False)
-                        genetypes.append(genetype)
-                    alltypes_dict[genetype][k] = True
-            ##### End data dict load
-
-            ### Calculate Backgrounds
-            cis_bg = dict()
-            cis_bg_file = os.path.join(gtexportal_dir, "gtex_background_freqs_ciseqtls_SHAPEIT2.txt")
-            if not os.path.exists(cis_bg_file):
-                # read all variants ids
-                all_snp_ids = pd.read_csv(os.path.join("/cbscratch/franco/from_saikat/gtex_v8_202003/all_variants_pvalues_tejaas.txt"), usecols=[0], header=0, sep="\t")
-                snps_list = list(all_snp_ids.values.reshape(-1))
-                for tissue in tissues:
-                    print(tissue, end=" ")
+                ################# Calculate Enrichment #################
+                for tissue in tissues:   
+                    # tejaas_file = os.path.join(basepath, summary_dir, tissue, "tejaas", preproc, "trans_eqtls.txt")
+                    tejaas_file = os.path.join(basepath, tissue, trans_file)
+                    if not os.path.exists(tejaas_file):
+                        print("File does not exist!", tejaas_file)
+                        # print("{:s} has no trans-eqtl results".format(tissue))
+                        # raise
+                        continue
+                    transeqtls = tejaas(tejaas_file)
+                    if use_LD and smartLD:
+                        transeqtls = smart_LD_filter(transeqtls, os.path.join(basepath, tissue, regions_file))
+                    
+                    if len(transeqtls) < MIN_TRANS:
+                        print("{:s} has less than {:d} trans-eqtls".format(tissue, MIN_TRANS))
+                        continue
+                    
                     signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))
                     if not os.path.exists(signif_cisfile) or os.stat(signif_cisfile).st_size == 0:
                         print("{:s} has no cis-file in GTEx!".format(tissue_names[tissue]))
                         continue
                     ciseqtls = read_cis(signif_cisfile)
-                    cis_bg[tissue] = sample_rand_bg(ciseqtls, snps_list, nchoose = 20000, niter = 20)
-                with open(cis_bg_file, 'w') as outstream:
-                    outstream.write("tissue\trand_count\tfreq\n")
-                    for t in cis_bg:
-                        outstream.write(f"{t}\t{cis_bg[t]}\t{cis_bg[t]/20000} \n")
-            ### End Bg calculation
-
-            res_dict = dict()
-            res_target_dict = dict()
-
-            ### Load Backgrounds
-            cis_bg_freq = dict()
-            with open(cis_bg_file) as instream:
-                next(instream)
-                for line in instream:
-                    arr = line.strip().split("\t")
-                    cis_bg_freq[arr[0]] = float(arr[2])
-
-            for tissue in tissues:
-                res_dict = dict()
-            res_target_dict = dict()
-            
-            cis_bg_freq = dict()
-            with open(cis_bg_file) as instream:
-                next(instream)
-                for line in instream:
-                    arr = line.strip().split("\t")
-                    cis_bg_freq[arr[0]] = float(arr[2])
-
-            ################# Calculate Enrichment #################
-            for tissue in tissues:   
-                # tejaas_file = os.path.join(basepath, summary_dir, tissue, "tejaas", preproc, "trans_eqtls.txt")
-                tejaas_file = os.path.join(basepath, tissue, trans_file)
-                if not os.path.exists(tejaas_file):
-                    print("File does not exist!", tejaas_file)
-                    # print("{:s} has no trans-eqtl results".format(tissue))
-                    raise
-                    #continue
-                transeqtls = tejaas(tejaas_file)
-                if use_LD and smartLD:
-                    transeqtls = smart_LD_filter(transeqtls, os.path.join(basepath, tissue, regions_file))
+                    cis_ids = list(set([x.rsid for x in ciseqtls]))
+                    
+                    if len(ciseqtls) < MIN_CIS:
+                        print("{:s} has less than {:d} cis-eqtls".format(tissue, MIN_CIS))
+                        continue
+                    
+                    cis_trans_eqtls_ids, cistrans_target_eqtls = crossref_trans_tejaas(transeqtls, ciseqtls)
+                    
+                    FRAC_CISTRANS = len(cis_trans_eqtls_ids) / len(transeqtls)
+                    FRAC_RANDOM_GWCISTRANS = cis_bg_freq[tissue] # randtrans / 50000 
+                    
+                    enrichment = FRAC_CISTRANS / FRAC_RANDOM_GWCISTRANS
                 
-                if len(transeqtls) < MIN_TRANS:
-                    print("{:s} has less than {:d} trans-eqtls".format(tissue, MIN_TRANS))
-                    continue
-                
-                signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))
-                if not os.path.exists(signif_cisfile) or os.stat(signif_cisfile).st_size == 0:
-                    print("{:s} has no cis-file in GTEx!".format(tissue_names[tissue]))
-                    continue
-                ciseqtls = read_cis(signif_cisfile)
-                cis_ids = list(set([x.rsid for x in ciseqtls]))
-                
-                if len(ciseqtls) < MIN_CIS:
-                    print("{:s} has less than {:d} cis-eqtls".format(tissue, MIN_CIS))
-                    continue
-                
-                cis_trans_eqtls_ids, cistrans_target_eqtls = crossref_trans_tejaas(transeqtls, ciseqtls)
-                
-                FRAC_CISTRANS = len(cis_trans_eqtls_ids) / len(transeqtls)
-                FRAC_RANDOM_GWCISTRANS = cis_bg_freq[tissue] # randtrans / 50000 
-                
-                enrichment = FRAC_CISTRANS / FRAC_RANDOM_GWCISTRANS
-            
-                ncis = len(cis_ids)
-                ntrans = len(transeqtls)
-                ncistrans = len(cis_trans_eqtls_ids)
-                pval_binom = ss.binom_test(ncistrans, ntrans, FRAC_RANDOM_GWCISTRANS, alternative='greater')
-                
-                res_dict[tissue] = CisTrans(tissue=tissue, ncis=ncis, ntrans=ntrans, 
-                                            ncistrans=ncistrans, randtrans=FRAC_RANDOM_GWCISTRANS,
-                                            enrichment=enrichment, pval=1, binom=pval_binom)
-                
-                res_target_dict[tissue] = cistrans_target_eqtls
-                
-                print(f"########## Tissue: {tissue} - {ntrans} trans-eqtls - {ncistrans} cis-trans-eqtls #########")
-                print(f"{tissue:>20}        Enrichment: {enrichment:>g} - binom {pval_binom:>g}")
+                    ncis = len(cis_ids)
+                    ntrans = len(transeqtls)
+                    ncistrans = len(cis_trans_eqtls_ids)
+                    pval_binom = ss.binom_test(ncistrans, ntrans, FRAC_RANDOM_GWCISTRANS, alternative='greater')
+                    
+                    res_dict[tissue] = CisTrans(tissue=tissue, ncis=ncis, ntrans=ntrans, 
+                                                ncistrans=ncistrans, randtrans=FRAC_RANDOM_GWCISTRANS,
+                                                enrichment=enrichment, pval=1, binom=pval_binom)
+                    
+                    res_target_dict[tissue] = cistrans_target_eqtls
+                    
+                    print(f"########## Tissue: {tissue} - {ntrans} trans-eqtls - {ncistrans} cis-trans-eqtls #########")
+                    print(f"{tissue:>20}        Enrichment: {enrichment:>g} - binom {pval_binom:>g}")
 
-            ##################### Save tissue enrichments #################
+                ##################### Save tissue enrichments #################
 
-            outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_"+out_suffix) 
-            targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_"+out_suffix) 
+                outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_"+out_suffix) 
+                targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_"+out_suffix) 
 
-            # if use_LD:
-            #     outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
-            #     targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
-            # else:
-            #     outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
-            #     targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
+                # if use_LD:
+                #     outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
+                #     targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
+                # else:
+                #     outcisfilename = os.path.join(baseoutdir,f"ciseqtl_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
+                #     targets_outfile = os.path.join(baseoutdir,f"ciseqtl_targets_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
 
-            with open(outcisfilename, 'w') as outstream:
-                for tissue in tissues:
-                    if tissue in res_dict:
-                        line = f"{tissue}\t{res_dict[tissue].ncis}\t{res_dict[tissue].ntrans}\t{res_dict[tissue].ncistrans}\t{res_dict[tissue].randtrans}\t{res_dict[tissue].enrichment}\t{res_dict[tissue].binom}\n"
-                        outstream.write(line)
-
-            with open(targets_outfile, 'w') as outstream:
-                for tissue in tissues:
-                    if tissue in res_target_dict:
-                        for snp in res_target_dict[tissue]:
-                            line = f"{tissue}\t{snp.rsid}\t{snp.logp}\t{snp.target}\t{snp.maf}\n"
+                with open(outcisfilename, 'w') as outstream:
+                    for tissue in tissues:
+                        if tissue in res_dict:
+                            line = f"{tissue}\t{res_dict[tissue].ncis}\t{res_dict[tissue].ntrans}\t{res_dict[tissue].ncistrans}\t{res_dict[tissue].randtrans}\t{res_dict[tissue].enrichment}\t{res_dict[tissue].binom}\n"
                             outstream.write(line)
-            #################### End save #################
 
-            #################### Read cis-targets and calculate enrichments #################
-            res_target_dict = collections.defaultdict(list)
-            with open(targets_outfile) as instream:
-                for line in instream:
-                    arr = line.strip().split("\t")
-                    t    = arr[0]
-                    rsid = arr[1]
-                    logp = -float(arr[2])
-                    targ = arr[3]
-                    maf  = float(arr[4])
-                    chrom = int(rsid.split("_")[0][3:])
-                    pos   = int(rsid.split("_")[1])
-                    res_target_dict[t].append( SNPRes(rsid=rsid, chrom=chrom, pos=pos, logp=-logp, maf=maf, target=targ) )
+                with open(targets_outfile, 'w') as outstream:
+                    for tissue in tissues:
+                        if tissue in res_target_dict:
+                            for snp in res_target_dict[tissue]:
+                                line = f"{tissue}\t{snp.rsid}\t{snp.logp}\t{snp.target}\t{snp.maf}\n"
+                                outstream.write(line)
+                #################### End save #################
 
-            CisTrans_Type_FIELDS = ['tissue', 'genetype', 'ncistrans', 'ntype', 'frac_cis', 'frac_cistrans', 'enrichment', 'binom']
-            class CisTrans_Type(collections.namedtuple('_CisTrans_Type', CisTrans_Type_FIELDS)):
-                __slots__ = ()
+                #################### Read cis-targets and calculate enrichments #################
+                res_target_dict = collections.defaultdict(list)
+                with open(targets_outfile) as instream:
+                    for line in instream:
+                        arr = line.strip().split("\t")
+                        t    = arr[0]
+                        rsid = arr[1]
+                        logp = -float(arr[2])
+                        targ = arr[3]
+                        maf  = float(arr[4])
+                        chrom = int(rsid.split("_")[0][3:])
+                        pos   = int(rsid.split("_")[1])
+                        res_target_dict[t].append( SNPRes(rsid=rsid, chrom=chrom, pos=pos, logp=-logp, maf=maf, target=targ) )
 
-            enrichment_genetypes = list()
-            for tissue in tissues:
-                signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))
-                if not os.path.exists(signif_cisfile) or os.stat(signif_cisfile).st_size == 0:
-                    print("{:s} has no cis-file in GTEx!".format(tissue_names[tissue]))
-                    continue
-                ciseqtls = read_cis(signif_cisfile)
-                
-                TOTAL_CIS = len(ciseqtls)
-                cis_counts_dict = collections.defaultdict(int)
-                for eqtl in ciseqtls:
-                    for genetype in genetypes:
-                        if alltypes_dict[genetype][eqtl.target]:
-                            cis_counts_dict[genetype] += 1
-                
-                if tissue in res_target_dict:
-                    TOTAL_CIS_TRANS = len(res_target_dict[tissue])
-                    cistrans_counts_dict = collections.defaultdict(int)
-                    for eqtl in res_target_dict[tissue]:
+                CisTrans_Type_FIELDS = ['tissue', 'genetype', 'ncistrans', 'ntype', 'frac_cis', 'frac_cistrans', 'enrichment', 'binom']
+                class CisTrans_Type(collections.namedtuple('_CisTrans_Type', CisTrans_Type_FIELDS)):
+                    __slots__ = ()
+
+                enrichment_genetypes = list()
+                for tissue in tissues:
+                    signif_cisfile = os.path.join(gtexportal_dir, "{:s}.v8.signif_variant_gene_pairs.txt.gz".format(tissue_names[tissue].replace(" ", "_")))
+                    if not os.path.exists(signif_cisfile) or os.stat(signif_cisfile).st_size == 0:
+                        print("{:s} has no cis-file in GTEx!".format(tissue_names[tissue]))
+                        continue
+                    ciseqtls = read_cis(signif_cisfile)
+                    
+                    TOTAL_CIS = len(ciseqtls)
+                    cis_counts_dict = collections.defaultdict(int)
+                    for eqtl in ciseqtls:
                         for genetype in genetypes:
                             if alltypes_dict[genetype][eqtl.target]:
-                                cistrans_counts_dict[genetype] += 1
-                            
-                    for genetype in genetypes:
-                        if TOTAL_CIS > 0 and TOTAL_CIS_TRANS > 0:
-                            frac_cis      = cis_counts_dict[genetype] / TOTAL_CIS
-                            frac_cistrans = cistrans_counts_dict[genetype] / TOTAL_CIS_TRANS
-                            if frac_cis > 0: 
-                                if frac_cistrans > 0:
-                                    enrichment = frac_cistrans / frac_cis
-                                    pval_binom = ss.binom_test(cistrans_counts_dict[genetype], TOTAL_CIS_TRANS, frac_cis, alternative='greater')
-                                    print(f"{tissue} - {genetype} ({cistrans_counts_dict[genetype]}) - enrichment: {enrichment} - pval_binom {pval_binom}")
-                                    enrichment_genetypes.append(CisTrans_Type(tissue=tissue, genetype=genetype, \
-                                                                            ncistrans=TOTAL_CIS_TRANS, \
-                                                                            ntype=cistrans_counts_dict[genetype], \
-                                                                            frac_cis=frac_cis, \
-                                                                            frac_cistrans=frac_cistrans, \
-                                                                            enrichment=enrichment, \
-                                                                            binom=pval_binom))
+                                cis_counts_dict[genetype] += 1
+                    
+                    if tissue in res_target_dict:
+                        TOTAL_CIS_TRANS = len(res_target_dict[tissue])
+                        cistrans_counts_dict = collections.defaultdict(int)
+                        for eqtl in res_target_dict[tissue]:
+                            for genetype in genetypes:
+                                if alltypes_dict[genetype][eqtl.target]:
+                                    cistrans_counts_dict[genetype] += 1
+                                
+                        for genetype in genetypes:
+                            if TOTAL_CIS > 0 and TOTAL_CIS_TRANS > 0:
+                                frac_cis      = cis_counts_dict[genetype] / TOTAL_CIS
+                                frac_cistrans = cistrans_counts_dict[genetype] / TOTAL_CIS_TRANS
+                                if frac_cis > 0: 
+                                    if frac_cistrans > 0:
+                                        enrichment = frac_cistrans / frac_cis
+                                        pval_binom = ss.binom_test(cistrans_counts_dict[genetype], TOTAL_CIS_TRANS, frac_cis, alternative='greater')
+                                        print(f"{tissue} - {genetype} ({cistrans_counts_dict[genetype]}) - enrichment: {enrichment} - pval_binom {pval_binom}")
+                                        enrichment_genetypes.append(CisTrans_Type(tissue=tissue, genetype=genetype, \
+                                                                                ncistrans=TOTAL_CIS_TRANS, \
+                                                                                ntype=cistrans_counts_dict[genetype], \
+                                                                                frac_cis=frac_cis, \
+                                                                                frac_cistrans=frac_cistrans, \
+                                                                                enrichment=enrichment, \
+                                                                                binom=pval_binom))
 
-            targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_"+out_suffix)
-            # if use_LD:
-            #     targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
-            # else:
-            #     targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
-            with open(targets_enrichment_outfile, 'w') as outstream:
-                outstream.write("tissue\tgenetype\tncistrans\tntype\tfrac_cis\tfrac_cistrans\tenrichment\tpval_binom\n")
-                for e in enrichment_genetypes:
-                    outstream.write(f"{e.tissue}\t{e.genetype}\t{e.ncistrans}\t{e.ntype}\t{e.frac_cis}\t{e.frac_cistrans}\t{e.enrichment}\t{e.binom}\n")
+                targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_"+out_suffix)
+                # if use_LD:
+                #     targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}_ldpruned.txt")
+                # else:
+                #     targets_enrichment_outfile = os.path.join(baseoutdir,f"ciseqtl_target_enrichment_pc_lncRNA_{gamma_suffix}_knn30_cut{pcutoff}.txt")
+                with open(targets_enrichment_outfile, 'w') as outstream:
+                    outstream.write("tissue\tgenetype\tncistrans\tntype\tfrac_cis\tfrac_cistrans\tenrichment\tpval_binom\n")
+                    for e in enrichment_genetypes:
+                        outstream.write(f"{e.tissue}\t{e.genetype}\t{e.ncistrans}\t{e.ntype}\t{e.frac_cis}\t{e.frac_cistrans}\t{e.enrichment}\t{e.binom}\n")

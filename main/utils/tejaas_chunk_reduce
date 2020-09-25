@@ -31,6 +31,7 @@ function tejaas_chunk_reduce() {
                             # echo "$HED  vs $REF"
                             if [ "$REF" != "$HED" ]; then
                                 echo "Old header line in file ${FILENAME}"
+                                echo "at dir ${DIR}"
                                 exit
                             fi
                         fi

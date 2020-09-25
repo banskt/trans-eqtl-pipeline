@@ -1,0 +1,7 @@
+#!/bin/bash
+
+VCFTOOLS="/usr/users/fsimone/bin/vcftools_bins/bin/vcftools"
+BGZIP="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/bgzip"
+TABIX="/usr/users/sbanerj/packages/htslib/htslib-1.4.1/bin/tabix"
+PLINK2="/usr/users/fsimone/bin/plink2"
+PYENV="/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python"
