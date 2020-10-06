@@ -118,8 +118,8 @@ def normalize_expr(Y):
     return vcfmask, exprmask """
 
 def knn_correction(expr, dosage):
-    pca = PCA(n_components=min(expr.shape[0], expr.shape[1]))
-    # pca = PCA(n_components=30)
+    # pca = PCA(n_components=min(expr.shape[0], expr.shape[1]))
+    pca = PCA(n_components=30)
     print("Original dimension: {:d} x {:d}".format(expr.shape[0], expr.shape[1]))
     pca.fit(expr) # requires N x G
     expr_pca = pca.transform(expr)

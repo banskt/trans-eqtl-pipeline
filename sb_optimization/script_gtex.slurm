@@ -12,9 +12,9 @@ module load intel/mkl/64/2017/2.174
 export OMP_NUM_THREADS=8
 MPYTHON=/usr/users/fsimone/opt/miniconda/3/envs/env3.6/bin/python
 
-RUN_PATH=/usr/users/fsimone/saikat/sb_optimization/sigbeta_optimizer.py
+RUN_PATH=/usr/users/fsimone/trans-eqtl-pipeline/sb_optimization/sigbeta_optimizer.py
 GXPRFILE=/cbscratch/franco/trans-eqtl/new_preprocess_feb2020_freeze/gtex_v8/expression/tpms/__TISSUE___tpms_qcfilter.txt.protein_coding_lncRNA_filtered
-OUTFILE="/usr/users/fsimone/saikat/sb_optimization/__OUTDIR__/__TISSUE___sboptim.txt"
-SAMPLE="/cbscratch/franco/datasets/gtex_v8/genotypes/gtex_v8_eur.sample"
+OUTFILE="/usr/users/fsimone/trans-eqtl-pipeline/sb_optimization/__OUTDIR__/__TISSUE___sboptim.txt"
+SAMPLE="/cbscratch/franco/datasets/gtex_v8/genotypes/gtex_v8_eur_noADM.sample"
 
 ${MPYTHON} ${RUN_PATH} --gx ${GXPRFILE} --out ${OUTFILE} --nsnp 5000 --samples ${SAMPLE}

@@ -1,52 +1,52 @@
-#Adipose - Subcutaneous	as	ADPSBQ
-#Adipose - Visceral (Omentum)	av	ADPVSC
-#Adrenal Gland	ag	ADRNLG
-#Artery - Aorta	aa	ARTAORT
-#Artery - Coronary	ac	ARTCRN
-#Artery - Tibial	at	ARTTBL
-#Brain - Amygdala	bam	BRNAMY
-#Brain - Anterior cingulate cortex (BA24)	ban	BRNACC
-#Brain - Caudate (basal ganglia)	bca	BRNCDT
-#Brain - Cerebellar Hemisphere	bceh	BRNCHB
-#Brain - Cerebellum	bce	BRNCHA
-#Brain - Cortex	bco	BRNCTXA
-#Brain - Frontal Cortex (BA9)	bfr	BRNCTXB
-#Brain - Hippocampus	bhi	BRNHPP
-#Brain - Hypothalamus	bhy	BRNHPT
-#Brain - Nucleus accumbens (basal ganglia)	bnu	BRNNCC
-#Brain - Putamen (basal ganglia)	bpu	BRNPTM
-#Brain - Spinal cord (cervical c-1)	bsp	BRNSPC
-#Brain - Substantia nigra	bsu	BRNSNG
-#Breast - Mammary Tissue	br	BREAST
-#Cells - EBV-transformed lymphocytes	ebv	LCL
-#Cells - Cultured fibroblasts	fib	FIBRBLS
-#Colon - Sigmoid	cols	CLNSGM
-#Colon - Transverse	colt	CLNTRN
-#Esophagus - Gastroesophageal Junction	esog	ESPGEJ
-#Esophagus - Mucosa	esom	ESPMCS
-#Esophagus - Muscularis	esomu	ESPMSL
-#Heart - Atrial Appendage	haa	HRTAA
-#Heart - Left Ventricle	hlv	HRTLV
-#Kidney - Cortex	kc	KDNCTX
-#Liver	liv	LIVER
-#Lung	lu	LUNG
-#Minor Salivary Gland	msg	SLVRYG
-#Muscle - Skeletal	ms	MSCLSK
-#Nerve - Tibial	nt	NERVET
-#Ovary	ov	OVARY
-#Pancreas	pan	PNCREAS
-#Pituitary	pit	PTTARY
-#Prostate	pro	PRSTTE
-#Skin - Not Sun Exposed (Suprapubic)	snse	SKINNS
-#Skin - Sun Exposed (Lower leg)	sse	SKINS
-#Small Intestine - Terminal Ileum	si	SNTTRM
-#Spleen	spl	SPLEEN
-#Stomach	sto	STMACH
-#Testis	tes	TESTIS
-#Thyroid	thy	THYROID
-#Uterus	ut	UTERUS
-#Vagina	va	VAGINA
-#Whole Blood	wb	WHLBLD
+Adipose - Subcutaneous	as	ADPSBQ
+Adipose - Visceral (Omentum)	av	ADPVSC
+Adrenal Gland	ag	ADRNLG
+Artery - Aorta	aa	ARTAORT
+Artery - Coronary	ac	ARTCRN
+Artery - Tibial	at	ARTTBL
+Brain - Amygdala	bam	BRNAMY
+Brain - Anterior cingulate cortex (BA24)	ban	BRNACC
+Brain - Caudate (basal ganglia)	bca	BRNCDT
+Brain - Cerebellar Hemisphere	bceh	BRNCHB
+Brain - Cerebellum	bce	BRNCHA
+Brain - Cortex	bco	BRNCTXA
+Brain - Frontal Cortex (BA9)	bfr	BRNCTXB
+Brain - Hippocampus	bhi	BRNHPP
+Brain - Hypothalamus	bhy	BRNHPT
+Brain - Nucleus accumbens (basal ganglia)	bnu	BRNNCC
+Brain - Putamen (basal ganglia)	bpu	BRNPTM
+Brain - Spinal cord (cervical c-1)	bsp	BRNSPC
+Brain - Substantia nigra	bsu	BRNSNG
+Breast - Mammary Tissue	br	BREAST
+Cells - EBV-transformed lymphocytes	ebv	LCL
+Cells - Cultured fibroblasts	fib	FIBRBLS
+Colon - Sigmoid	cols	CLNSGM
+Colon - Transverse	colt	CLNTRN
+Esophagus - Gastroesophageal Junction	esog	ESPGEJ
+Esophagus - Mucosa	esom	ESPMCS
+Esophagus - Muscularis	esomu	ESPMSL
+Heart - Atrial Appendage	haa	HRTAA
+Heart - Left Ventricle	hlv	HRTLV
+Kidney - Cortex	kc	KDNCTX
+Liver	liv	LIVER
+Lung	lu	LUNG
+Minor Salivary Gland	msg	SLVRYG
+Muscle - Skeletal	ms	MSCLSK
+Nerve - Tibial	nt	NERVET
+Ovary	ov	OVARY
+Pancreas	pan	PNCREAS
+Pituitary	pit	PTTARY
+Prostate	pro	PRSTTE
+Skin - Not Sun Exposed (Suprapubic)	snse	SKINNS
+Skin - Sun Exposed (Lower leg)	sse	SKINS
+Small Intestine - Terminal Ileum	si	SNTTRM
+Spleen	spl	SPLEEN
+Stomach	sto	STMACH
+Testis	tes	TESTIS
+Thyroid	thy	THYROID
+Uterus	ut	UTERUS
+Vagina	va	VAGINA
+Whole Blood	wb	WHLBLD
 #Bladder	bl	BLADDER
 ####### Cells - Leukemia cell line (CML)	leu
 ####### Cells - Transformed fibroblasts	fib	FIBRBLS
@@ -54,16 +54,27 @@
 ####### Cervix - Endocervix	end
 ####### Fallopian Tube	ft
 ######################
-Artery - Aorta	aa	60
-Brain - Cerebellum	bce	30
-Brain - Cortex	bco	30
-Cells - Cultured fibroblasts	fib	60
-Colon - Transverse	colt	60
-Heart - Left Ventricle	hlv	60
-Nerve - Tibial	nt	60
-Skin - Sun Exposed (Lower leg)	sse	60
-Thyroid	thy	60
-#######################
-Adipose - Subcutaneous	as	60
-Muscle - Skeletal	ms	60
-Whole Blood	wb	60
+#Artery - Aorta	aa	60
+#Brain - Cerebellum	bce	30
+#Brain - Cortex	bco	30
+#Cells - Cultured fibroblasts	fib	60
+#Colon - Transverse	colt	60
+#Heart - Left Ventricle	hlv	60
+#Nerve - Tibial	nt	60
+#Skin - Sun Exposed (Lower leg)	sse	60
+#Thyroid	thy	60
+########################
+#Adipose - Subcutaneous	as	60
+#Muscle - Skeletal	ms	60
+#Whole Blood	wb	60
+##### Special 0.006 ######
+#Adrenal Gland	ag	30
+#Heart - Atrial Appendage	haa	60
+#Liver	liv	30
+#Minor Salivary Gland	msg	15
+#Pituitary	pit	30
+#Small Intestine - Terminal Ileum	si	30
+#Spleen	spl	30
+#Pancreas	pan	45
+#Whole Blood	wb	60
+#Vagina	va	15

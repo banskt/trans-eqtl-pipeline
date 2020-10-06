@@ -1,87 +1,81 @@
 #### GTEx v8!!
-#Adipose - Subcutaneous	as	60
-#Adipose - Visceral (Omentum)	av	60
-#Adrenal Gland	ag	30
-#Artery - Aorta	aa	60
-#Artery - Coronary	ac	30
-#Artery - Tibial	at	60
-#Brain - Amygdala	bam	15
-#Brain - Anterior cingulate cortex (BA24)	ban	15
-#Brain - Caudate (basal ganglia)	bca	30
-#Brain - Cerebellar Hemisphere	bceh	30
-#Brain - Cerebellum	bce	30
-#Brain - Cortex	bco	30
-#Brain - Frontal Cortex (BA9)	bfr	30
-#Brain - Hippocampus	bhi	30
-#Brain - Hypothalamus	bhy	30
-#Brain - Nucleus accumbens (basal ganglia)	bnu	30
-#Brain - Putamen (basal ganglia)	bpu	30
-#Brain - Spinal cord (cervical c-1)	bsp	15
-#Brain - Substantia nigra	bsu	15
-#Breast - Mammary Tissue	br	60
-#Cells - EBV-transformed lymphocytes	ebv	15
-#Cells - Cultured fibroblasts	fib	60
-#Colon - Sigmoid	cols	45
-#Colon - Transverse	colt	60
-#Esophagus - Gastroesophageal Junction	esog	45
-#Esophagus - Mucosa	esom	60
-#Esophagus - Muscularis	esomu	60
-#Heart - Atrial Appendage	haa	60
-#Heart - Left Ventricle	hlv	60
-#Kidney - Cortex	kc	15
-#Liver	liv	30
-#Lung	lu	60
-#Minor Salivary Gland	msg	15
-#Muscle - Skeletal	ms	60
-#Nerve - Tibial	nt	60
-#Pancreas	pan	45
-#Pituitary	pit	30
-#Skin - Not Sun Exposed (Suprapubic)	snse	60
-#Skin - Sun Exposed (Lower leg)	sse	60
-#Small Intestine - Terminal Ileum	si	30
-#Spleen	spl	30
-#Stomach	sto	45
-#Thyroid	thy	60
-#Whole Blood	wb	60
-#Ovary	ov	30
-#Prostate	pro	30
-#Testis	tes	45
-#Uterus	ut	15
-#Vagina	va	15
+# Adipose - Subcutaneous	as	60
+# Adipose - Visceral (Omentum)	av	60
+# Adrenal Gland	ag	30
+# Artery - Aorta	aa	60
+# Artery - Coronary	ac	30
+# Artery - Tibial	at	60
+# Brain - Amygdala	bam	15
+# Brain - Anterior cingulate cortex (BA24)	ban	15
+# Brain - Caudate (basal ganglia)	bca	30
+# Brain - Cerebellar Hemisphere	bceh	30
+# Brain - Cerebellum	bce	30
+# Brain - Cortex	bco	30
+# Brain - Frontal Cortex (BA9)	bfr	30
+# Brain - Hippocampus	bhi	30
+# Brain - Hypothalamus	bhy	30
+# Brain - Nucleus accumbens (basal ganglia)	bnu	30
+# Brain - Putamen (basal ganglia)	bpu	30
+# Brain - Spinal cord (cervical c-1)	bsp	15
+# Brain - Substantia nigra	bsu	15
+# Breast - Mammary Tissue	br	60
+# Cells - EBV-transformed lymphocytes	ebv	15
+# Cells - Cultured fibroblasts	fib	60
+# Colon - Sigmoid	cols	45
+# Colon - Transverse	colt	60
+# Esophagus - Gastroesophageal Junction	esog	45
+# Esophagus - Mucosa	esom	60
+# Esophagus - Muscularis	esomu	60
+# Heart - Atrial Appendage	haa	60
+# Heart - Left Ventricle	hlv	60
+# Kidney - Cortex	kc	15
+# Liver	liv	30
+# Lung	lu	60
+# Minor Salivary Gland	msg	15
+# Muscle - Skeletal	ms	60
+# Nerve - Tibial	nt	60
+# Pancreas	pan	45
+# Pituitary	pit	30
+# Skin - Not Sun Exposed (Suprapubic)	snse	60
+# Skin - Sun Exposed (Lower leg)	sse	60
+# Small Intestine - Terminal Ileum	si	30
+# Spleen	spl	30
+# Stomach	sto	45
+# Thyroid	thy	60
+# Whole Blood	wb	60
+# Ovary	ov	30
+# Prostate	pro	30
+# Testis	tes	45
+# Uterus	ut	15
+# Vagina	va	15
 # # Bladder	bl	15
 # # Cells - Leukemia cell line (CML)	leu
 # #Cervix - Ectocervix	ect
 # #Cervix - Endocervix	end
 # #Fallopian Tube	ft
 ######################
-#Artery - Aorta	aa	60
-#Brain - Cerebellum	bce	30
-#Brain - Cortex	bco	30
-#Cells - Cultured fibroblasts	fib	60
-#Colon - Transverse	colt	60
-#Heart - Left Ventricle	hlv	60
-#Nerve - Tibial	nt	60
-#Skin - Sun Exposed (Lower leg)	sse	60
-#Thyroid	thy	60
-#Adipose - Subcutaneous	as	60
-#Muscle - Skeletal	ms	60
-#Whole Blood	wb	60
+Adipose - Subcutaneous	as	60
+Muscle - Skeletal	ms	60
+Skin - Sun Exposed (Lower leg)	sse	60
+Thyroid	thy	60
+Whole Blood	wb	60
+# Uterus	ut	15
 #######################
+##Brain - Amygdala	bam	15
+##Brain - Anterior cingulate cortex (BA24)	ban	15
+##Brain - Caudate (basal ganglia)	bca	30
+##Brain - Cerebellar Hemisphere	bceh	30
+##Brain - Frontal Cortex (BA9)	bfr	30
+##Brain - Hippocampus	bhi	30
+##Brain - Hypothalamus	bhy	30
+##Brain - Nucleus accumbens (basal ganglia)	bnu	30
+##Brain - Putamen (basal ganglia)	bpu	30
+##Brain - Spinal cord (cervical c-1)	bsp	15
+##Brain - Substantia nigra	bsu	15
 #Adipose - Visceral (Omentum)	av	60
 #Adrenal Gland	ag	30
 #Artery - Coronary	ac	30
 #Artery - Tibial	at	60
-#Brain - Amygdala	bam	15
-#Brain - Anterior cingulate cortex (BA24)	ban	15
-#Brain - Caudate (basal ganglia)	bca	30
-#Brain - Cerebellar Hemisphere	bceh	30
-#Brain - Frontal Cortex (BA9)	bfr	30
-#Brain - Hippocampus	bhi	30
-#Brain - Hypothalamus	bhy	30
-#Brain - Nucleus accumbens (basal ganglia)	bnu	30
-#Brain - Putamen (basal ganglia)	bpu	30
-#Brain - Spinal cord (cervical c-1)	bsp	15
-#Brain - Substantia nigra	bsu	15
 #Breast - Mammary Tissue	br	60
 #Cells - EBV-transformed lymphocytes	ebv	15
 #Colon - Sigmoid	cols	45
@@ -92,7 +86,7 @@
 #Kidney - Cortex	kc	15
 #Liver	liv	30
 #Lung	lu	60
-Minor Salivary Gland	msg	15
+#Minor Salivary Gland	msg	15
 #Pancreas	pan	45
 #Pituitary	pit	30
 #Skin - Not Sun Exposed (Suprapubic)	snse	60
@@ -104,14 +98,14 @@ Minor Salivary Gland	msg	15
 #Testis	tes	45
 #Uterus	ut	15
 #Vagina	va	15
-#### For KNN testing [15,20,25,35,40,50] ##################
-#Brain - Amygdala	bam	15
-#Brain - Caudate (basal ganglia)	bca	30
-#Brain - Cerebellum	bce	30
-#Brain - Cortex	bco	30
-#### For KNN testing [20,40,50,60,70,80] ##################
-#Adipose - Subcutaneous	as	60
-#Heart - Left Ventricle	hlv	60
-#Muscle - Skeletal	ms	60
-#Nerve - Tibial	nt	60
-#Thyroid	thy	60
+##### Special 0.006 ######
+#Adrenal Gland	ag	30
+#Heart - Atrial Appendage	haa	60
+#Liver	liv	30
+#Minor Salivary Gland	msg	15
+#Pituitary	pit	30
+#Small Intestine - Terminal Ileum	si	30
+#Spleen	spl	30
+#Pancreas	pan	45
+#Whole Blood	wb	60
+#Vagina	va	15

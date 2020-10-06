@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TISSUEFILE="/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
-OUTDIR="gtex_v8"
+OUTDIR="gtex_v8_eur_noADM_30pc"
 
 
 mkdir -p $OUTDIR
