@@ -1,0 +1,34 @@
+#!/bin/bash
+
+DATADIR="/cbscratch/sbanerj/data"
+GENEPOSFILE="${DATADIR}/GENCODE/genepos.gencode.v26.txt"
+GENEINFOFILE="${DATADIR}/GENCODE/gencode.v26.annotation.gtf.gz"
+
+# output directory
+OUTDIR="/cbscratch/sbanerj/trans-eqtl/dev-pipeline"
+
+DATATYPE="gtex"
+GTEXDIR="/cbscratch/sbanerj/trans-eqtl/input/gtex_v8"
+
+SELECTION_STRING=$( echo ${GXSELECTION} | sed 's/ /_/g' )
+EXPR_FMT="${GTEXDIR}/expression/gtex_[TISSUE]_[PREPROC_STRING]_${SELECTION_STRING}.txt"
+GENO_FMT="${GTEXDIR}/genotype/all_samples/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze_SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr[CHRM].vcf.gz"
+
+SAMPLEFILE="${GTEXDIR}/gtex_EUR.sample"
+TISSUEFILE="tissue_table_EUR.txt"
+
+JOBSUBDIR="${JOBSUBDIR}/gtex_v8_EUR_202006"
+OUTDIR="${OUTDIR}/gtex_v8_EUR_202006"
+
+MAF_1KG_FMT="${DATADIR}/1KG_MAFs/1000G_phase3_v5a_20130502_snpinfo_EUR_chr[CHRM].txt"
+LDFILE_FMT="${GTEXDIR}/SHAPEIT_ldmap_200000_0.5/chr{:d}_gtex_v8.geno.ld"
+
+if [ "${TEJAAS_SIGMA_BETA_OPTIM}"  = "true" ]; then
+    # Optimized sigma_beta
+    TEJAAS_SIGMA_BETA_PERM_FILE="gtex_tissue_specific_priors_shift05.txt"
+    TEQTL_OUTDIR="${HOME}/trans-eQTL/gtex_v8_tejaas_trans_eQTLs_20200607/${SELECTION_STRING}_optim_gamma_knn${KNN_NBR}_cut${PP_TEJAAS_PVALCUT}"
+else
+    # Fixed sigma_beta
+    TEJAAS_SIGMA_BETA_PERM_FILE="gtex_fixed_priors_EUR.txt"
+    TEQTL_OUTDIR="${HOME}/trans-eQTL/gtex_v8_EUR_tejaas_trans_eQTLs_20200607/${SELECTION_STRING}_gamma0006_knn${KNN_NBR}_cut${PP_TEJAAS_PVALCUT}"
+fi

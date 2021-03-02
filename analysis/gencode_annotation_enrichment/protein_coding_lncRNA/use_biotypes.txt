@@ -1,0 +1,11 @@
+protein_coding
+macro_lncRNA
+non_coding
+bidirectional_promoter_lncRNA
+3prime_overlapping_ncRNA
+sense_overlapping
+processed_transcript
+sense_intronic
+antisense
+lincRNA
+miRNA

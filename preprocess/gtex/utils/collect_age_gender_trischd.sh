@@ -4,7 +4,7 @@
 # COVARDIR
 # PREPROC_UTILSDIR
 
-## collect subjectID, gender, age, trischd from phenotypefile
+## collect subjectID, age, trischd from phenotypefile
 grep -v -P "^#" ${SRCSUBJCT} | cut -f 2,5,15 | grep "SUBJID\|GTEX" > ${COVARDIR}/tmp_gender_age_trischd.txt
 
 ## transpose 

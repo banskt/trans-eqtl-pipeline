@@ -19,6 +19,7 @@ MPYTHON=_PYT_ENV_
 RUN_PATH=_TJS_BINR
 GENOFILE=_GT_FILE_
 GXPRFILE=_EXPR_FL_
+SAMPFILE=_SAMP_FL_
 GENEINFO=_GEN_POSF
 
 TJMETHOD=_TJ_METHD
@@ -38,6 +39,7 @@ fi
 
 
 mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \
+                                   --fam          ${SAMPFILE} \
                                    --gx           ${GXPRFILE} \
                                    --gtf          ${GENEINFO} \
                                    --method       ${TJMETHOD} \

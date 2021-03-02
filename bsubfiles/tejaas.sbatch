@@ -1,14 +1,13 @@
 #!/bin/bash
-#SBATCH -p medium
+#SBATCH -A cramer
+#SBATCH -p em
 #SBATCH --qos=short
 #SBATCH -t 0-2:00:00
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=8
-#SBATCH -C scratch
 #SBATCH -J _JOB_NAME
 #SBATCH -o _JOB_NAME_%a.out
 #SBATCH -e _JOB_NAME_%a.err
-#SBATCH -A all
 
 module load intel/compiler/64/2017/17.0.2
 module load intel/mkl/64/2017/2.174
@@ -21,6 +20,7 @@ RUN_PATH=_TJS_BINR
 GENOFILE=_GT_FILE_
 GXPRFILE=_EXPR_FL_
 GXCORRFL=_GX_CRFL_
+SAMPLEFL=_SAMP_FL_
 GENEINFO=_GEN_POSF
 
 TJMETHOD=_TJ_METHD
@@ -57,6 +57,7 @@ fi
 mpirun -n 8 ${MPYTHON} ${RUN_PATH} --vcf          ${GENOFILE} \
                                    --gx           ${GXPRFILE} \
                                    --gxcorr       ${GXCORRFL} \
+                                   --fam          ${SAMPLEFL} \
                                    --gtf          ${GENEINFO} \
                                    --method       ${TJMETHOD} \
                                    --null         ${NULLMODL} \

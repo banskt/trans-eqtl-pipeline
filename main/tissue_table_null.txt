@@ -1,0 +1,2 @@
+Artery - Aorta	aa
+Cells - EBV-transformed lymphocytes	ebv

@@ -18,7 +18,7 @@ MATRIXEQTL_MODEL="modelLINEAR"
 bTejaas=true				# run the method if true
 bTjsRandom=false
 TEJAAS_PREPROC_STR="raw_std"
-TEJAAS_TARGETGENE_PREPROC_STR="raw_cclm_std"
+TEJAAS_TARGETGENE_PREPROC_STR="qn_cclm_std"
 TEJAAS_MODEL="rr" 			# only one model allowed
 TEJAAS_NULL="perm" 			# list of null models
 TEJAAS_SIGMA_BETA_OPTIM=false          # optimize sigma_beta for perm null, else use fixed value (0.1)
@@ -30,7 +30,7 @@ TEJAAS_KNN=true
 KNN_NBR=30
 
 # Postprocess options
-bChunkReduce=false
+bChunkReduce=true
 bPostResult=true
 PP_USE_SLURM=false
 LD_USE_SLURM=false

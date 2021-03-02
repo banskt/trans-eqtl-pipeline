@@ -1,13 +1,12 @@
 #!/bin/bash
-#SBATCH -p medium
+#SBATCH -A cramer
+#SBATCH -p em
 #SBATCH --qos=short
 #SBATCH -t 0-2:00:00
 #SBATCH -n 1
-#SBATCH -C scratch
 #SBATCH -J _JOB_NAME
 #SBATCH -o _JOB_NAME.out
 #SBATCH -e _JOB_NAME.err
-#SBATCH -A all
 
 SPECIFIC_OUTDIR=_RES_DIR_
 RESOUTDIR=_COL_DIR_

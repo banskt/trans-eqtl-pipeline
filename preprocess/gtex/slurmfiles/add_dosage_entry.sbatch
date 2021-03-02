@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH -p medium
+#SBATCH -A cramer
+#SBATCH -p em
 #SBATCH -t 2-0:00:00
 #SBATCH -n 1
 #SBATCH -N 1
@@ -12,6 +13,8 @@
 CHROM=(1 2)
 DS2VCF="/usr/users/sbanerj/trans-eQTL/dev-pipeline/preprocess/external/DS2VCF/bin/add_dosage"
 CHRNUM=${CHROM[$SLURM_ARRAY_TASK_ID]}
-INFILE="/scratch/sbanerj/trans-eqtl/input/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr${CHRNUM}_filtered.vcf.gz"
-OUTFILE="/usr/users/sbanerj/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr${CHRNUM}.vcf.gz"
+INFILE="/cbscratch/sbanerj/gtex_v8_genotype/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze_SHAPEIT2_phased_NoMissingGT_SNPfilter_MAF0.01_chr${CHRNUM}.vcf.gz"
+OUTFILE="/cbscratch/sbanerj/trans-eqtl/input/gtex_v8_sample_source/genotype/all_samples/GTEX_v8_2020-02-21_WGS_838Indiv_Freeze_SHAPEIT2_phased_NoMissingGT_withDS_SNPfilter_MAF0.01_chr${CHRNUM}.vcf.gz"
+#INFILE="/scratch/sbanerj/trans-eqtl/input/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_chr${CHRNUM}_filtered.vcf.gz"
+#OUTFILE="/usr/users/sbanerj/gtex_v8/genotype/all_samples/GTEX_v8_2019-07-29_WGS_838Indiv_Freeze_NoMissingGT_SNPfilter_MAF0.01_withDS_chr${CHRNUM}.vcf.gz"
 ${DS2VCF} ${INFILE} ${OUTFILE}

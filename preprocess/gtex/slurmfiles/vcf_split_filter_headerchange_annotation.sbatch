@@ -1,15 +1,13 @@
 #!/bin/bash
-#SBATCH -p medium
+#SBATCH -A cramer
+#SBATCH -p em
 #SBATCH --qos=short
 #SBATCH -t 0-2:00:00
 #SBATCH -n 4
 #SBATCH -N 1
-#SBATCH -C scratch
-#SBATCH -A all
 #SBATCH -J _JOB_NAME
 #SBATCH -o _JOB_NAME.out
 #SBATCH -e _JOB_NAME.err
-
 
 PYENV=_PYT_ENV_
 
@@ -24,6 +22,7 @@ OUTFILE=_OUT_FILE
 CONVERT_ANNOT_PY=_ANNT_PY_
 IMPUTE_MISSING_PY=_IMPT_PY_
 VCF_FILTER_PY=_VCFT_PY_
+GTVERSION=_GTEX_VER_
 CHRM=_CHRM_NUM
 MAF_MIN=_MAF_MIN_
 REMOVE_INDELS=_RM_INDEL
@@ -45,7 +44,12 @@ fi
 ${VCFTOOLS} --gzvcf ${SRCVCF} --chr ${CHRM} ${VCF_FILTER_OPTIONS} --recode --recode-INFO-all --out ${TMPOUT}
 
 # change header
-sed "18q;d" ${TMPOUT}.recode.vcf | awk -F$'\t' '{for (i = 1; i <= NF; i++) {idmod=gensub(/^(GTEX-[^-]*).*/,"\\1","g", $i); print idmod} }'| awk 'BEGIN { ORS = "\t" } { print }' > ${HEADERFILE}
+if [[ "${GTVERSION}" == "v6p" ]]; then
+    sed "18q;d" ${TMPOUT}.recode.vcf | awk -F$'\t' '{for (i = 1; i <= NF; i++) {idmod=gensub(/^(GTEX-[^-]*).*/,"\\1","g", $i); print idmod} }'| awk 'BEGIN { ORS = "\t" } { print }' > ${HEADERFILE}
+fi
+if [[ "${GTVERSION}" == "v8" ]]; then
+    sed "40q;d" ${TMPOUT}.recode.vcf | awk -F$'\t' '{for (i = 1; i <= NF; i++) {idmod=gensub(/^(GTEX-[^-]*).*/,"\\1","g", $i); print idmod} }'| awk 'BEGIN { ORS = "\t" } { print }' > ${HEADERFILE}
+fi
 ${BGZIP} -c ${TMPOUT}.recode.vcf > ${TMPOUT}.recode.vcf.gz
 ${TABIX} -r ${HEADERFILE} ${TMPOUT}.recode.vcf.gz > ${TMPOUT}.vcf.gz
 
@@ -53,9 +57,9 @@ ${TABIX} -r ${HEADERFILE} ${TMPOUT}.recode.vcf.gz > ${TMPOUT}.vcf.gz
 FILTER_STRING="--maf ${MAF_MIN}"
 
 # remove ambiguous SNPs (optional)
-if [ "${REMOVE_AMBIGUOUS}" = "true" ]; then
-    FILTER_STRING="${FILTER_STRING} --remove-ambiguous"
-fi
+if [ "${REMOVE_AMBIGUOUS}" = "true" ]; then FILTER_STRING="${FILTER_STRING} --remove-ambiguous"; fi
+if [[ "${GTVERSION}" == "v8" ]]; then FILTER_STRING="${FILTER_STRING} --maf-metapos 2"; fi
+
 ${PYENV} ${VCF_FILTER_PY} --input ${TMPOUT}.vcf.gz --out ${TMPOUT}_pyfilter.vcf.gz ${FILTER_STRING}
 
 # convert annotation

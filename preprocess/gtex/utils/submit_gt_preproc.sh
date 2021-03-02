@@ -1,7 +1,7 @@
 #!/bin/bash
 
 THISJOBDEPS="None"
-SPECIFIC_JOBSUBDIR="${JOBSUBDIR}/preprocess/gtex/genotype/all_samples"
+SPECIFIC_JOBSUBDIR="${JOBSUBDIR}/preprocess/gtex_${GTVERSION}/genotype/all_samples"
 if [ ! -d ${SPECIFIC_JOBSUBDIR} ]; then mkdir -p ${SPECIFIC_JOBSUBDIR}; fi
 
 for CHRM in {1..22}; do
@@ -34,6 +34,7 @@ for CHRM in {1..22}; do
             s|_RM_INDEL|${REMOVE_INDELS}|g;
             s|_RM_AMBIG|${REMOVE_AMBIGUOUS}|g;
             s|_IMP_MISS|${IMPUTE_MISSING}|g;
+            s|_GTEX_VER_|${GTVERSION}|g;
            " ${__MASTERFILE} > ${__SUBMITFILE}
 
     if [ "${USE_SLURM}" = "true" ]; then

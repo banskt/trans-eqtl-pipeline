@@ -7,29 +7,26 @@ function submit_tejaas() {
     local genotype=$4
     local expression=$5
     local corrected_expression=$6
-    local geneinfo=$7
-    local maffile=$8
-    local method=$9
-    local null=${10}
-    local snpthres=${11}
-    local genethres=${12}
-    local sbeta=${13}
-    local extraflags=${14}
-    local jobsubdir=${15}
-    local outdir=${16}
-    local jobprefix=${17}
-    local nmax=${18}
-    local thisjobdep=${19}
-    local bsubdir=${20}
-    local __jobdeps=${21} ## name of the bash variable
-    local jobdeps=${22}   ## contents of the bash variable
-    local ntot=${23}
+    local samplefile=$7 
+    local geneinfo=$8
+    local maffile=$9
+    local method=${10}
+    local null=${11}
+    local snpthres=${12}
+    local genethres=${13}
+    local sbeta=${14}
+    local extraflags=${15}
+    local jobsubdir=${16}
+    local outdir=${17}
+    local jobprefix=${18}
+    local nmax=${19}
+    local thisjobdep=${20}
+    local bsubdir=${21}
+    local __jobdeps=${22} ## name of the bash variable
+    local jobdeps=${23}   ## contents of the bash variable
+    local ntot=${24}
     local jobname=0
     local i=0
-    #local index=0
-    #local includesnps=0
-    #local startsnp=0
-    #local endsnp=0
     local outprefix=0
 
     ## echo $tejaas $chrm $genotype ${expression} ${sample} ${geneinfo} $maffile
@@ -46,17 +43,7 @@ function submit_tejaas() {
     if [ -d ${jobsubdir} ]; then rm -rf ${jobsubdir}; fi; mkdir -p ${jobsubdir}
     if [ -d ${outdir} ]; then rm -rf ${outdir}; mkdir -p ${outdir}; fi
 
-    #for (( i=0; i < ${njobs}; i++ )); do
-    #index=`echo ${i} | awk '{printf "%03d", $1}'`
     jobname="${jobprefix}"
-
-    #startsnp=$(( nmax * i + 1 ))
-    #endsnp=$(( nmax * (i + 1) ))
-    #if [ $endsnp -gt $ntot ]; then
-    #    endsnp=${ntot}
-    #fi
-    #includesnps="${startsnp}:${endsnp}"
-
     outprefix="${outdir}/chunk"
 
     # create the job submission file
@@ -66,6 +53,7 @@ function submit_tejaas() {
          s|_GT_FILE_|${genotype}|g;
          s|_EXPR_FL_|${expression}|g;
          s|_GX_CRFL_|${corrected_expression}|g;
+         s|_SAMP_FL_|${samplefile}|g;
          s|_GEN_POSF|${geneinfo}|g;
          s|_TJ_METHD|${method}|g;
          s|_NULL_MDL|${null}|g;
@@ -81,7 +69,7 @@ function submit_tejaas() {
         " ${bsubdir}/tejaas.sbatch > ${jobsubdir}/${jobname}.sbatch
 
     thisjobid=$( submit_job_array ${jobsubdir} ${jobname} ${thisjobdep} ${narr} )
+    #thisjobid="999"
     jobdeps=$( add_deps "${jobdeps}" ${thisjobid} )
-    #done
     eval $__jobdeps="'$jobdeps'"
 }

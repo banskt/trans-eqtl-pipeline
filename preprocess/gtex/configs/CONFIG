@@ -4,6 +4,7 @@ TISSUEFILE="tissue_table.txt"
 DATALOAD="configs/GTEXv8.SAIKAT"
 EXTERNALLOAD="configs/EXTERNAL.SAIKAT"
 OUTDIR="/scratch/sbanerj/trans-eqtl/input/gtex_v8"
+GTVERSION="v8"
 
 GXOUTDIR="${OUTDIR}/expression"
 GTOUTDIR="${OUTDIR}/genotype"
@@ -17,12 +18,12 @@ COVARDIR="${OUTDIR}/covariates"
 USE_SLURM=true
 USE_LSF=false
 GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
-QCMETHODS="raw raw_std raw_cclm_std raw_cclasso_std"
+QCMETHODS="raw raw_std raw_cclm_std raw_cclasso_std qn_cclm_std"
 TPM_THRESHOLD=0.1
 COUNTS_THRESHOLD=6
 SAMPLE_FRAC_THRESHOLD=0.2
-bCollectCovs=true
-bSelectTissue=true
+bCollectCovs=false
+bSelectTissue=false
 bNormalizeQC=true
 
 #---- Genotype filtering
@@ -33,7 +34,7 @@ IMPUTE_MISSING=true
 
 #---- GNetLMM format
 CREATE_EXPRESSION=false
-CREATE_GENOTYPE=true
+CREATE_GENOTYPE=false
 
 for DIR in ${GXOUTDIR} ${GTOUTDIR} ${PREGXOUTDIR} ${COVARDIR}; do
     if [ ! -d ${DIR} ]; then mkdir -p $DIR; fi

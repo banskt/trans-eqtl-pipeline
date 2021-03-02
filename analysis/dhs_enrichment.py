@@ -8,6 +8,7 @@ sys.path.append('./')
 from utils import utils
 from utils import read_tejaas_results
 from utils import read_eqtlgen_results
+from utils import read_varid_results
 
 
 def parse_args():
@@ -49,6 +50,11 @@ def parse_args():
                         dest='is_eqtlgen',
                         action='store_true',
                         help='Read eQTLGen')
+
+    parser.add_argument('--varid',
+                        dest='is_varid',
+                        action='store_true',
+                        help='Read from GTEx varid list')
 
     opts = parser.parse_args()
     return opts
@@ -139,6 +145,7 @@ dhsfile = opts.dhsfile
 resdir = opts.resdir
 teqtlfile = opts.teqtlfile
 is_eqtlgen = opts.is_eqtlgen
+is_varid = opts.is_varid
 
 #dhs_frac_rand = get_random_dhs_overlap(random_snp_dir, dhsfile)
 #print(f'Fraction of DHS overlap for randomly selected SNPs: {dhs_frac_rand :7.4f}')
@@ -161,6 +168,8 @@ for tissue in tissuelist:
     resfilename = os.path.join(resdir, tissue, teqtlfile)
     if is_eqtlgen:
         transeqtls = read_eqtlgen_results.transeqtls(resfilename)
+    elif is_varid:
+        transeqtls = read_varid_results.transeqtls(resfilename)
     else:
         transeqtls = read_tejaas_results.transeqtls(resfilename)
     print(f'{tissue}: {len(transeqtls)} trans-eQTLs')

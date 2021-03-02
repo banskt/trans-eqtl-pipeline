@@ -2,6 +2,8 @@ import numpy as np
 import collections
 import gzip
 import argparse
+import os
+import re
 from scipy import stats
 import revreg
 
@@ -42,6 +44,11 @@ def parse_args():
                         default=0,
                         help='number of neighbors for KNN correction')
 
+    parser.add_argument('--fam',
+                        type=str,
+                        dest='samplefile',
+                        help='path of input sample file')
+
     opts = parser.parse_args()
     return opts
 
@@ -73,6 +80,30 @@ def create_snps(nsample, nsnp = 5000, fmin = 0.01, fmax = 0.1):
         snpinfo.append(this_snp)
 
     return dosage, snpinfo
+
+
+def read_samples(samplefile):
+    if os.path.exists(samplefile):
+        with open(samplefile, 'r') as samfile:
+            nsample = 0
+            samplenames = list()
+            next(samfile)
+            next(samfile)
+            for line in samfile:
+                if re.search('^#', line):
+                    continue
+                nsample += 1
+                samplenames.append(line.strip().split()[0])
+        return nsample, samplenames
+
+def select_donors(vcf_donors, expr_donors):
+    ''' Make sure that donors are in the same order for both expression and genotype
+    '''
+    common_donors = [x for x in vcf_donors if x in expr_donors]
+    vcfmask = np.array([vcf_donors.index(x) for x in common_donors])
+    exprmask = np.array([expr_donors.index(x) for x in common_donors])
+    return vcfmask, exprmask
+
 
 
 def non_gaussian_parameter(x):
@@ -128,10 +159,16 @@ if __name__ == '__main__':
 
     # Read the expression file and create N snps for checking deviation from Qscale
     gx_full, gene_list, gx_donors = revreg.read_gtex(opts.gxfile)
-    gtfull, snp_info = create_snps(gx_full.shape[1], nsnp = opts.nsnp)
-    gt_donors = gx_donors
-    gx_norm = revreg.normalize_expr(gx_full)
-    gx_corr, gt_corr, knn_neighbors = revreg.knn_correction(gx_norm.T, gtfull, opts.knn)
+    _, gt_donors = read_samples(opts.samplefile)
+    gtfull, snp_info = create_snps(len(gt_donors), nsnp = opts.nsnp)
+
+    vcfmask, exprmask = select_donors(gt_donors, gx_donors)
+    gx_norm = revreg.normalize_expr(gx_full[:, exprmask])
+    gt_masked = gtfull[:, vcfmask]
+
+    #gx_norm = revreg.normalize_expr(gx_full)
+    #gx_corr, gt_corr, knn_neighbors = revreg.knn_correction(gx_norm.T, gtfull, opts.knn)
+    gx_corr, gt_corr, knn_neighbors = revreg.knn_correction(gx_norm.T, gt_masked, opts.knn)
     gx_knn = revreg.normalize_expr(gx_corr.T) #/ np.sqrt(nsample)
     gt_knn = revreg.normalize_and_center_dosage(gt_corr, snp_info)
 

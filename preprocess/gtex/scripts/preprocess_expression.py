@@ -199,7 +199,8 @@ def filter_genes(df, gene_info):
     return df.loc[keep]
 
 
-def pp_options(method, gx_df, mask, cov = None):
+def pp_options(method, _df, mask, cov = None):
+    gx_df = _df.copy(deep = True)
     # a pythonic dictionary runs through all functions and creates the full dictionary
     # hence if-else is used.
     if method == 'raw':

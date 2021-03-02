@@ -33,4 +33,5 @@ if [ "${REMOVE_AMBIGUOUS}" = "true" ]; then OUTFILE_BASE="${OUTFILE_BASE}_noambi
 #---- Run jobs for splitting genotype into chromosomes, filtering, changing header of VCF files and modifying annotations
 #---- ${JOBDEPS} contain the job dependencies
 source utils/annotation_split.sh
-source utils/vcf_split_filter_headerchange_annotation.sh
+#source utils/vcf_split_filter_headerchange_annotation.sh
+source utils/submit_gt_preproc.sh

@@ -37,9 +37,41 @@ def parse_args():
                         dest='maf_min',
                         help='remove SNPs with MAF below this value')
 
+    parser.add_argument('--maf-metapos',
+                        type=int,
+                        default=1,
+                        dest='maf_metapos',
+                        help='Position of MAF in the VCF meta string (column 8)')
+
+    parser.add_argument('--use-sample-maf',
+                        dest='use_sample_maf',
+                        action='store_true',
+                        help='whether to use sample MAF (instead of population MAF given in VCF)')
+
 
     opts = parser.parse_args()
     return opts
+
+
+def get_dosage_from_vcfline(linesplit):
+    dsindx = linesplit[8].split(':').index("DS")
+    gtindx = linesplit[8].split(':').index("GT")
+
+    ds = [x.split(':')[dsindx] for x in linesplit[9:]]
+    ds_notna = [float(x) for x in ds if x != "."]
+    freq = sum(ds_notna) / 2 / len(ds_notna)
+
+    for i, x in enumerate(ds):
+        if x == ".":
+            gt = linesplit[9+i].split(':')[gtindx]
+            if len(gt) == 3 and gt[0] != "." and gt[2] != ".":
+                ds[i] = float(int(gt[0]) + int(gt[2]))
+            else:
+                ds[i] = 2 * freq
+
+    floatds = [float(x) for x in ds]
+    maf = sum(floatds) / 2 / len(floatds)
+    return floatds, maf
 
 if __name__ == '__main__':
 
@@ -51,10 +83,12 @@ if __name__ == '__main__':
     remove_indels = opts.remove_indels
     remove_ambiguous = opts.remove_ambiguous
     vcf_pass_filter = opts.vcf_pass_filter
+    use_sample_maf = opts.use_sample_maf
     maf_filter = False
     if opts.maf_min is not None:
         maf_min = opts.maf_min
         maf_filter = True
+        maf_metapos = opts.maf_metapos - 1
 
     SNP_COMPLEMENT = {'A':'T', 'C':'G', 'G':'C', 'T':'A'}
 
@@ -97,9 +131,14 @@ if __name__ == '__main__':
 
                     if not deletesnp and maf_filter:
                         QC_meta = linesplit[7].split(";")
-                        maf = float(QC_meta[0].split("=")[1])
+                        maf = float(QC_meta[maf_metapos].split("=")[1])
+
+                        if use_sample_maf:
+                            _, maf = get_dosage_from_vcfline(linesplit)
+                        
                         if maf < maf_min or maf > (1 - maf_min):
                             deletesnp = True
+                            print(linesplit[2])
                             nmaf += 1
 
                     # print SNP if not filtered
