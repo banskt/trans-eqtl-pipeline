@@ -54,11 +54,11 @@
 # #Cervix - Endocervix	end
 # #Fallopian Tube	ft
 ######################
-Adipose - Subcutaneous	as	60
-Muscle - Skeletal	ms	60
-Skin - Sun Exposed (Lower leg)	sse	60
-Thyroid	thy	60
-Whole Blood	wb	60
+# Adipose - Subcutaneous	as	60
+# Muscle - Skeletal	ms	60
+# Skin - Sun Exposed (Lower leg)	sse	60
+# Thyroid	thy	60
+# Whole Blood	wb	60
 # Uterus	ut	15
 #######################
 ##Brain - Amygdala	bam	15
@@ -105,7 +105,7 @@ Whole Blood	wb	60
 #Minor Salivary Gland	msg	15
 #Pituitary	pit	30
 #Small Intestine - Terminal Ileum	si	30
-#Spleen	spl	30
+Spleen	spl	30
 #Pancreas	pan	45
 #Whole Blood	wb	60
 #Vagina	va	15

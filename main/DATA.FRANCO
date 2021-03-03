@@ -8,7 +8,7 @@ GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2_072020"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2_022021"
 
 # output directory
 # if [ "${SAMPLETYPE}" = "EUR" ] || [ "${SAMPLETYPE}" = "NOADM" ]; then 
