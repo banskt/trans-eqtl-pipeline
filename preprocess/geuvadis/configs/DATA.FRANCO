@@ -21,11 +21,3 @@ TISSUEFILE="tissue_table.txt"
 GXDIR="${SRCDIR}/expression"
 GXOUTDIR="${SRCDIR}/expression"
 GTOUTDIR="${SRCDIR}/genotype"
-
-
-TPMOUTDIR="${GXOUTDIR}/tpms"                  # tissue specific rpkms output dir
-COVOUTDIR="${GXOUTDIR}/covariates"              # covariates outdir
-PEEROUTDIR="${GXOUTDIR}/peercorrected"          # PEER corrected
-# AGE_COVARIATE_FILE="${COVOUTDIR}/gtex_age_covariate.txt"  # where to store the age covariate
-
-

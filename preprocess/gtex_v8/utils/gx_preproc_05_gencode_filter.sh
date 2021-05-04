@@ -2,7 +2,7 @@
 
 ALLGXFILES=()
 
-EXPR_TYPES="tmm tpms"
+EXPR_TYPES="qn" #tmm tpms"
 CORR_TYPES="cclm"
 
 # EXPR_TYPES="tpms"

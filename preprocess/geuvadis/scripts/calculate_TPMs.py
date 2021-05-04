@@ -15,11 +15,18 @@ def parse_args():
                         metavar='FILE',
                         help='Input read counts')
 
-    parser.add_argument('--out',
+    parser.add_argument('--out_tpm',
                         type=str,
-                        dest='outfile',
+                        dest='outfile_tpm',
                         metavar='FILE',
                         help='Output TPMs')
+
+    parser.add_argument('--out_rpkm',
+                        type=str,
+                        dest='outfile_rpkm',
+                        metavar='FILE',
+                        help='Output RPKMs')
+
 
     parser.add_argument('--gtf',
                         type=str,
@@ -100,7 +107,8 @@ with open(lengthsfile) as instream:
 ##############################
 
 geu_reads = opts.infile # Counts file
-outfile = opts.outfile  
+outfile_tpm  = opts.outfile_tpm  
+outfile_rpkm = opts.outfile_rpkm
 
 reads_phaser = pd.read_csv(geu_reads, header=0, sep="\t")
 reads_phaser.columns = [x.strip() for x in reads_phaser.columns]
@@ -118,7 +126,20 @@ for i in range(1, reads_phaser.shape[1]):
     tpm = rpk / sf
     TPM_matrix[:,i-1] = tpm
     if i%1000 == 0:
-        print("Processed {:d} samples".format(i))
+        print("TPMs: Processed {:d} samples".format(i))
 
 tpm_df = pd.DataFrame(TPM_matrix, index=reads_phaser.iloc[:,0], columns=reads_phaser.columns[1:])
-tpm_df.to_csv(outfile, header=True, sep="\t")
+tpm_df.to_csv(outfile_tpm, header=True, sep="\t")
+
+RPKM_matrix = np.zeros((reads_phaser.shape[0], reads_phaser.shape[1]-1))
+for i in range(1, reads_phaser.shape[1]):
+    # Calculate RPKMs
+    sf2 = np.sum(reads_phaser.iloc[:, i]) / 1e6
+    rpm = reads_phaser.iloc[:, i]  / sf2
+    rpkm = rpm * 1000 / genelengths
+    RPKM_matrix[:,i-1] = rpkm
+    if i%1000 == 0:
+        print("RPKMs: Processed {:d} samples".format(i))
+
+rpkm_df = pd.DataFrame(RPKM_matrix, index=reads_phaser.iloc[:,0], columns=reads_phaser.columns[1:])
+rpkm_df.to_csv(outfile_rpkm, header=True, sep="\t")

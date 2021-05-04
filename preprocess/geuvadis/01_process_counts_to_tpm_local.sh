@@ -29,24 +29,36 @@ GENCODEFILTERPY="${PREPROC_SCRIPTDIR}/filter_gencode_expr.py"
 RANDSTRING=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1`
 
 SRCREAD="${GXDIR}/Counts.reproc.462.allgenes.txt"
-OUTDIR="${GXOUTDIR}/tpms"
-if [ ! -e $OUTDIR ]; then
-    mkdir $OUTDIR
+OUTDIR_TPMs="${GXOUTDIR}/tpms"
+OUTDIR_RPKMs="${GXOUTDIR}/rpkms"
+if [ ! -e $OUTDIR_TPMs ]; then
+    mkdir $OUTDIR_TPMs
 fi
-OUTTPM="${GXOUTDIR}/tpms/TPMs_GEUVADIS.reproc.462.allgenes.txt"
 
-echo ${PYENV} ${PYTPMS} --in ${SRCREAD} --out ${OUTTPM} --gtf ${GTFFILE}
-# ${PYENV} ${PYTPMS} --in ${SRCREAD} --out ${OUTTPM} --gtf ${GTFFILE}
+if [ ! -e $OUTDIR_RPKMs ]; then
+    mkdir $OUTDIR_RPKMs
+fi
+
+OUTTPM="${OUTDIR_TPMs}/TPMs_GEUVADIS.reproc.462.allgenes.txt"
+OUTRPKM="${OUTDIR_RPKMs}/RPKMs_GEUVADIS.reproc.462.allgenes.txt"
+
+### Calculate TPM and RPKMs
+echo ${PYENV} ${PYTPMS} --in ${SRCREAD} --out_tpm ${OUTTPM} --out_rpkm ${OUTRPKM} --gtf ${GTFFILE}
 
 
 # Normalize
-echo ${PYENV} ${GTEXNORMALIZEPY} --rpkm $OUTTPM --counts $SRCREAD --outdir $GXOUTDIR
-# ${PYENV} ${GTEXNORMALIZEPY} --rpkm $OUTTPM --counts $SRCREAD --outdir $GXOUTDIR
+echo "#######"
+echo ${PYENV} ${GTEXNORMALIZEPY} --tpm $OUTTPM --counts $SRCREAD --outdir $GXOUTDIR
+${PYENV} ${GTEXNORMALIZEPY} --tpm $OUTTPM --counts $SRCREAD --outdir $GXOUTDIR
+
+echo "#######"
+echo ${PYENV} ${GTEXNORMALIZEPY} --rpkm $OUTRPKM --counts $SRCREAD --outdir $GXOUTDIR
+${PYENV} ${GTEXNORMALIZEPY} --rpkm $OUTRPKM --counts $SRCREAD --outdir $GXOUTDIR
 
 # Filter protein coding and lncRNA
 ALLGXFILES=()
 
-EXPR_TYPES="tmm tpms"
+EXPR_TYPES="rpkms tmm tpms"
 
 # normalized uncorrected
 ALLGXFILES+=( )
@@ -60,9 +72,10 @@ for EXPR_TYPE in ${EXPR_TYPES}; do
 done
 
 for THIS_GXFILE in ${ALLGXFILES[@]}; do
+    echo "#######"
     echo $THIS_GXFILE
     if [ -e $THIS_GXFILE ]; then 
-        echo ${PYENV} ${GENCODEFILTERPY} --gx ${THIS_GXFILE} \
+        ${PYENV} ${GENCODEFILTERPY} --gx ${THIS_GXFILE} \
                                     --dataset gtex \
                                     --gtf ${GENCODEFILE} \
                                     --biotype ${GXSELECTION} # --out ${TISSUEGXFILE} 

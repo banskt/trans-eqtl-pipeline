@@ -12,8 +12,16 @@ def parse_args():
     parser.add_argument('--rpkm',
                         type=str,
                         dest='rpkmpath',
+                        default=None,
                         metavar='FILE',
-                        help='input RPKM GCT file for a given tissue')
+                        help='input RPKM file for a given tissue')
+
+    parser.add_argument('--tpm',
+                        type=str,
+                        dest='tpmpath',
+                        default=None,
+                        metavar='FILE',
+                        help='input TPM file for a given tissue')
 
     parser.add_argument('--counts',
                         type=str,
@@ -71,7 +79,23 @@ min_samples=10              # 'Minimum number of samples that must satisfy thres
 # expression_df = read_gct(opts.rpkmpath, donor_ids)
 # counts_df = read_gct(opts.countspath, donor_ids)
 
-expression_df = pd.read_csv(opts.rpkmpath, header=0, index_col=0, sep="\t")
+if opts.tpmpath is not None and opts.rpkmpath is not None:
+    print("Problem! cannot process TPM and RPKMs at the same time")
+    raise
+
+specific_outdir = None
+if opts.tpmpath is not None:
+    expression_df = pd.read_csv(opts.tpmpath, header=0, index_col=0, sep="\t")
+    specific_outdir = "tpms"
+
+if opts.rpkmpath is not None:
+    expression_df = pd.read_csv(opts.rpkmpath, header=0, index_col=0, sep="\t")
+    specific_outdir = "rpkms"
+
+if specific_outdir is None:
+    print("Problem! no expression file?")
+    raise
+
 counts_df = pd.read_csv(opts.countspath, header=0, index_col=0, sep="\t")
 donors_ids = list(expression_df.columns)
 
@@ -90,22 +114,20 @@ tissue_counts_df.columns = newcolumns
 # QC filtering
 # TPM filtering
 print('  * QC filtering')
-qc_tpm_expr, qc_counts = QC_expression(tissue_counts_df, expression_df)
-if not os.path.exists(os.path.join(opts.outdir,"tpms")):
-    os.makedirs(os.path.join(opts.outdir,"tpms"))
-qc_tpm_expr.to_csv(os.path.join(opts.outdir, "tpms", "tpms_qcfilter.txt"), sep="\t")
-qc_counts.to_csv(os.path.join(opts.outdir, "tpms", "counts_qcfilter.txt"), sep="\t")
+qc_expr, qc_counts = QC_expression(tissue_counts_df, expression_df)
+if not os.path.exists(os.path.join(opts.outdir,specific_outdir)):
+    os.makedirs(os.path.join(opts.outdir,specific_outdir))
+qc_expr.to_csv(os.path.join(opts.outdir, specific_outdir, "{:s}_qcfilter.txt".format(specific_outdir)), sep="\t")
+qc_counts.to_csv(os.path.join(opts.outdir, specific_outdir, "counts_qcfilter.txt"), sep="\t")
 
 # Apply TMM or QN normalization
 print('  * Applying QN')
-qn_expr  = centerscale_expr(qn_normalize(qc_tpm_expr))
+qn_expr  = centerscale_expr(qn_normalize(qc_expr))
 
 print('  * Applying TMM')
 tmm_expr = centerscale_expr(tmm_normalize(qc_counts))
 
-if not os.path.exists(os.path.join(opts.outdir,"qn")):
-    os.makedirs(os.path.join(opts.outdir,"qn"))
 if not os.path.exists(os.path.join(opts.outdir,"tmm")):
     os.makedirs(os.path.join(opts.outdir,"tmm"))
-qn_expr.to_csv(os.path.join(opts.outdir, "qn","qn.txt"), sep="\t")
+qn_expr.to_csv(os.path.join(opts.outdir, specific_outdir,"{:s}_qn.txt".format(specific_outdir)), sep="\t")
 tmm_expr.to_csv(os.path.join(opts.outdir, "tmm","tmm.txt"), sep="\t")

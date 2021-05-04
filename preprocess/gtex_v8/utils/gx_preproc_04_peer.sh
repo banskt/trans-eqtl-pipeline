@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p ${PEEROUTDIR};
 
-EXPR_TYPES="tpms tmm"
+EXPR_TYPES="qn" #"tpms tmm"
 
 ## PEER correction on normalized gene expression (without using any covariates, they have been already regressed out)
 for EXPR_TYPE in ${EXPR_TYPES}; do
