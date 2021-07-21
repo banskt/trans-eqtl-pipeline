@@ -9,6 +9,10 @@ source ${UTILSDIR}/submit_tejaas_array
 EXTRAFLAGS="--dosage --gxcorr ${EXPRCORRFILE}"
 _VARIANT=""
 
+if [ "${USEFDR}" == "true" ]; then
+    EXTRAFLAGS="$EXTRAFLAGS --fdrgenethres ${FDR_CUTOFF}"
+fi
+
 if [ "${KNN}" -gt "0" ]; then
     EXTRAFLAGS="$EXTRAFLAGS --knn ${KNN}"
     _VARIANT="${_VARIANT}_knn${KNN}"

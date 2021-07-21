@@ -17,6 +17,8 @@ source ${UTILSDIR}/tejaas_top_snps
 #dummy variable
 if [ "$TISSUEFILE" == "fhs" ]; then
     MDATA="fhs"
+elif [ "$TISSUEFILE" == "geu" ]; then
+    MDATA="geu"
 else
     MDATA="gtex_v8-no_file"
 fi

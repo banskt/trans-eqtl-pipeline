@@ -3,24 +3,24 @@
 DATALOAD="DATA.FRANCO"
 EXTERNALLOAD="EXTERNAL.FRANCO"
 
-TISSUEFILE="/usr/users/fsimone/trans-eqtl-pipeline/main/tissues.txt"
+TISSUEFILE="geu"
 CHRNUMS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22"
 
 DATASETS=""
-TSHORTS=""
-declare -A TISSUEPEER
-while IFS='' read -r LINE || [ -n "${LINE}" ]; do
-    if [[ $LINE =~ ^[^\#] ]]; then
-        # Get the name of the tissue
-        TFULL=$( echo "${LINE}" | cut -f 1 )
-        TSHORT=$( echo "${LINE}" | cut -f 2 )
-        TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
-        GXNPEERS=$( echo "${LINE}" | cut -f 3 )
-        DATASETS="${DATASETS} gtex_v8-${TSHORT}"
-        TSHORTS="${TSHORTS} ${TSHORT}"
-        TISSUEPEER[$TSHORT]="${GXNPEERS}"
-    fi
-done < ${TISSUEFILE}
+# TSHORTS=""
+# declare -A TISSUEPEER
+# while IFS='' read -r LINE || [ -n "${LINE}" ]; do
+#     if [[ $LINE =~ ^[^\#] ]]; then
+#         # Get the name of the tissue
+#         TFULL=$( echo "${LINE}" | cut -f 1 )
+#         TSHORT=$( echo "${LINE}" | cut -f 2 )
+#         TBASE=$( echo ${TFULL} | sed 's/ - /_/g' | sed 's/ /_/g' | sed 's/(//g' | sed 's/)//g' )
+#         GXNPEERS=$( echo "${LINE}" | cut -f 3 )
+#         DATASETS="${DATASETS} gtex_v8-${TSHORT}"
+#         TSHORTS="${TSHORTS} ${TSHORT}"
+#         TISSUEPEER[$TSHORT]="${GXNPEERS}"
+#     fi
+# done < ${TISSUEFILE}
 
 
 
@@ -34,8 +34,7 @@ echo "DATASETS: $DATASETS"
 EXPRESSIONS="raw"
 TGENE_EXPR="raw"
 GXSELECTION="protein_coding lncRNA"   # a list of biotypes to be selected for analysis
-CHRNUMS="1 2 3 4 5 6 7 8 9 12 13 14 15 16 17 18 19 20 21"
-# CHRNUMS="22"
+#CHRNUMS="22"
 
 # top SNPs to select in step 03
 # TEJAAS_CUTOFF="1e-04"

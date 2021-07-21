@@ -6,11 +6,14 @@
 #SBATCH -J _JOB_NAME_%a
 #SBATCH -o _JOB_NAME_%a.out
 #SBATCH -e _JOB_NAME_%a.err
-####SBATCH -x hh004
 
-module load intel/compiler/64/2017/17.0.2
-module load intel/mkl/64/2017/2.174
-module load intel/mpi/64/2017/2.174
+#module load intel/compiler/64/2020/19.1.2
+#module load intel/mkl/64/2020/2.254
+#module load intel/mpi/64/2020/2.254
+
+module load intel/2020.4 intel-parallel-studio/cluster.2020.4 # intel-mpi/2019.9.304
+module load openmpi/4.0.5
+
 
 # source $HOME/miniconda3/envs/py36/bin/activate py36
 

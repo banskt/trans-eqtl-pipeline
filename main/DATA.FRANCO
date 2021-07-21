@@ -8,7 +8,7 @@ GENEINFOFILE="${DATADIR}/GENCODE/gencode.v19.annotation.gtf.gz"
 PROBEINFOFILE="${DATADIR}/FHS/probe_annotations.affy"
 CROSSMAPFILE="${DATADIR}/crossmappability/hg38_cross_mappability_strength.txt.gz"
 
-OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_SHAPEIT2_022021"
+OUTDIR="/cbscratch/franco/trans-eqtl/dev-pipeline/geuvadis_052021"
 
 # output directory
 # if [ "${SAMPLETYPE}" = "EUR" ] || [ "${SAMPLETYPE}" = "NOADM" ]; then 
@@ -199,7 +199,8 @@ case "${EXPR_CORR}" in
         FHS_EXPR_FMT="${FHSDIR}/expression/fhs.formatted.expr.txt"
         # GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/gtexv8_[TISSUE]_raw_std_protein_coding.txt"
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
-        GEU_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        #GEU_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        GEU_EXPR_FMT="${EXPRGEUDIR}/rpkms/rpkms_qcfilter.txt.${BIOTYPES}_filtered"
         ;;
     "raw_popcorr")
         GTEX_V8_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/popcorr/[TISSUE]_tpms_qcfilter_popcorr.txt.${BIOTYPES}_filtered"
@@ -237,7 +238,8 @@ esac
 case "${TGENE_EXPR}" in
     "raw")
         GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_qcfilter.txt.${BIOTYPES}_filtered"
-        GEU_TGENE_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        #GEU_TGENE_EXPR_FMT="${EXPRGEUDIR}/tpms/tpms_qcfilter.txt.${BIOTYPES}_filtered"
+        GEU_TGENE_EXPR_FMT="${EXPRGEUDIR}/rpkms/rpkms_qcfilter.txt.${BIOTYPES}_filtered"
         ;;
     "raw_cclm")
         GTEX_V8_TGENE_EXPR_FMT="${EXPRGTEXDIR_V8}/expression/tpms/[TISSUE]_tpms_cclm.txt.${BIOTYPES}_filtered"

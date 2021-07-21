@@ -29,9 +29,9 @@ for NTRANS in $NTRANSS; do
             SIMINDEX=`echo $SIM | awk '{printf "%03d", $1}'`
             SIMNAME="sim${SIMINDEX}"
             echo $SIMNAME
-            # echo "${PYTHON37} calc_tpr_fpr_sims.py --input ${PARAMDIR} --simname ${SIMNAME} --outdir ${OUTDIR}"
-            sbatch -p hh -N 1 -n 16 -t 2-00:00:00 -o "${OUTDIR}/${SIMNAME}.out" -e "${OUTDIR}/${SIMNAME}.err" \
-                    --wrap="${PYTHON37} calc_tpr_fpr_sims.py --input ${PARAMDIR} --simname ${SIMNAME} --outdir ${OUTDIR}"
+            # echo "${PYTHON37} calc_FDR_sims_eachSNP.py --input ${PARAMDIR} --simname ${SIMNAME} --outdir ${OUTDIR}"
+            sbatch -p hh -N 1 -n 4 --mem=40G -t 1-00:00:00 -o "${OUTDIR}/${SIMNAME}.out" -e "${OUTDIR}/${SIMNAME}.err" \
+                    --wrap="${PYTHON37} calc_FDR_sims_eachSNP.py --input ${PARAMDIR} --simname ${SIMNAME} --outdir ${OUTDIR}"
         done;
     done;
 done;

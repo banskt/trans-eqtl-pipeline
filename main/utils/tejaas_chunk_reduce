@@ -5,7 +5,7 @@ function tejaas_chunk_reduce() {
     local CWD=`pwd`
     cd $DIR
     REF=$(echo -e "ID\tCHR\tPos\tMAF\tQ\tMu\tSigma\tP\n")
-    for EXT in rr.txt gene_snp_list.txt gene_snp_list_knn.txt; do
+    for EXT in rr.txt gene_snp_list.txt gene_snp_list_knn.txt gene_snp_list_FDR.txt; do
         if [ -f chunk000_${EXT} ]; then
             NCHUNK=`wc -l chunk*_${EXT} | wc -l | awk '{print $1-1}'`
             if [ $NCHUNK -eq 0 ]; then NCHUNK=1; fi

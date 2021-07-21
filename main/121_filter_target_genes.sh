@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
-module load intel/2020.4 intel-parallel-studio/cluster.2020.4 # intel-mpi/2019.9.304
+module load intel/compiler/64/2020/19.1.2
+module load intel/mkl/64/2020/2.254
+
+echo "This script was never finished, because we don't really want to filter lead SNPs in the target gene list"
+echo "If you want to finish it, call your script in line 65"
+exit 0;
 
 if [ "$PS1" ]; then echo -e "This script cannot be sourced. Use \"${BASH_SOURCE[0]}\" instead." ; return ; fi
 
@@ -38,13 +43,7 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
             if [ "${CURRENT_DTYPE}" = "" ]; then CURRENT_DTYPE=$DATATYPE; fi
             if [ "${CURRENT_DTYPE}" != "${DATATYPE}" ]; then echo "Different datasets! abort"; exit; fi
 
-            # JOBDIR_DATA="${JOBSUBDIR}/ldprune/${DATATYPE}"
-            # if [ -d ${JOBDIR_DATA} ]; then rm -rf ${JOBDIR_DATA}; fi; mkdir -p ${JOBDIR_DATA}
-            # JOBNAME="ldprune_${DATATYPE}_${CHRM}_${RANDSTRING}"
-
             OUTDIR_DATA="${SOURCEDIR}/${EXPR_CORR}/summary_${CUTOFF}/${TISSUEID}"
-            # if [ "${bMatrixEqtl}" = "true" ];  then source ${UTILSDIR}/matrix_eqtl; fi
-            # if [ "${bMEqtlRandom}" = "true" ]; then SHUFFLE=true; source ${UTILSDIR}/matrix_eqtl; fi
 
             for NULL in ${TEJAAS_NULL}; do
                 if [ ${NULL} == "perm" ]; then TEJAAS_SIGMA_BETA=${TEJAAS_SIGMA_BETA_PERM}; fi
@@ -58,30 +57,18 @@ for CUTOFF in ${TEJAAS_CUTOFF}; do
                     if [ "${MAGIC_SQRT}" == "true" ]; then _VARIANT="${_VARIANT}_sqrt"; fi
                     if [ "${NOGTKNN}" == "true" ]; then _VARIANT="${_VARIANT}_nogtknn"; fi
 
-                    if [ "${DYNAMIC_SB}" == "true" ]; then
-                        for KEFF in ${KEFFS}; do
-                            METHOD_VARIANT="${NULL}null_sbDynamic${KEFF}"
-                            if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
-
-                            if [ "${bTejaas}" = "true" ];   then
-                                NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls.txt"
-                                INFILES="${INFILES}${NEWFILE} " ; fi
-                            if [ "${bTjsRandom}" = "true" ];then
-                                NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls.txt" 
-                                INFILES="${INFILES}${NEWFILE} " ; fi
-                        done
-                    else
-                        for SBETA in $TEJAAS_SIGMA_BETA_PERM; do
-                            METHOD_VARIANT="${NULL}null_sb${SBETA}"
-                            if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
-                            if [ "${bTejaas}" = "true" ];   then
-                                NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls.txt"
-                                INFILES="${INFILES}${NEWFILE} " ; fi
-                            if [ "${bTjsRandom}" = "true" ];then
-                                NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls.txt" 
-                                INFILES="${INFILES}${NEWFILE} " ; fi
-                        done
-                    fi            
+                    for SBETA in $TEJAAS_SIGMA_BETA_PERM; do
+                        METHOD_VARIANT="${NULL}null_sb${SBETA}"
+                        if [ "${_VARIANT}" != "" ]; then METHOD_VARIANT="${METHOD_VARIANT}${_VARIANT}"; fi
+                        if [ "${bTejaas}" = "true" ];   then
+                            NEWFILE="${OUTDIR_DATA}/tejaas/${METHOD_VARIANT}/trans_eqtls.txt"
+                            #### Run here the target gene filtering
+                        fi
+                        if [ "${bTjsRandom}" = "true" ];then
+                            NEWFILE="${OUTDIR_DATA}/tejaas_rand/${METHOD_VARIANT}/trans_eqtls.txt" 
+                            #### Run here the target gene filtering
+                        fi
+                    done
                 done
             done
         done

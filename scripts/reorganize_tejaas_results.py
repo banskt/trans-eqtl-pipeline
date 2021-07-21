@@ -57,7 +57,7 @@ def parse_args():
 opts = parse_args()
 sourcedir = opts.indir #"/cbscratch/franco/trans-eqtl/dev-pipeline/gtex_v8_a2s_lncRNA/"
 pcutoff = 5e-08
-if opts.datatype == "fhs":
+if opts.datatype == "fhs" or opts.datatype == "geu":
     for preproc in opts.preprocs:
         print(sourcedir, preproc)
         #preproc = "permnull_sb{:s}_knn{:s}".format(sb2, K)
@@ -73,6 +73,9 @@ if opts.datatype == "fhs":
                     copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
                 if file == "target_genes_knn_{:g}.txt".format(pcutoff): 
                     destfile = "target_genes_knn.txt"
+                    copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                if file == "target_genes_FDR_{:g}.txt".format(pcutoff): 
+                    destfile = "target_genes_FDR.txt"
                     copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
                 if file == "trans_eqtls_{:g}.txt".format(pcutoff): 
                     destfile = "trans_eqtls.txt"
@@ -99,6 +102,9 @@ if opts.datatype == "gtex_v8":
                         copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
                     if file == "target_genes_knn_{:g}.txt".format(pcutoff): 
                         destfile = "target_genes_knn.txt"
+                        copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
+                    if file == "target_genes_FDR_{:g}.txt".format(pcutoff): 
+                        destfile = "target_genes_FDR.txt"
                         copyfile(os.path.join(basedir, file), os.path.join(destdir, destfile))
                     if file == "trans_eqtls_{:g}.txt".format(pcutoff): 
                         destfile = "trans_eqtls.txt"

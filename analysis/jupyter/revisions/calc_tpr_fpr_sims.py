@@ -61,7 +61,7 @@ def load_transtarget_genes(simdir, paramsdir, mode, cis_dict):
                 arr = line.split("\t")
                 variant_id = arr[1]
                 ensembl_id = arr[0]
-                if cis_dict[variant_id] != ensembl_id:
+                if cis_dict[variant_id] != ensembl_id:  # done like this because simulations only have 1 cis gene!
                     pval = float(arr[2])
                     target_genes_pvals[variant_id][ensembl_id] = pval
     return target_genes_pvals
@@ -206,9 +206,11 @@ outdir = opts.outdir
 simname = opts.simname
 sigmab = 0.2
 
-bTejaas = False
+bTejaas = True
 bMatrixeqtl = True
 bJPA = True
+
+writeTPR = False
 
 params_tejaas = f"tejaas/permnull_sb{sigmab}/raw_knn30/peer0"
 params_meqtl  = "matrixeqtl/qn_cclm/peer0"
@@ -285,10 +287,11 @@ if bTejaas:
     auc_rr = np.trapz(tpr, fpr)
     auc01_rr = np.trapz(tpr[:int(len(tpr)/10)], fpr[:int(len(fpr)/10)])
 
-    with open(os.path.join(outdir, f"rr_tpr_fpr_{simname}_sb{sigmab}.txt"), 'w') as outst:
-        outst.write(f"tpr({tp})\tfpr({fp})\n")
-        for i in range(len(tpr)):
-            outst.write(f"{tpr[i]}\t{fpr[i]}\n")
+    if writeTPR:
+        with open(os.path.join(outdir, f"rr_tpr_fpr_{simname}_sb{sigmab}.txt"), 'w') as outst:
+            outst.write(f"tpr({tp})\tfpr({fp})\n")
+            for i in range(len(tpr)):
+                outst.write(f"{tpr[i]}\t{fpr[i]}\n")
 
     with open(os.path.join(outdir, f"rr_auc_{simname}_sb{sigmab}.txt"), 'w') as outst:
         outst.write("auc\tauc01\n")
@@ -305,10 +308,11 @@ if bJPA:
     auc_jpa = np.trapz(tpr, fpr)
     auc01_jpa = np.trapz(tpr[:int(len(tpr)/10)], fpr[:int(len(fpr)/10)])  
 
-    with open(os.path.join(outdir, f"jpa_tpr_fpr_{simname}.txt"), 'w') as outst:
-        outst.write(f"tpr({tp})\tfpr({fp})\n")
-        for i in range(len(tpr)):
-            outst.write(f"{tpr[i]}\t{fpr[i]}\n")
+    if writeTPR:
+        with open(os.path.join(outdir, f"jpa_tpr_fpr_{simname}.txt"), 'w') as outst:
+            outst.write(f"tpr({tp})\tfpr({fp})\n")
+            for i in range(len(tpr)):
+                outst.write(f"{tpr[i]}\t{fpr[i]}\n")
 
     with open(os.path.join(outdir, f"jpa_auc_{simname}.txt"), 'w') as outst:
         outst.write("auc\tauc01\n")
@@ -324,26 +328,15 @@ if bMatrixeqtl:
     auc_meqtl = np.trapz(tpr, fpr)
     auc01_meqtl = np.trapz(tpr[:int(len(tpr)/10)], fpr[:int(len(fpr)/10)])
 
-    with open(os.path.join(outdir, f"meqtl_tpr_fpr_{simname}.txt"), 'w') as outst:
-        outst.write(f"tpr({tp})\tfpr({fp})\n")
-        for i in range(len(tpr)):
-            outst.write(f"{tpr[i]}\t{fpr[i]}\n")
+    if writeTPR:
+        with open(os.path.join(outdir, f"meqtl_tpr_fpr_{simname}.txt"), 'w') as outst:
+            outst.write(f"tpr({tp})\tfpr({fp})\n")
+            for i in range(len(tpr)):
+                outst.write(f"{tpr[i]}\t{fpr[i]}\n")
 
     with open(os.path.join(outdir, f"meqtl_auc_{simname}.txt"), 'w') as outst:
         outst.write("auc\tauc01\n")
         outst.write(f"{auc_meqtl}\t{auc01_meqtl}\n")
-
-def bh_procedure_targetgenes(sorted_snp_gene_pval, target_fdr):
-    n_tests = len(sorted_snp_gene_pval)
-    pass_snps = list()
-    for i, snp_pval in enumerate(sorted_snp_gene_pval):
-        bh_factor = ((i+1)/n_tests)*target_fdr
-        fdr_val = snp_pval[2] / bh_factor
-        if snp_pval[2] <= bh_factor:
-            pass_snps.append(snp_pval+(fdr_val,))
-        else:
-            break
-    return pass_snps
 
 print("Running trans-target gene discovery")
 
@@ -353,6 +346,46 @@ class SimResult(collections.namedtuple('SIMFIELDS', SIM_FIELDS)):
 
 snp_cutoffs = [0.01, 0.001, 0.0001]
 
+# def bh_procedure(self, snp_gene_pval, target_fdr):
+#     self.logger.debug("Calculating FDR ... sorting {:d} SNP-gene pairs".format(len(snp_gene_pval)))
+#     sorted_pairs   = sorted(snp_gene_pval, key=lambda item: item[2])
+#     n_tests        = len(sorted_pairs) # NOT equivalent to ntrans-eqtls * ngenes, because ntrans is filtered
+#     pass_snps      = list()
+#     bh_index_limit = -1
+#     for i, snp_pval in enumerate(sorted_pairs[::-1]):
+#         bh_factor = ( (n_tests-i) / n_tests ) * target_fdr
+#         if snp_pval[2] > bh_factor:
+#             continue
+#         else:
+#             bh_index_limit = n_tests - i - 1
+#             break
+#     if bh_index_limit < 0:
+#         self.logger.debug("No significant SNP-gene pairs @ {:f} FDR for SNP".format(target_fdr))
+#         return [], []
+#     else:
+#         pass_fdr  = [ sorted_pairs[i] for i in range(bh_index_limit + 1)]
+#         adj_pvals = [ sorted_pairs[i][2] * ( n_tests / ( i + 1 ) ) for i in range(n_tests)] # equiv to report FDR
+#         return pass_fdr, adj_pvals[:len(pass_fdr)]
+
+def bh_procedure_correct(sorted_snp_gene_pval, target_fdr):
+    n_tests = len(sorted_snp_gene_pval) # NOT equivalent to ntrans-eqtls * ngenes, because ntrans is filtered
+    pass_snps = list()
+    bh_index_limit = -1
+    for i, snp_pval in enumerate(sorted_snp_gene_pval[::-1]):
+        bh_factor = ((n_tests-i)/n_tests)*target_fdr
+        if snp_pval[2] > bh_factor:
+            # pass_snps.append(snp_pval)
+            continue
+        else:
+            bh_index_limit = n_tests - i - 1
+            break
+    if bh_index_limit < 0:
+        print(f"No sinificant snp-gene pairs @ {target_fdr} FDR ")
+        return [], []
+    else:
+        pass_fdr = [sorted_snp_gene_pval[i] for i in range(bh_index_limit + 1)]
+        adj_pvals = [sorted_snp_gene_pval[i][2]*(n_tests/(i+1)) for i in range(n_tests)] # equiv to report fdr
+        return pass_fdr, adj_pvals
 
 if bTejaas:
     #########################################
@@ -367,24 +400,6 @@ if bTejaas:
     snp_gene_pairs = [(snp, geneid, target_dict[snp][geneid]) for snp in target_dict for geneid in target_dict[snp]]
     sorted_pairs = sorted(snp_gene_pairs, key=lambda item: item[2])
 
-    target_fdr = 0.99
-    pass_targets = bh_procedure_targetgenes(sorted_pairs, target_fdr)
-
-    pass_targets_checked = list()
-    for snp_gene_pval in pass_targets:
-        isTeqtl = 0
-        isTG = 0
-        if snp_gene_pval[0] in trans_dict:
-            isTeqtl = 1
-            if snp_gene_pval[1] in trans_dict[snp_gene_pval[0]]['targets']:
-                isTG = 1
-        pass_targets_checked.append(snp_gene_pval + (isTeqtl, isTG))
-
-    with open(os.path.join(outdir, f"rr_target_genes_fdr_bh_{simname}_sb{sigmab}.txt"), 'w') as outst:
-        outst.write("snp\tgene\tpval\tfdr\tis_transeqtl\tis_target_gene\n")
-        for x in pass_targets_checked:
-            outst.write(f"{x[0]}\t{x[1]}\t{x[2]}\t{x[3]}\t{x[4]}\t{x[5]}\n")
-
     ## then go through that list, but only consider snps where tejaas pval is lower than cutoff
     for snp_cutoff in snp_cutoffs:
         pass_pairs = list()
@@ -393,6 +408,27 @@ if bTejaas:
                 pass_pairs.append((snpid, geneid, pval))
 
         print(len(pass_pairs))
+
+        # Apply BH on the set of pass SNPs < cutoff
+        pass_snp_pval_targets = list()
+        for snp_gene_pval in pass_pairs:
+            isTeqtl = 0
+            isTG = 0
+            if snp_gene_pval[0] in trans_dict:
+                isTeqtl = 1
+                if snp_gene_pval[1] in trans_dict[snp_gene_pval[0]]['targets']:
+                    isTG = 1
+            pass_snp_pval_targets.append(snp_gene_pval + (isTeqtl, isTG))
+
+        target_fdr = 0.7
+        pass_targets_fdr, adj_pvals = bh_procedure_correct(pass_snp_pval_targets, target_fdr)
+
+        with open(os.path.join(outdir, f"rr_target_genes_fdr_bh_{simname}_sb{sigmab}_cut{snp_cutoff}.txt"), 'w') as outst:
+            outst.write("snp\tgene\tpval\tadj_pval\tis_transeqtl\tis_target_gene\n")
+            if len(pass_targets_fdr) > 0:
+                for i, x in enumerate(pass_targets_fdr):
+                    print(i, x)
+                    outst.write(f"{x[0]}\t{x[1]}\t{x[2]}\t{adj_pvals[i]}\t{x[3]}\t{x[4]}\n")
 
         tp = 0
         fp = 0
@@ -411,18 +447,25 @@ if bTejaas:
                 fpr.append(fp)
 
             print(simname, snp_cutoff, tp, fp)
-            tpr_rel = np.array(tpr)/tpr[-1]
-            fpr_rel = np.array(fpr)/fpr[-1]
-            
-            auc = np.trapz(tpr_rel, fpr_rel)
-            auc01 = np.trapz(tpr_rel[:int(len(tpr_rel)/10)], fpr_rel[:int(len(fpr_rel)/10)])
-            auc001 = np.trapz(tpr_rel[:int(len(tpr_rel)/100)], fpr_rel[:int(len(fpr_rel)/100)])
-            res = SimResult(simname=simname, auc=auc, auc01=auc01, auc001=auc001, cutoff=snp_cutoff, tp=tp, tn=fp)
+            if tpr[-1] > 0:
+                tpr_rel = np.array(tpr)/tpr[-1]
+                fpr_rel = np.array(fpr)/fpr[-1]
+                
+                auc = np.trapz(tpr_rel, fpr_rel)
+                auc01 = np.trapz(tpr_rel[:int(len(tpr_rel)/10)], fpr_rel[:int(len(fpr_rel)/10)])
+                auc001 = np.trapz(tpr_rel[:int(len(tpr_rel)/100)], fpr_rel[:int(len(fpr_rel)/100)])
+                res = SimResult(simname=simname, auc=auc, auc01=auc01, auc001=auc001, cutoff=snp_cutoff, tp=tp, tn=fp)
 
-            with open(os.path.join(outdir, f"rr_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}_sb{sigmab}.txt"), 'w') as outst:
-                outst.write(f"tpr({tp})\tfpr({fp})\n")
-                for i in range(len(tpr_rel)):
-                    outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
+                if writeTPR:
+                    with open(os.path.join(outdir, f"rr_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}_sb{sigmab}.txt"), 'w') as outst:
+                        outst.write(f"tpr({tp})\tfpr({fp})\n")
+                        for i in range(len(tpr_rel)):
+                            outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
+            else:
+                if writeTPR:
+                    with open(os.path.join(outdir, f"rr_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}_sb{sigmab}.txt"), 'w') as outst:
+                        outst.write(f"tpr({tp})\tfpr({fp})\n")
+                res = SimResult(simname=simname, auc=0, auc01=0, auc001=0, cutoff=snp_cutoff, tp=0, tn=0)
         else:
             res = SimResult(simname=simname, auc=0, auc01=0, auc001=0, cutoff=snp_cutoff, tp=0, tn=0)
         auc_res.append(res)
@@ -447,23 +490,6 @@ if bJPA:
     snp_gene_pairs = [(snp, geneid, target_dict[snp][geneid]) for snp in target_dict for geneid in target_dict[snp]]
     sorted_pairs = sorted(snp_gene_pairs, key=lambda item: item[2])
 
-    target_fdr = 0.99
-    pass_targets = bh_procedure_targetgenes(sorted_pairs, target_fdr)
-    pass_targets_checked = list()
-    for snp_gene_pval in pass_targets:
-        isTeqtl = 0
-        isTG = 0
-        if snp_gene_pval[0] in trans_dict:
-            isTeqtl = 1
-            if snp_gene_pval[1] in trans_dict[snp_gene_pval[0]]['targets']:
-                isTG = 1
-        pass_targets_checked.append(snp_gene_pval + (isTeqtl, isTG))
-
-    with open(os.path.join(outdir, f"jpa_target_genes_fdr_bh_{simname}.txt"), 'w') as outst:
-        outst.write("snp\tgene\tpval\tfdr\tis_transeqtl\tis_target_gene\n")
-        for x in pass_targets_checked:
-            outst.write(f"{x[0]}\t{x[1]}\t{x[2]}\t{x[3]}\t{x[4]}\t{x[5]}\n")
-
     ## then go through that list, but only consider snps where tejaas pval is lower than cutoff
     for snp_cutoff in snp_cutoffs:
         pass_pairs = list()
@@ -472,6 +498,26 @@ if bJPA:
                 pass_pairs.append((snpid, geneid, pval))
 
         print(len(pass_pairs))
+
+        # Apply BH on the set of pass SNPs < cutoff
+        pass_snp_pval_targets = list()
+        for snp_gene_pval in pass_pairs:
+            isTeqtl = 0
+            isTG = 0
+            if snp_gene_pval[0] in trans_dict:
+                isTeqtl = 1
+                if snp_gene_pval[1] in trans_dict[snp_gene_pval[0]]['targets']:
+                    isTG = 1
+            pass_snp_pval_targets.append(snp_gene_pval + (isTeqtl, isTG))
+
+        target_fdr = 0.7
+        pass_targets_fdr, adj_pvals = bh_procedure_correct(pass_snp_pval_targets, target_fdr)
+
+        with open(os.path.join(outdir, f"jpa_target_genes_fdr_bh_{simname}_sb{sigmab}_cut{snp_cutoff}.txt"), 'w') as outst:
+            outst.write("snp\tgene\tpval\tadj_pval\tis_transeqtl\tis_target_gene\n")
+            if len(pass_targets_fdr) > 0:
+                for i, x in enumerate(pass_targets_fdr):
+                    outst.write(f"{x[0]}\t{x[1]}\t{x[2]}\t{adj_pvals[i]}\t{x[3]}\t{x[4]}\n")
 
         tp = 0
         fp = 0
@@ -490,18 +536,25 @@ if bJPA:
                 fpr.append(fp)
 
             print(simname, snp_cutoff, tp, fp)
-            tpr_rel = np.array(tpr)/tpr[-1]
-            fpr_rel = np.array(fpr)/fpr[-1]
-            
-            auc = np.trapz(tpr_rel, fpr_rel)
-            auc01 = np.trapz(tpr_rel[:int(len(tpr_rel)/10)], fpr_rel[:int(len(fpr_rel)/10)])
-            auc001 = np.trapz(tpr_rel[:int(len(tpr_rel)/100)], fpr_rel[:int(len(fpr_rel)/100)])
-            res = SimResult(simname=simname, auc=auc, auc01=auc01, auc001=auc001, cutoff=snp_cutoff, tp=tp, tn=fp)
+            if tpr[-1] > 0:
+                tpr_rel = np.array(tpr)/tpr[-1]
+                fpr_rel = np.array(fpr)/fpr[-1]
+                
+                auc = np.trapz(tpr_rel, fpr_rel)
+                auc01 = np.trapz(tpr_rel[:int(len(tpr_rel)/10)], fpr_rel[:int(len(fpr_rel)/10)])
+                auc001 = np.trapz(tpr_rel[:int(len(tpr_rel)/100)], fpr_rel[:int(len(fpr_rel)/100)])
+                res = SimResult(simname=simname, auc=auc, auc01=auc01, auc001=auc001, cutoff=snp_cutoff, tp=tp, tn=fp)
 
-            with open(os.path.join(outdir, f"jpa_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}.txt"), 'w') as outst:
-                outst.write(f"tpr({tp})\tfpr({fp})\n")
-                for i in range(len(tpr_rel)):
-                    outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
+                if writeTPR:
+                    with open(os.path.join(outdir, f"jpa_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}.txt"), 'w') as outst:
+                        outst.write(f"tpr({tp})\tfpr({fp})\n")
+                        for i in range(len(tpr_rel)):
+                            outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
+            else:
+                if writeTPR:
+                    with open(os.path.join(outdir, f"jpa_targetgene_cut{snp_cutoff}_tpr_fpr_{simname}.txt"), 'w') as outst:
+                        outst.write(f"tpr({tp})\tfpr({fp})\n")
+                res = SimResult(simname=simname, auc=0, auc01=0, auc001=0, cutoff=snp_cutoff, tp=0, tn=0)
         else:
             res = SimResult(simname=simname, auc=0, auc01=0, auc001=0, cutoff=snp_cutoff, tp=0, tn=0)
         auc_res.append(res)
@@ -549,10 +602,11 @@ if bMatrixeqtl:
     auc001 = np.trapz(tpr_rel[:int(len(tpr_rel)/100)], fpr_rel[:int(len(fpr_rel)/100)])
     res = SimResult(simname=simname, auc=auc, auc01=auc01, auc001=auc001, cutoff=0, tp=tp, tn=fp)
 
-    with open(os.path.join(outdir, f"meqtl_targetgene_tpr_fpr_{simname}.txt"), 'w') as outst:
-        outst.write(f"tpr({tp})\tfpr({fp})\n")
-        for i in range(len(tpr_rel)):
-            outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
+    if writeTPR:
+        with open(os.path.join(outdir, f"meqtl_targetgene_tpr_fpr_{simname}.txt"), 'w') as outst:
+            outst.write(f"tpr({tp})\tfpr({fp})\n")
+            for i in range(len(tpr_rel)):
+                outst.write(f"{tpr_rel[i]}\t{fpr_rel[i]}\n")
 
     with open(os.path.join(outdir, f"meqtl_targetgene_auc_{simname}.txt"), 'w') as outst:
         outst.write("auc\tauc01\tauc001\tcutoff\tTP\tTN\n")
